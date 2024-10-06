@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfmp4bpt0wwlb"]
+
+[ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Scenes/player.tscn" id="1_wmqhn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_phm3u"]
+size = Vector2(2139.75, 113)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_55rn4"]
+size = Vector2(117.875, 546.25)
+
+[node name="test_level" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(754.125, 462.5)
+shape = SubResource("RectangleShape2D_phm3u")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(59, 144.125)
+shape = SubResource("RectangleShape2D_55rn4")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+position = Vector2(323, 138)
+shape = SubResource("RectangleShape2D_55rn4")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -322.0
+offset_top = 406.0
+offset_right = 1840.0
+offset_bottom = 608.0
+
+[node name="Panel2" type="Panel" parent="."]
+offset_left = -32.0
+offset_top = -129.0
+offset_right = 118.0
+offset_bottom = 424.0
+
+[node name="Panel3" type="Panel" parent="."]
+offset_left = 264.0
+offset_top = -134.0
+offset_right = 410.0
+offset_bottom = 414.0
+
+[node name="player" parent="." instance=ExtResource("1_wmqhn")]
+position = Vector2(77, -203)
+scale = Vector2(1.68594, 1.62774)
+
+[node name="Camera2D" type="Camera2D" parent="player"]
+limit_left = 0
+limit_bottom = 550
+position_smoothing_enabled = true
