@@ -1,38 +1,42 @@
-class_name StateMachine extends Node
+class_name StateMachine 
+extends Node
 
-## The initial state of the state machine. If not set, the first child node is used.
-@export var initial_state: State = null
-
-## The current state of the state machine.
-@onready var state: State = (func get_initial_state() -> State:
-	return initial_state if initial_state != null else get_child(0)
-).call()
+@export var current_state: State;
+var states: Dictionary = {};
 
 func _ready() -> void:
-	# Give every state a reference to the state machine.
-	for state_node: State in find_children("*", "State"):
-		state_node.finished.connect(_transition_to_next_state)
+	for child in get_children():
+		if child is State:
+			# Add the state to the dictionary using its name
+			states[child.name] = child;
+			
+			# Connect the state machine to the transitioned signal of all children
+			child.transitioned.connect(on_child_transitioned);
+		else:
+			push_warning("State machine contains child which is not in 'State'");
+	
+	# Start execution of the initial state
+	current_state.enter();
 
-	# State machines usually access data from the root node of the scene they're part of: the owner.
-	# We wait for the owner to be ready to guarantee all the data and nodes the states may need are available.
-	await owner.ready
-	state.enter("")
+func on_child_transitioned(new_state_name: StringName) -> void:
+	# Get the next state from the dictionary
+	var new_state = states.get(new_state_name);
+	
+	if new_state != null:
+		if new_state != current_state:
+			# Exit the current state
+			current_state.exit();
+			
+			# Enter the new state
+			new_state.enter();
+			
+			# Update current state to new state
+			current_state = new_state;
+	else:
+		push_warning("Called transition to a state that does not exist");
 
-func _transition_to_next_state(target_state_path: String, data: Dictionary = {}) -> void:
-	if not has_node(target_state_path):
-		printerr(owner.name + ": Trying to transition to state " + target_state_path + " but it does not exist.")
-		return
-
-	var previous_state_path := state.name
-	state.exit()
-	state = get_node(target_state_path)
-	state.enter(previous_state_path, data)
-
-func _unhandled_input(event: InputEvent) -> void:
-	state.handle_input(event)
-
-func _process(delta: float) -> void:
-	state.update(delta)
+func _process(delta) -> void:
+	current_state.update(delta);
 
 func _physics_process(delta: float) -> void:
-	state.physics_update(delta)
+	current_state.physics_update(delta);
