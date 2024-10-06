@@ -4,7 +4,7 @@ const SPEED: float = 400.0;
 const JUMP_VELOCITY: float = -500.0;
 const GRAVITY: float = 1000.0;
 const WALL_SLIDE_GRAVITY: float = 800.0;
-const WALL_JUMP_VELOCITY: float = -400.0;
+const WALL_JUMP_VELOCITY: float = -450.0;
 const WALL_JUMP_VELOCITY_BAD: float = -200.0;
 
 @onready var animation: AnimatedSprite2D = $sprite;
@@ -132,12 +132,12 @@ func _update_state(delta: float) -> void:
 				animation.flip_h = true;
 			
 			if Input.is_action_just_pressed("jump"):
-				_set_state(STATE.WALL_JUMP_BAD);
+				_set_state(STATE.WALL_JUMP);
 			
-			if (left_wall_detect.is_colliding() && direction > 0 && Input.is_action_just_pressed("jump")) \
-				|| \
-				(right_wall_detect.is_colliding() && direction < 0 && Input.is_action_just_pressed("jump")):
-					_set_state(STATE.WALL_JUMP);
+			#if (left_wall_detect.is_colliding() && direction > 0 && Input.is_action_just_pressed("jump")) \
+				#|| \
+				#(right_wall_detect.is_colliding() && direction < 0 && Input.is_action_just_pressed("jump")):
+					#_set_state(STATE.WALL_JUMP);
 			elif is_on_floor():
 				_set_state(STATE.IDLE);
 
