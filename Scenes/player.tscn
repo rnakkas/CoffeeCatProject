@@ -15,6 +15,11 @@ region = Rect2(0, 0, 64, 64)
 animations = [{
 "frames": [],
 "loop": true,
+"name": &"caffeinated",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
 "name": &"death",
 "speed": 5.0
 }, {
@@ -51,11 +56,6 @@ animations = [{
 }, {
 "frames": [],
 "loop": true,
-"name": &"run_fast",
-"speed": 5.0
-}, {
-"frames": [],
-"loop": true,
 "name": &"slide",
 "speed": 5.0
 }, {
@@ -75,14 +75,16 @@ script = ExtResource("1_k70q4")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_4jm0p")
-animation = &"run"
+animation = &"idle"
 
 [node name="collider" type="CollisionShape2D" parent="."]
 position = Vector2(-2, 3.5)
 shape = SubResource("RectangleShape2D_881vg")
 
 [node name="left_wall_detect" type="RayCast2D" parent="."]
+modulate = Color(0, 0.860542, 0.185596, 1)
 target_position = Vector2(-16, 0)
 
 [node name="right_wall_detect" type="RayCast2D" parent="."]
-target_position = Vector2(12, 0)
+modulate = Color(0.0509804, 0.933333, 0.176471, 1)
+target_position = Vector2(16, 0)

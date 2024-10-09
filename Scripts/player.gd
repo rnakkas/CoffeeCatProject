@@ -1,18 +1,18 @@
 class_name Player extends CharacterBody2D
 
 const SPEED: float = 400.0;
-const JUMP_VELOCITY: float = -500.0;
-const GRAVITY: float = 1000.0;
-const WALL_SLIDE_GRAVITY: float = 800.0;
+const JUMP_VELOCITY: float = -550.0;
+const GRAVITY: float = 1500.0;
+const WALL_SLIDE_GRAVITY: float = 1000.0;
 const WALL_JUMP_VELOCITY: float = -450.0;
-const WALL_JUMP_VELOCITY_BAD: float = -200.0;
 
 @onready var animation: AnimatedSprite2D = $sprite;
 @onready var left_wall_detect: RayCast2D = $left_wall_detect;
 @onready var right_wall_detect: RayCast2D = $right_wall_detect;
 
-enum STATE {IDLE, RUN, RUN_FAST, JUMP, WALL_SLIDE, FALL, WALL_JUMP, WALL_JUMP_BAD};
+enum STATE {IDLE, RUN, CAFFEINATED, JUMP, WALL_SLIDE, FALL, WALL_JUMP};
 var current_state;
+var wall_jump_direction: float;
 
 func _ready() -> void:
 	_set_state(STATE.IDLE);
@@ -32,7 +32,7 @@ func _exit_state() -> void:
 			pass;
 		STATE.RUN:
 			pass;
-		STATE.RUN_FAST:
+		STATE.CAFFEINATED:
 			pass;
 		STATE.JUMP:
 			pass;
@@ -42,8 +42,6 @@ func _exit_state() -> void:
 			pass;
 		STATE.WALL_JUMP:
 			pass;
-		STATE.WALL_JUMP_BAD:
-			pass;
 	
 func _enter_state() -> void:
 	match current_state:
@@ -52,8 +50,8 @@ func _enter_state() -> void:
 			animation.play("idle");
 		STATE.RUN:
 			animation.play("run");
-		STATE.RUN_FAST:
-			animation.play("run_fast");
+		STATE.CAFFEINATED:
+			animation.play("caffeinated");
 		STATE.JUMP:
 			velocity.y = JUMP_VELOCITY
 			animation.play("jump");
@@ -66,13 +64,9 @@ func _enter_state() -> void:
 			print("wall jump");
 			velocity.y = WALL_JUMP_VELOCITY;
 			animation.play("jump");
-		STATE.WALL_JUMP_BAD:
-			print("wall jump bad")
-			velocity.y = WALL_JUMP_VELOCITY_BAD;
-			animation.play("jump");
 
 func _update_state(delta: float) -> void:
-	var direction := Input.get_axis("move_left", "move_right");
+	var direction : float = Input.get_axis("move_left", "move_right");
 	match current_state:
 		STATE.IDLE:
 			if direction:
@@ -104,7 +98,6 @@ func _update_state(delta: float) -> void:
 				if velocity.y > 0:
 					_set_state(STATE.FALL);
 			elif is_on_wall():
-				#velocity.y = move_toward(velocity.y, 0, WALL_SLIDE_GRAVITY)
 				_set_state(STATE.WALL_SLIDE);	
 				
 			move_and_slide()
@@ -132,31 +125,21 @@ func _update_state(delta: float) -> void:
 				animation.flip_h = true;
 			
 			if Input.is_action_just_pressed("jump"):
+				if left_wall_detect.is_colliding():
+					wall_jump_direction = 1.0;
+				elif right_wall_detect.is_colliding():
+					wall_jump_direction = -1.0;
+				
 				_set_state(STATE.WALL_JUMP);
-			
-			#if (left_wall_detect.is_colliding() && direction > 0 && Input.is_action_just_pressed("jump")) \
-				#|| \
-				#(right_wall_detect.is_colliding() && direction < 0 && Input.is_action_just_pressed("jump")):
-					#_set_state(STATE.WALL_JUMP);
+
 			elif is_on_floor():
 				_set_state(STATE.IDLE);
 
 			move_and_slide();
 		
 		STATE.WALL_JUMP:
-			velocity.x = direction * SPEED;
-			_flip_sprite(direction);
-			
-			if !is_on_floor():
-				velocity.y += GRAVITY * delta;
-				if velocity.y > 0:
-					_set_state(STATE.FALL);
-			
-			move_and_slide();
-			
-		STATE.WALL_JUMP_BAD:
-			velocity.x = direction * SPEED;
-			_flip_sprite(direction);
+			velocity.x = wall_jump_direction * SPEED;
+			_flip_sprite(wall_jump_direction);
 			
 			if !is_on_floor():
 				velocity.y += GRAVITY * delta;
