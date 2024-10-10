@@ -118,11 +118,11 @@ func _update_state(delta: float) -> void:
 		STATE.WALL_SLIDE:
 			velocity.y += WALL_SLIDE_GRAVITY * delta;
 			
-			# Flip sprite to face opposite of wall
-			if left_wall_detect.is_colliding():
-				animation.flip_h = false;
-			elif right_wall_detect.is_colliding():
-				animation.flip_h = true;
+			## Flip sprite to face opposite of wall
+			#if left_wall_detect.is_colliding():
+				#animation.flip_h = false;
+			#elif right_wall_detect.is_colliding():
+				#animation.flip_h = true;
 			
 			if Input.is_action_just_pressed("jump"):
 				if left_wall_detect.is_colliding():
@@ -150,9 +150,9 @@ func _update_state(delta: float) -> void:
 
 func _flip_sprite(direction: float) -> void:
 	if direction < 0:
-		animation.flip_h = true;
-	elif direction > 0:
 		animation.flip_h = false;
+	elif direction > 0:
+		animation.flip_h = true;
 
 func _physics_process(delta: float) -> void:
 	_update_state(delta);
