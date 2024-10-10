@@ -13,6 +13,7 @@ func _on_body_entered(body: Node2D) -> void:
 	var tween_2: Tween = get_tree().create_tween();
 	if body.name == "player":
 		print("player enter");
-		tween_1.tween_property(self, "modulate:a", 0, 0.9);
-		tween_2.tween_property(self, "position", position - Vector2(0, 70), 0.3);
+		animation.play("collect");
+		tween_1.tween_property(self, "modulate:a", 0, 1.0);
+		tween_2.tween_property(self, "position", position - Vector2(0, 80), 0.3);
 		tween_2.tween_callback(queue_free);
