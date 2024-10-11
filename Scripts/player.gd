@@ -1,10 +1,10 @@
 class_name Player extends CharacterBody2D
 
-const SPEED: float = 400.0;
-const JUMP_VELOCITY: float = -550.0;
-const GRAVITY: float = 1500.0;
+const SPEED: float = 700.0;
+const JUMP_VELOCITY: float = -850.0;
+const GRAVITY: float = 1800.0;
 const WALL_SLIDE_GRAVITY: float = 1000.0;
-const WALL_JUMP_VELOCITY: float = -450.0;
+const WALL_JUMP_VELOCITY: float = -750.0;
 
 @onready var animation: AnimatedSprite2D = $sprite;
 @onready var left_wall_detect: RayCast2D = $left_wall_detect;

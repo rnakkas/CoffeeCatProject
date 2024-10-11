@@ -1,82 +1,91 @@
-[gd_scene load_steps=5 format=3 uid="uid://cfmp4bpt0wwlb"]
+[gd_scene load_steps=6 format=3 uid="uid://cfmp4bpt0wwlb"]
 
 [ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Scenes/player.tscn" id="1_wmqhn"]
 [ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Scenes/coffee.tscn" id="2_wkv4d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_phm3u"]
-size = Vector2(2139.75, 113)
+size = Vector2(3668.75, 324)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0vmkn"]
+size = Vector2(297, 779.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_55rn4"]
-size = Vector2(117.875, 546.25)
+size = Vector2(225, 792.125)
 
 [node name="test_level" type="Node2D"]
+position = Vector2(192, 9)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(754.125, 462.5)
+position = Vector2(1518.63, 568)
 shape = SubResource("RectangleShape2D_phm3u")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-position = Vector2(59, 144.125)
-shape = SubResource("RectangleShape2D_55rn4")
+position = Vector2(-32.5, 27.625)
+shape = SubResource("RectangleShape2D_0vmkn")
 
 [node name="StaticBody2D3" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
-position = Vector2(323, 138)
+position = Vector2(518.5, 24.0625)
 shape = SubResource("RectangleShape2D_55rn4")
 
 [node name="Panel" type="Panel" parent="."]
-offset_left = -322.0
-offset_top = 406.0
-offset_right = 1840.0
-offset_bottom = 608.0
+offset_left = -350.0
+offset_top = 394.0
+offset_right = 3351.0
+offset_bottom = 727.0
+metadata/_edit_use_anchors_ = true
 
 [node name="Panel2" type="Panel" parent="."]
-offset_left = -32.0
-offset_top = -129.0
+offset_left = -184.0
+offset_top = -373.0
 offset_right = 118.0
 offset_bottom = 424.0
+metadata/_edit_use_anchors_ = true
 
 [node name="Panel3" type="Panel" parent="."]
-offset_left = 264.0
-offset_top = -134.0
-offset_right = 410.0
-offset_bottom = 414.0
+offset_left = 404.0
+offset_top = -372.0
+offset_right = 632.0
+offset_bottom = 420.0
+metadata/_edit_use_anchors_ = true
 
 [node name="coffees" type="Node" parent="."]
 
 [node name="coffee" parent="coffees" instance=ExtResource("2_wkv4d")]
-position = Vector2(330, -181)
+position = Vector2(547, -243)
+
+[node name="coffee8" parent="coffees" instance=ExtResource("2_wkv4d")]
+position = Vector2(710, -416)
 
 [node name="coffee2" parent="coffees" instance=ExtResource("2_wkv4d")]
-position = Vector2(147, 12)
+position = Vector2(351, -119)
 
 [node name="coffee3" parent="coffees" instance=ExtResource("2_wkv4d")]
-position = Vector2(225, 176)
+position = Vector2(540, 49)
 
 [node name="coffee5" parent="coffees" instance=ExtResource("2_wkv4d")]
-position = Vector2(508, 363)
+position = Vector2(1408, 367)
 
 [node name="coffee6" parent="coffees" instance=ExtResource("2_wkv4d")]
-position = Vector2(747, 363)
+position = Vector2(943, 369)
 
 [node name="coffee7" parent="coffees" instance=ExtResource("2_wkv4d")]
-position = Vector2(983, 361)
+position = Vector2(1175, 370)
 
 [node name="coffee4" parent="coffees" instance=ExtResource("2_wkv4d")]
-position = Vector2(148, 299)
+position = Vector2(349, 178)
 
 [node name="player" parent="." instance=ExtResource("1_wmqhn")]
-top_level = true
-position = Vector2(77, -203)
+position = Vector2(169, -486)
 scale = Vector2(1.68594, 1.62774)
 
 [node name="Camera2D" type="Camera2D" parent="player"]
-zoom = Vector2(1.2, 1.2)
+zoom = Vector2(0.7, 0.7)
 limit_left = 0
 limit_bottom = 550
 position_smoothing_enabled = true

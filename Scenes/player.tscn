@@ -268,8 +268,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_881vg"]
-size = Vector2(22, 42)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_an578"]
+size = Vector2(43, 96)
 
 [node name="player" type="CharacterBody2D"]
 collision_layer = 2
@@ -277,17 +277,21 @@ collision_mask = 5
 script = ExtResource("1_k70q4")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(-9, -1)
 sprite_frames = SubResource("SpriteFrames_4jm0p")
-animation = &"wall_slide"
+animation = &"idle"
+flip_h = true
 
 [node name="collider" type="CollisionShape2D" parent="."]
-position = Vector2(0, 5)
-shape = SubResource("RectangleShape2D_881vg")
+position = Vector2(-9, 9)
+shape = SubResource("RectangleShape2D_an578")
 
 [node name="left_wall_detect" type="RayCast2D" parent="."]
 modulate = Color(0, 0.860542, 0.185596, 1)
-target_position = Vector2(-14, 0)
+position = Vector2(-28, 4)
+target_position = Vector2(-13, 0)
 
 [node name="right_wall_detect" type="RayCast2D" parent="."]
 modulate = Color(0.0509804, 0.933333, 0.176471, 1)
-target_position = Vector2(14, 0)
+position = Vector2(11, 4)
+target_position = Vector2(13, 0)
