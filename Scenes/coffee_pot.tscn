@@ -1,0 +1,92 @@
+[gd_scene load_steps=13 format=3 uid="uid://f41uy40r0hsp"]
+
+[ext_resource type="Texture2D" uid="uid://0k7oowkgbxd1" path="res://Assets/coffee_pot_spritesheet_v1.png" id="1_78t62"]
+[ext_resource type="Script" path="res://Scripts/coffee_pot.gd" id="1_ye5fj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6wpg0"]
+atlas = ExtResource("1_78t62")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4bey"]
+atlas = ExtResource("1_78t62")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pkvuy"]
+atlas = ExtResource("1_78t62")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rffy3"]
+atlas = ExtResource("1_78t62")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0k3aq"]
+atlas = ExtResource("1_78t62")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4yw45"]
+atlas = ExtResource("1_78t62")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xtodf"]
+atlas = ExtResource("1_78t62")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7xuy5"]
+atlas = ExtResource("1_78t62")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e1eib"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6wpg0")
+}],
+"loop": true,
+"name": &"collect",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y4bey")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pkvuy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rffy3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0k3aq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4yw45")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xtodf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xuy5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 11.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o754r"]
+radius = 65.0077
+
+[node name="coffee_pot" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_ye5fj")
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1.2, 1.2)
+sprite_frames = SubResource("SpriteFrames_e1eib")
+animation = &"idle"
+
+[node name="collider" type="CollisionShape2D" parent="."]
+position = Vector2(2, 1)
+shape = SubResource("CircleShape2D_o754r")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

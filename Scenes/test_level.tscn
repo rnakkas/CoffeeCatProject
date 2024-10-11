@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cfmp4bpt0wwlb"]
+[gd_scene load_steps=7 format=3 uid="uid://cfmp4bpt0wwlb"]
 
 [ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Scenes/player.tscn" id="1_wmqhn"]
+[ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Scenes/coffee_pot.tscn" id="2_6cst6"]
 [ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Scenes/coffee.tscn" id="2_wkv4d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_phm3u"]
@@ -60,7 +61,7 @@ metadata/_edit_use_anchors_ = true
 position = Vector2(547, -243)
 
 [node name="coffee8" parent="coffees" instance=ExtResource("2_wkv4d")]
-position = Vector2(710, -416)
+position = Vector2(1627, 367)
 
 [node name="coffee2" parent="coffees" instance=ExtResource("2_wkv4d")]
 position = Vector2(351, -119)
@@ -80,8 +81,11 @@ position = Vector2(1175, 370)
 [node name="coffee4" parent="coffees" instance=ExtResource("2_wkv4d")]
 position = Vector2(349, 178)
 
+[node name="coffee_pot" parent="coffees" instance=ExtResource("2_6cst6")]
+position = Vector2(704, -441)
+
 [node name="player" parent="." instance=ExtResource("1_wmqhn")]
-position = Vector2(169, -486)
+position = Vector2(21, -504)
 scale = Vector2(1.68594, 1.62774)
 
 [node name="Camera2D" type="Camera2D" parent="player"]
