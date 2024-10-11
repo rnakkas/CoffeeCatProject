@@ -56,12 +56,12 @@ func _enter_state() -> void:
 			velocity.y = JUMP_VELOCITY
 			animation.play("jump");
 		STATE.WALL_SLIDE:
-			print("wall slide");
+			#print("wall slide");
 			animation.play("wall_slide");
 		STATE.FALL:
 			animation.play("fall");
 		STATE.WALL_JUMP:
-			print("wall jump");
+			#print("wall jump");
 			velocity.y = WALL_JUMP_VELOCITY;
 			animation.play("jump");
 

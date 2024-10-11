@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cfmp4bpt0wwlb"]
+[gd_scene load_steps=8 format=3 uid="uid://cfmp4bpt0wwlb"]
 
 [ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Scenes/player.tscn" id="1_wmqhn"]
 [ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Scenes/coffee_pot.tscn" id="2_6cst6"]
 [ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Scenes/coffee.tscn" id="2_wkv4d"]
+[ext_resource type="PackedScene" uid="uid://mxw523q5nx4f" path="res://Scenes/game_manager.tscn" id="4_lle7t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_phm3u"]
 size = Vector2(3668.75, 324)
@@ -15,6 +16,9 @@ size = Vector2(225, 792.125)
 
 [node name="test_level" type="Node2D"]
 position = Vector2(192, 9)
+
+[node name="game_manager" parent="." instance=ExtResource("4_lle7t")]
+unique_name_in_owner = true
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
@@ -55,34 +59,37 @@ offset_right = 632.0
 offset_bottom = 420.0
 metadata/_edit_use_anchors_ = true
 
-[node name="coffees" type="Node" parent="."]
+[node name="items" type="Node" parent="."]
 
-[node name="coffee" parent="coffees" instance=ExtResource("2_wkv4d")]
+[node name="coffee" parent="items" instance=ExtResource("2_wkv4d")]
 position = Vector2(547, -243)
 
-[node name="coffee8" parent="coffees" instance=ExtResource("2_wkv4d")]
+[node name="coffee8" parent="items" instance=ExtResource("2_wkv4d")]
 position = Vector2(1627, 367)
 
-[node name="coffee2" parent="coffees" instance=ExtResource("2_wkv4d")]
+[node name="coffee2" parent="items" instance=ExtResource("2_wkv4d")]
 position = Vector2(351, -119)
 
-[node name="coffee3" parent="coffees" instance=ExtResource("2_wkv4d")]
+[node name="coffee3" parent="items" instance=ExtResource("2_wkv4d")]
 position = Vector2(540, 49)
 
-[node name="coffee5" parent="coffees" instance=ExtResource("2_wkv4d")]
+[node name="coffee5" parent="items" instance=ExtResource("2_wkv4d")]
 position = Vector2(1408, 367)
 
-[node name="coffee6" parent="coffees" instance=ExtResource("2_wkv4d")]
+[node name="coffee6" parent="items" instance=ExtResource("2_wkv4d")]
 position = Vector2(943, 369)
 
-[node name="coffee7" parent="coffees" instance=ExtResource("2_wkv4d")]
+[node name="coffee7" parent="items" instance=ExtResource("2_wkv4d")]
 position = Vector2(1175, 370)
 
-[node name="coffee4" parent="coffees" instance=ExtResource("2_wkv4d")]
+[node name="coffee4" parent="items" instance=ExtResource("2_wkv4d")]
 position = Vector2(349, 178)
 
-[node name="coffee_pot" parent="coffees" instance=ExtResource("2_6cst6")]
+[node name="coffee_pot" parent="items" instance=ExtResource("2_6cst6")]
 position = Vector2(704, -441)
+
+[node name="coffee_pot2" parent="items" instance=ExtResource("2_6cst6")]
+position = Vector2(1918, 339)
 
 [node name="player" parent="." instance=ExtResource("1_wmqhn")]
 position = Vector2(21, -504)
