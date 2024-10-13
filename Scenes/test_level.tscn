@@ -95,11 +95,11 @@ position = Vector2(704, -441)
 position = Vector2(1918, 339)
 
 [node name="player" parent="." instance=ExtResource("1_wmqhn")]
-position = Vector2(21, -504)
+position = Vector2(-16, -633)
 scale = Vector2(1.68594, 1.62774)
 
 [node name="Camera2D" type="Camera2D" parent="player"]
-zoom = Vector2(0.6, 0.6)
+zoom = Vector2(0.65, 0.65)
 limit_left = 0
 limit_bottom = 550
 position_smoothing_enabled = true
