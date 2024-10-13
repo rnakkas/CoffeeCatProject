@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://srbck5hqyrvf"]
+
+[ext_resource type="Script" path="res://Scripts/hud.gd" id="1_d51eb"]
+[ext_resource type="Texture2D" uid="uid://cp7stu7okphtc" path="res://Assets/coffee_mug_spritesheet_v1.png" id="1_swtkt"]
+[ext_resource type="FontFile" uid="uid://dsgv5b6heuugb" path="res://Assets/Fonts/PixelOperator8.ttf" id="2_pgmqy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_88ggg"]
+atlas = ExtResource("1_swtkt")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8v1qm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_88ggg")
+}],
+"loop": true,
+"name": &"hud",
+"speed": 5.0
+}]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_d51eb")
+
+[node name="coffee_score_sprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(50, 50)
+scale = Vector2(1.09375, 1.125)
+sprite_frames = SubResource("SpriteFrames_8v1qm")
+animation = &"hud"
+
+[node name="coffee_score" type="Label" parent="."]
+offset_left = 84.0
+offset_top = 42.0
+offset_right = 320.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(1, 0.654902, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 0.776471, 0.0156863, 0.423529)
+theme_override_colors/font_outline_color = Color(0.307056, 0.246164, 4.81308e-08, 1)
+theme_override_constants/line_spacing = 0
+theme_override_constants/outline_size = 7
+theme_override_constants/shadow_outline_size = 12
+theme_override_fonts/font = ExtResource("2_pgmqy")
+theme_override_font_sizes/font_size = 32
