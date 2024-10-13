@@ -1,8 +1,7 @@
-class_name CoffeePot
 extends Area2D
 
 @onready var animation: AnimatedSprite2D = $sprite;
-@onready var game_manager: Node = %game_manager;
+@onready var level_manager: Node = %level_manager;
 
 var identifier: String;
 
@@ -13,4 +12,4 @@ func _ready() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.name == "player":
 		var item_collection: ItemCollection = ItemCollection.new()
-		item_collection.player_collects_item(self, animation, game_manager);
+		item_collection.player_collects_item(self, animation, level_manager);

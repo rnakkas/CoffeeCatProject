@@ -1,4 +1,5 @@
-class_name Player extends CharacterBody2D
+class_name Player 
+extends CharacterBody2D
 
 const SPEED: float = 700.0;
 const JUMP_VELOCITY: float = -850.0;
@@ -15,6 +16,7 @@ var current_state;
 var wall_jump_direction: float;
 
 func _ready() -> void:
+	animation.flip_h = true;
 	_set_state(STATE.IDLE);
 
 # State machine

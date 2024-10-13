@@ -280,7 +280,6 @@ script = ExtResource("1_k70q4")
 position = Vector2(-9, -1)
 sprite_frames = SubResource("SpriteFrames_4jm0p")
 animation = &"idle"
-flip_h = true
 
 [node name="collider" type="CollisionShape2D" parent="."]
 position = Vector2(-9, 9)

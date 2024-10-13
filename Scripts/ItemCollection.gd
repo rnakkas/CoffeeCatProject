@@ -2,8 +2,8 @@ class_name ItemCollection
 extends Node
 
 # When player collects item, increase score and play animation
-func player_collects_item(object: Object, animation: AnimatedSprite2D, game_manager: Node) -> void:
-	_increase_score(object, game_manager);
+func player_collects_item(object: Object, animation: AnimatedSprite2D, level_manager: Node) -> void:
+	_increase_score(object, level_manager);
 	
 	var tween_1: Tween = object.get_tree().create_tween();
 	var tween_2: Tween = object.get_tree().create_tween();
@@ -12,9 +12,9 @@ func player_collects_item(object: Object, animation: AnimatedSprite2D, game_mana
 	tween_2.tween_property(object, "position", object.position - Vector2(0, 210), 0.45);
 	tween_2.tween_callback(object.queue_free);
 
-func _increase_score(object: Object, game_manager: Node) -> void:
+func _increase_score(object: Object, level_manager: Node) -> void:
 	match object.identifier: #Gets the object identifier field
 		"coffee":
-			game_manager.increase_coffee_score(1);
+			level_manager.increase_coffee_score(1);
 		"coffee_pot":
-			game_manager.increase_coffee_score(5);
+			level_manager.increase_coffee_score(5);
