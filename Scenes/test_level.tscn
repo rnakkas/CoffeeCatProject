@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://cfmp4bpt0wwlb"]
+[gd_scene load_steps=10 format=3 uid="uid://cfmp4bpt0wwlb"]
 
 [ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Scenes/player.tscn" id="1_wmqhn"]
 [ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Scenes/coffee_pot.tscn" id="2_6cst6"]
 [ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Scenes/coffee.tscn" id="2_wkv4d"]
 [ext_resource type="PackedScene" uid="uid://mxw523q5nx4f" path="res://Scenes/level_manager.tscn" id="4_lle7t"]
 [ext_resource type="PackedScene" uid="uid://srbck5hqyrvf" path="res://Scenes/hud.tscn" id="5_hk3rh"]
+[ext_resource type="PackedScene" uid="uid://bnpdedb212get" path="res://Scenes/level_end.tscn" id="6_ouf0m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_phm3u"]
 size = Vector2(3668.75, 324)
@@ -95,10 +96,13 @@ position = Vector2(704, -441)
 position = Vector2(1918, 339)
 
 [node name="player" parent="." instance=ExtResource("1_wmqhn")]
-position = Vector2(317, -239)
+position = Vector2(918, 227)
 scale = Vector2(1.68594, 1.62774)
 
 [node name="Camera2D" type="Camera2D" parent="player"]
 limit_left = 0
 limit_bottom = 550
 position_smoothing_enabled = true
+
+[node name="level_end" parent="." instance=ExtResource("6_ouf0m")]
+position = Vector2(895, 232)
