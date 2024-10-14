@@ -94,7 +94,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_shag6"]
-radius = 29.0172
+radius = 19.105
 
 [node name="coffee" type="Area2D"]
 collision_layer = 4
