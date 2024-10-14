@@ -2,7 +2,7 @@ class_name ItemCollection
 extends Node
 
 # When player collects item, increase score and play animation
-func player_collects_item(object: Object, animation: AnimatedSprite2D, level_manager: Node) -> void:
+func player_collects_item(object: Object, _animation: AnimatedSprite2D, level_manager: Node) -> void:
 	_increase_score(object, level_manager);
 	
 	var tween_1: Tween = object.get_tree().create_tween();
