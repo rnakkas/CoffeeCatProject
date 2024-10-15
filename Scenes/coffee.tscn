@@ -94,7 +94,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_shag6"]
-radius = 19.105
+radius = 4.0
 
 [node name="coffee" type="Area2D"]
 collision_layer = 4
@@ -103,14 +103,13 @@ script = ExtResource("1_jcrmj")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(10, 13)
-scale = Vector2(0.695, 0.745)
+scale = Vector2(0.15, 0.161)
 sprite_frames = SubResource("SpriteFrames_nm0lc")
 animation = &"idle"
-frame = 3
-frame_progress = 0.60301
+frame_progress = 0.784905
 
 [node name="collider" type="CollisionShape2D" parent="."]
-position = Vector2(10, 12)
+position = Vector2(10, 14)
 shape = SubResource("CircleShape2D_shag6")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

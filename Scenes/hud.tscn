@@ -24,7 +24,7 @@ script = ExtResource("1_d51eb")
 
 [node name="coffee_score_sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(50, 50)
-scale = Vector2(1.09375, 1.125)
+scale = Vector2(1, 1.028)
 sprite_frames = SubResource("SpriteFrames_8v1qm")
 animation = &"hud"
 

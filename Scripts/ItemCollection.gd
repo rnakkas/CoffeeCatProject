@@ -9,7 +9,7 @@ func player_collects_item(object: Object, _animation: AnimatedSprite2D, level_ma
 	var tween_2: Tween = object.get_tree().create_tween();
 	#animation.play("collect");
 	tween_1.tween_property(object, "modulate:a", 0, 0.4);
-	tween_2.tween_property(object, "position", object.position - Vector2(0, 150), 0.5);
+	tween_2.tween_property(object, "position", object.position - Vector2(0, 50), 0.5);
 	tween_2.tween_callback(object.queue_free);
 
 func _increase_score(object: Object, level_manager: Node) -> void:

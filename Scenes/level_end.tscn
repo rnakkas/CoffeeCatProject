@@ -132,7 +132,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ppgx8"]
-size = Vector2(121, 233)
+size = Vector2(34, 63)
 
 [node name="level_end" type="Area2D"]
 collision_layer = 8
@@ -141,13 +141,13 @@ script = ExtResource("1_qdub1")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 modulate = Color(1, 0.929412, 0, 1)
-position = Vector2(-3.5, 52.5)
-scale = Vector2(0.945313, 1.82031)
+position = Vector2(1, -1)
+scale = Vector2(0.265625, 0.492186)
 sprite_frames = SubResource("SpriteFrames_13lvr")
 animation = &"idle"
 
 [node name="collider" type="CollisionShape2D" parent="."]
-position = Vector2(-3.5, 52.5)
+position = Vector2(1, -1)
 shape = SubResource("RectangleShape2D_ppgx8")
 debug_color = Color(0.604997, 0.541178, 0.0129845, 0.42)
 

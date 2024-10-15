@@ -73,7 +73,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o754r"]
-radius = 38.833
+radius = 8.0
 
 [node name="coffee_pot" type="Area2D"]
 collision_layer = 4
@@ -81,12 +81,11 @@ collision_mask = 2
 script = ExtResource("1_ye5fj")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.75, 0.75)
+scale = Vector2(0.15, 0.15)
 sprite_frames = SubResource("SpriteFrames_e1eib")
 animation = &"idle"
 
 [node name="collider" type="CollisionShape2D" parent="."]
-position = Vector2(2, 1)
 shape = SubResource("CircleShape2D_o754r")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

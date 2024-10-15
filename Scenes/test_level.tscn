@@ -92,8 +92,7 @@ unique_name_in_owner = true
 [node name="items" type="Node" parent="."]
 
 [node name="coffee" parent="items" instance=ExtResource("2_wkv4d")]
-visible = false
-position = Vector2(547, -243)
+position = Vector2(63, 117)
 
 [node name="coffee8" parent="items" instance=ExtResource("2_wkv4d")]
 visible = false
@@ -124,8 +123,7 @@ visible = false
 position = Vector2(349, 178)
 
 [node name="coffee_pot" parent="items" instance=ExtResource("2_6cst6")]
-visible = false
-position = Vector2(704, -441)
+position = Vector2(91, 82)
 
 [node name="coffee_pot2" parent="items" instance=ExtResource("2_6cst6")]
 visible = false
@@ -144,5 +142,4 @@ position_smoothing_enabled = true
 position_smoothing_speed = 2.835
 
 [node name="level_end" parent="." instance=ExtResource("6_ouf0m")]
-visible = false
-position = Vector2(895, 232)
+position = Vector2(352, 130)
