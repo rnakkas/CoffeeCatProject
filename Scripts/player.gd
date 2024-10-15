@@ -1,11 +1,11 @@
 class_name Player 
 extends CharacterBody2D
 
-const SPEED: float = 700.0;
-const JUMP_VELOCITY: float = -850.0;
-const GRAVITY: float = 1800.0;
-const WALL_SLIDE_GRAVITY: float = 1000.0;
-const WALL_JUMP_VELOCITY: float = -750.0;
+const SPEED: float = 180.0;
+const JUMP_VELOCITY: float = -250.0;
+const GRAVITY: float = 750.0;
+const WALL_SLIDE_GRAVITY: float = 500.0;
+const WALL_JUMP_VELOCITY: float = -200.0;
 
 @onready var animation: AnimatedSprite2D = $sprite;
 @onready var left_wall_detect: RayCast2D = $left_wall_detect;
@@ -119,12 +119,6 @@ func _update_state(delta: float) -> void:
 
 		STATE.WALL_SLIDE:
 			velocity.y += WALL_SLIDE_GRAVITY * delta;
-			
-			## Flip sprite to face opposite of wall
-			#if left_wall_detect.is_colliding():
-				#animation.flip_h = false;
-			#elif right_wall_detect.is_colliding():
-				#animation.flip_h = true;
 			
 			if Input.is_action_just_pressed("jump"):
 				if left_wall_detect.is_colliding():
