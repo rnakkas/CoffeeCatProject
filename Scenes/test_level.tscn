@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://cfmp4bpt0wwlb"]
+[gd_scene load_steps=10 format=4 uid="uid://cfmp4bpt0wwlb"]
 
+[ext_resource type="Texture2D" uid="uid://w7so2b7woqim" path="res://Assets/Tilemaps/garden_terrain_tilemap_v1.png" id="1_46iho"]
 [ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Scenes/player.tscn" id="1_wmqhn"]
 [ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Scenes/coffee_pot.tscn" id="2_6cst6"]
 [ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Scenes/coffee.tscn" id="2_wkv4d"]
@@ -7,102 +8,140 @@
 [ext_resource type="PackedScene" uid="uid://srbck5hqyrvf" path="res://Scenes/hud.tscn" id="5_hk3rh"]
 [ext_resource type="PackedScene" uid="uid://bnpdedb212get" path="res://Scenes/level_end.tscn" id="6_ouf0m"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_phm3u"]
-size = Vector2(3668.75, 324)
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_71c8k"]
+texture = ExtResource("1_46iho")
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -5.25, 8, -5.25, 8, 8, -8, 8)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -5.25, 8, -5.25, 8, 8, -8, 8)
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -5.25, 8, -5.25, 8, 8, -8, 8)
+4:0/0 = 0
+4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5, -8, 8, -8, 8, 8, -5.0625, 8)
+5:0/0 = 0
+5:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+6:0/0 = 0
+6:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5, -8, 8, -8, 8, 5.125, -5, 5.125)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 4.86142, -8, 4.96063)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:1/0 = 0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:1/0 = 0
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+4:1/0 = 0
+4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5, -8, 8, -8, 8, 8, -5.0625, 8)
+5:1/0 = 0
+5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+6:1/0 = 0
+6:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -6.5, 8, -6.54803, 8, 8, -8, 8)
+0:2/0 = 0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:2/0 = 0
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 6.10157, -8, 5.96308, 8, -8, 8)
+2:2/0 = 0
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+0:6/0 = 0
+1:6/0 = 0
+2:6/0 = 0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0vmkn"]
-size = Vector2(297, 779.25)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_55rn4"]
-size = Vector2(225, 792.125)
+[sub_resource type="TileSet" id="TileSet_8m5wr"]
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 2
+sources/0 = SubResource("TileSetAtlasSource_71c8k")
 
 [node name="test_level" type="Node2D"]
 position = Vector2(192, 9)
 
+[node name="floor" type="TileMapLayer" parent="."]
+scale = Vector2(1.5, 1.5)
+tile_map_data = PackedByteArray("AAAaAAoAAAACAAAAAAAbAAoAAAACAAAAAAAcAAoAAAACAAAAAAAdAAoAAAACAAAAAAAeAAoAAAACAAAAAAAfAAoAAAACAAAAAAAgAAoAAAACAAAAAAAhAAoAAAACAAAAAAAaAAkAAAABAAMAAAAbAAkAAAACAAMAAAAcAAkAAAADAAMAAAAdAAkAAAABAAMAAAAeAAkAAAACAAMAAAAfAAkAAAABAAMAAAAgAAkAAAACAAMAAAAhAAkAAAADAAMAAAAMAAoAAAACAAAAAAANAAoAAAACAAAAAAAOAAoAAAACAAAAAAAPAAoAAAACAAAAAAAQAAoAAAACAAAAAAARAAoAAAACAAAAAAASAAoAAAACAAAAAAATAAoAAAACAAAAAAAUAAoAAAACAAAAAAAVAAoAAAACAAAAAAAWAAoAAAACAAAAAAAXAAoAAAACAAAAAAAYAAoAAAACAAAAAAAZAAoAAAACAAAAAAAiAAoAAAACAAAAAAAjAAoAAAACAAAAAAAkAAoAAAACAAAAAAAlAAoAAAACAAAAAAAmAAoAAAACAAAAAAAnAAoAAAACAAAAAAAoAAoAAAACAAAAAAApAAoAAAACAAAAAAAqAAoAAAACAAAAAAArAAoAAAACAAAAAAAsAAoAAAACAAAAAAAtAAoAAAACAAAAAAAuAAoAAAACAAAAAAAvAAoAAAACAAAAAAAwAAoAAAACAAAAAAAxAAoAAAACAAAAAAAyAAoAAAACAAAAAAALAAoAAAACAAAAAAAzAAoAAAADAAAAAAAKAAoAAAACAAAAAAAJAAoAAAACAAAAAAAIAAoAAAACAAAAAAAHAAoAAAACAAAAAAAGAAoAAAACAAAAAAAFAAoAAAACAAAAAAAEAAoAAAACAAAAAAADAAoAAAACAAAAAAACAAoAAAACAAAAAAABAAoAAAACAAAAAAAAAAoAAAACAAAAAAD//woAAAACAAAAAAD+/woAAAACAAAAAAD9/woAAAACAAAAAAD8/woAAAACAAAAAAD7/woAAAACAAAAAAD6/woAAAACAAAAAAD5/woAAAACAAAAAAD4/woAAAACAAAAAAD3/woAAAACAAAAAAD2/woAAAACAAAAAAA=")
+tile_set = SubResource("TileSet_8m5wr")
+
 [node name="HUD" parent="." instance=ExtResource("5_hk3rh")]
+visible = false
 
 [node name="level_manager" parent="." instance=ExtResource("4_lle7t")]
 unique_name_in_owner = true
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(1518.63, 568)
-shape = SubResource("RectangleShape2D_phm3u")
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-position = Vector2(-32.5, 27.625)
-shape = SubResource("RectangleShape2D_0vmkn")
-
-[node name="StaticBody2D3" type="StaticBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
-position = Vector2(518.5, 24.0625)
-shape = SubResource("RectangleShape2D_55rn4")
-
-[node name="Panel" type="Panel" parent="."]
-offset_left = -350.0
-offset_top = 394.0
-offset_right = 3351.0
-offset_bottom = 727.0
-metadata/_edit_use_anchors_ = true
-
-[node name="Panel2" type="Panel" parent="."]
-offset_left = -184.0
-offset_top = -373.0
-offset_right = 118.0
-offset_bottom = 424.0
-metadata/_edit_use_anchors_ = true
-
-[node name="Panel3" type="Panel" parent="."]
-offset_left = 404.0
-offset_top = -372.0
-offset_right = 632.0
-offset_bottom = 420.0
-metadata/_edit_use_anchors_ = true
-
 [node name="items" type="Node" parent="."]
 
 [node name="coffee" parent="items" instance=ExtResource("2_wkv4d")]
+visible = false
 position = Vector2(547, -243)
 
 [node name="coffee8" parent="items" instance=ExtResource("2_wkv4d")]
+visible = false
 position = Vector2(1627, 367)
 
 [node name="coffee2" parent="items" instance=ExtResource("2_wkv4d")]
+visible = false
 position = Vector2(351, -119)
 
 [node name="coffee3" parent="items" instance=ExtResource("2_wkv4d")]
+visible = false
 position = Vector2(540, 49)
 
 [node name="coffee5" parent="items" instance=ExtResource("2_wkv4d")]
+visible = false
 position = Vector2(1408, 367)
 
 [node name="coffee6" parent="items" instance=ExtResource("2_wkv4d")]
+visible = false
 position = Vector2(943, 369)
 
 [node name="coffee7" parent="items" instance=ExtResource("2_wkv4d")]
+visible = false
 position = Vector2(1175, 370)
 
 [node name="coffee4" parent="items" instance=ExtResource("2_wkv4d")]
+visible = false
 position = Vector2(349, 178)
 
 [node name="coffee_pot" parent="items" instance=ExtResource("2_6cst6")]
+visible = false
 position = Vector2(704, -441)
 
 [node name="coffee_pot2" parent="items" instance=ExtResource("2_6cst6")]
+visible = false
 position = Vector2(1918, 339)
 
 [node name="player" parent="." instance=ExtResource("1_wmqhn")]
-position = Vector2(918, 227)
+position = Vector2(108, 165)
 scale = Vector2(1.68594, 1.62774)
 
 [node name="Camera2D" type="Camera2D" parent="player"]
+zoom = Vector2(1.15, 1.15)
 limit_left = 0
 limit_bottom = 550
 position_smoothing_enabled = true
 
 [node name="level_end" parent="." instance=ExtResource("6_ouf0m")]
+visible = false
 position = Vector2(895, 232)
