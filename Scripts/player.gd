@@ -1,11 +1,12 @@
 class_name Player 
 extends CharacterBody2D
 
-const SPEED: float = 180.0;
+const SPEED: float = 170.0;
 const JUMP_VELOCITY: float = -250.0;
 const GRAVITY: float = 750.0;
 const WALL_SLIDE_GRAVITY: float = 500.0;
 const WALL_JUMP_VELOCITY: float = -200.0;
+const floor_snap_length_value: float = 3.0;
 
 @onready var animation: AnimatedSprite2D = $sprite;
 @onready var left_wall_detect: RayCast2D = $left_wall_detect;
@@ -18,6 +19,8 @@ var wall_jump_direction: float;
 func _ready() -> void:
 	animation.flip_h = true;
 	_set_state(STATE.IDLE);
+	# Keeps player snapped to floors on slopes
+	self.floor_snap_length = floor_snap_length_value;
 
 # State machine
 func _set_state(new_state: STATE) -> void:
