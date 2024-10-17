@@ -12,7 +12,7 @@ const floor_snap_length_value: float = 3.0;
 @onready var left_wall_detect: RayCast2D = $left_wall_detect;
 @onready var right_wall_detect: RayCast2D = $right_wall_detect;
 
-enum STATE {IDLE, RUN, CAFFEINATED, JUMP, WALL_SLIDE, FALL, WALL_JUMP};
+enum STATE {IDLE, RUN, JUMP, WALL_SLIDE, FALL, WALL_JUMP};
 var current_state;
 var wall_jump_direction: float;
 
@@ -37,8 +37,6 @@ func _exit_state() -> void:
 			pass;
 		STATE.RUN:
 			pass;
-		STATE.CAFFEINATED:
-			pass;
 		STATE.JUMP:
 			pass;
 		STATE.WALL_SLIDE:
@@ -55,8 +53,6 @@ func _enter_state() -> void:
 			animation.play("idle");
 		STATE.RUN:
 			animation.play("run");
-		STATE.CAFFEINATED:
-			animation.play("caffeinated");
 		STATE.JUMP:
 			velocity.y = JUMP_VELOCITY
 			animation.play("jump");
