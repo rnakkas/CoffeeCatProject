@@ -1,110 +1,66 @@
-[gd_scene load_steps=10 format=4 uid="uid://cfmp4bpt0wwlb"]
+[gd_scene load_steps=8 format=3 uid="uid://cfmp4bpt0wwlb"]
 
 [ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Scenes/player.tscn" id="1_wmqhn"]
-[ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Scenes/coffee_pot.tscn" id="2_6cst6"]
 [ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Scenes/coffee.tscn" id="2_wkv4d"]
-[ext_resource type="Texture2D" uid="uid://ci56iohvj3ijs" path="res://Assets/Tilemaps/garden_terrain_tilemap_v2.png" id="3_r085d"]
 [ext_resource type="PackedScene" uid="uid://mxw523q5nx4f" path="res://Scenes/level_manager.tscn" id="4_lle7t"]
 [ext_resource type="PackedScene" uid="uid://srbck5hqyrvf" path="res://Scenes/hud.tscn" id="5_hk3rh"]
 [ext_resource type="PackedScene" uid="uid://bnpdedb212get" path="res://Scenes/level_end.tscn" id="6_ouf0m"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3kkqa"]
-texture = ExtResource("3_r085d")
-0:0/0 = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:0/0 = 0
-1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:0/0 = 0
-2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:0/0 = 0
-3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-4:0/0 = 0
-4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-5:0/0 = 0
-5:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-6:0/0 = 0
-6:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-7:0/0 = 0
-7:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-0:1/0 = 0
-0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:1/0 = 0
-1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:1/0 = 0
-2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:1/0 = 0
-3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-4:1/0 = 0
-4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-5:1/0 = 0
-5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-6:1/0 = 0
-6:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-7:1/0 = 0
-7:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-0:2/0 = 0
-1:2/0 = 0
-2:2/0 = 0
-3:2/0 = 0
-4:2/0 = 0
-5:2/0 = 0
-6:2/0 = 0
-7:2/0 = 0
-0:3/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
-4:3/0 = 0
-5:3/0 = 0
-6:3/0 = 0
-7:3/0 = 0
-0:4/0 = 0
-1:4/0 = 0
-2:4/0 = 0
-3:4/0 = 0
-4:4/0 = 0
-5:4/0 = 0
-6:4/0 = 0
-7:4/0 = 0
-0:5/0 = 0
-1:5/0 = 0
-2:5/0 = 0
-3:5/0 = 0
-4:5/0 = 0
-4:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(24.0625, -9.0625, 24.0625, 7.9375, -8, 8)
-4:5/0/physics_layer_0/polygon_0/one_way = true
-5:5/0 = 0
-6:5/0 = 0
-7:5/0 = 0
-7:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -9, 8, 8, -24, 8)
-7:5/0/physics_layer_0/polygon_0/one_way = true
-0:6/0 = 0
-0:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:6/0 = 0
-1:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:6/0 = 0
-2:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:6/0 = 0
-3:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-4:6/0 = 0
-4:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-5:6/0 = 0
-6:6/0 = 0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vc1sl"]
+size = Vector2(2576, 28)
 
-[sub_resource type="TileSet" id="TileSet_8m5wr"]
-physics_layer_0/collision_layer = 1
-physics_layer_0/collision_mask = 2
-sources/1 = SubResource("TileSetAtlasSource_3kkqa")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_40mu1"]
+size = Vector2(24, 197)
 
 [node name="test_level" type="Node2D"]
 position = Vector2(192, 9)
 
+[node name="floor" type="Node" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="floor"]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="floor/StaticBody2D"]
+position = Vector2(1248, 183)
+shape = SubResource("RectangleShape2D_vc1sl")
+debug_color = Color(0.618652, 0.413294, 0.872047, 0.42)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="floor/StaticBody2D"]
+position = Vector2(-28, 98.5)
+shape = SubResource("RectangleShape2D_40mu1")
+debug_color = Color(0.859677, 0.315083, 0.471886, 0.42)
+
+[node name="Panel" type="Panel" parent="floor/StaticBody2D"]
+offset_left = -135.0
+offset_top = 168.0
+offset_right = 2529.0
+offset_bottom = 298.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="floor/StaticBody2D"]
+position = Vector2(192, 120)
+polygon = PackedVector2Array(-32, 56, 96, 16, 120, 16, 160, 24, 224, 40, 280, 56)
+
+[node name="soil heap" type="Label" parent="floor/StaticBody2D/CollisionPolygon2D"]
+offset_left = 91.0
+offset_top = 29.0
+offset_right = 126.0
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 9
+text = "soil heap"
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="floor/StaticBody2D"]
+position = Vector2(96, 168)
+polygon = PackedVector2Array(-7, -5, 12, -32, 42, -32, 59, -5, 60, 8, -8, 8)
+
+[node name="pot" type="Label" parent="floor/StaticBody2D/CollisionPolygon2D2"]
+offset_left = 18.0
+offset_top = -23.0
+offset_right = 45.0
+theme_override_font_sizes/font_size = 9
+text = "pot"
+
 [node name="level_end" parent="." instance=ExtResource("6_ouf0m")]
 position = Vector2(422, 129)
-
-[node name="floor" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAD0/woAAQABAAAAAAD1/woAAQABAAAAAAD2/woAAQABAAAAAAD3/woAAQABAAAAAAD4/woAAQABAAAAAAD5/woAAQABAAAAAAD6/woAAQABAAAAAAD7/woAAQABAAAAAAD8/woAAQABAAAAAAD9/woAAQABAAAAAAD+/woAAQABAAAAAAD//woAAQAAAAYAAAAAAAkAAQAEAAUAAAABAAkAAQAFAAUAAAACAAkAAQABAAAAAAADAAkAAQAGAAUAAAAEAAkAAQAHAAUAAAAAAAoAAQABAAYAAAABAAoAAQACAAYAAAADAAoAAQADAAYAAAAEAAoAAQAEAAYAAAACAAoAAQAAAAEAAAAFAAoAAQABAAAAAAAGAAoAAQABAAAAAAAHAAoAAQABAAAAAAAIAAoAAQABAAAAAAAJAAoAAQABAAAAAAAKAAoAAQABAAAAAAALAAoAAQABAAAAAAAMAAoAAQABAAAAAAANAAoAAQABAAAAAAAOAAoAAQABAAAAAAAPAAoAAQABAAAAAAAQAAoAAQABAAAAAAARAAoAAQAAAAYAAAASAAkAAQAEAAUAAAATAAkAAQAFAAUAAAAUAAgAAQAEAAUAAAAVAAgAAQAFAAUAAAAWAAcAAQAEAAUAAAAXAAcAAQAFAAUAAAAaAAcAAQAGAAUAAAAbAAcAAQAHAAUAAAAcAAgAAQAGAAUAAAAdAAgAAQAHAAUAAAAeAAkAAQABAAAAAAASAAoAAQABAAYAAAATAAoAAQACAAYAAAAUAAkAAQABAAYAAAAVAAkAAQACAAYAAAAWAAgAAQABAAYAAAAXAAgAAQACAAYAAAAaAAgAAQADAAYAAAAbAAgAAQAEAAYAAAAcAAkAAQAAAAEAAAAdAAkAAQAEAAYAAAAfAAkAAQABAAAAAAAgAAkAAQABAAAAAAAhAAkAAQABAAAAAAAiAAkAAQABAAAAAAAjAAkAAQABAAAAAAAkAAkAAQABAAAAAAAYAAcAAQABAAAAAAAZAAcAAQABAAAAAAAYAAgAAQAAAAEAAAAZAAgAAQAAAAEAAAAZAAkAAQAAAAEAAAAYAAkAAQAAAAEAAAAXAAkAAQAAAAEAAAAWAAkAAQAAAAEAAAAaAAkAAQAAAAEAAAAbAAkAAQAAAAEAAAAcAAoAAQAAAAEAAAAbAAoAAQAAAAEAAAAaAAoAAQAAAAEAAAAZAAoAAQAAAAEAAAAYAAoAAQAAAAEAAAAXAAoAAQAAAAEAAAAWAAoAAQAAAAEAAAAVAAoAAQAAAAEAAAAUAAoAAQAAAAEAAAAcAAsAAQAAAAEAAAAdAAsAAQAAAAEAAAAeAAsAAQAAAAEAAAAfAAsAAQAAAAEAAAAgAAsAAQAAAAEAAAAhAAsAAQAAAAEAAAAgAAoAAQAAAAEAAAAfAAoAAQAAAAEAAAAeAAoAAQAAAAEAAAAdAAoAAQAAAAEAAAAhAAoAAQAAAAEAAAAiAAoAAQAAAAEAAAAjAAoAAQAAAAEAAAAkAAoAAQAAAAEAAAD0/wsAAQAAAAEAAAD0/wwAAQAAAAEAAAD0/w0AAQAAAAEAAAD0/w4AAQAAAAEAAAD0/w8AAQAAAAEAAAD1/wsAAQAAAAEAAAD1/wwAAQAAAAEAAAD1/w0AAQAAAAEAAAD1/w4AAQAAAAEAAAD1/w8AAQAAAAEAAAD2/wsAAQAAAAEAAAD2/wwAAQAAAAEAAAD2/w0AAQAAAAEAAAD2/w4AAQAAAAEAAAD2/w8AAQAAAAEAAAD3/wsAAQAAAAEAAAD3/wwAAQAAAAEAAAD3/w0AAQAAAAEAAAD3/w4AAQAAAAEAAAD3/w8AAQAAAAEAAAD4/wsAAQAAAAEAAAD4/wwAAQAAAAEAAAD4/w0AAQAAAAEAAAD4/w4AAQAAAAEAAAD4/w8AAQAAAAEAAAD5/wsAAQAAAAEAAAD5/wwAAQAAAAEAAAD5/w0AAQAAAAEAAAD5/w4AAQAAAAEAAAD5/w8AAQAAAAEAAAD6/wsAAQAAAAEAAAD6/wwAAQAAAAEAAAD6/w0AAQAAAAEAAAD6/w4AAQAAAAEAAAD6/w8AAQAAAAEAAAD7/wsAAQAAAAEAAAD7/wwAAQAAAAEAAAD7/w0AAQAAAAEAAAD7/w4AAQAAAAEAAAD7/w8AAQAAAAEAAAD8/wsAAQAAAAEAAAD8/wwAAQAAAAEAAAD8/w0AAQAAAAEAAAD8/w4AAQAAAAEAAAD8/w8AAQAAAAEAAAD9/wsAAQAAAAEAAAD9/wwAAQAAAAEAAAD9/w0AAQAAAAEAAAD9/w4AAQAAAAEAAAD9/w8AAQAAAAEAAAD+/wsAAQAAAAEAAAD+/wwAAQAAAAEAAAD+/w0AAQAAAAEAAAD+/w4AAQAAAAEAAAD+/w8AAQAAAAEAAAD//wsAAQAAAAEAAAD//wwAAQAAAAEAAAD//w0AAQAAAAEAAAD//w4AAQAAAAEAAAD//w8AAQAAAAEAAAAAAAsAAQAAAAEAAAAAAAwAAQAAAAEAAAAAAA0AAQAAAAEAAAAAAA4AAQAAAAEAAAAAAA8AAQAAAAEAAAABAAsAAQAAAAEAAAABAAwAAQAAAAEAAAABAA0AAQAAAAEAAAABAA4AAQAAAAEAAAABAA8AAQAAAAEAAAACAAsAAQAAAAEAAAACAAwAAQAAAAEAAAACAA0AAQAAAAEAAAACAA4AAQAAAAEAAAACAA8AAQAAAAEAAAADAAsAAQAAAAEAAAADAAwAAQAAAAEAAAADAA0AAQAAAAEAAAADAA4AAQAAAAEAAAADAA8AAQAAAAEAAAAEAAsAAQAAAAEAAAAEAAwAAQAAAAEAAAAEAA0AAQAAAAEAAAAEAA4AAQAAAAEAAAAEAA8AAQAAAAEAAAAFAAsAAQAAAAEAAAAFAAwAAQAAAAEAAAAFAA0AAQAAAAEAAAAFAA4AAQAAAAEAAAAFAA8AAQAAAAEAAAAGAAsAAQAAAAEAAAAGAAwAAQAAAAEAAAAGAA0AAQAAAAEAAAAGAA4AAQAAAAEAAAAGAA8AAQAAAAEAAAAHAAsAAQAAAAEAAAAHAAwAAQAAAAEAAAAHAA0AAQAAAAEAAAAHAA4AAQAAAAEAAAAHAA8AAQAAAAEAAAAIAAsAAQAAAAEAAAAIAAwAAQAAAAEAAAAIAA0AAQAAAAEAAAAIAA4AAQAAAAEAAAAIAA8AAQAAAAEAAAAJAAsAAQAAAAEAAAAJAAwAAQAAAAEAAAAJAA0AAQAAAAEAAAAJAA4AAQAAAAEAAAAJAA8AAQAAAAEAAAAKAAsAAQAAAAEAAAAKAAwAAQAAAAEAAAAKAA0AAQAAAAEAAAAKAA4AAQAAAAEAAAAKAA8AAQAAAAEAAAALAAsAAQAAAAEAAAALAAwAAQAAAAEAAAALAA0AAQAAAAEAAAALAA4AAQAAAAEAAAALAA8AAQAAAAEAAAAMAAsAAQAAAAEAAAAMAAwAAQAAAAEAAAAMAA0AAQAAAAEAAAAMAA4AAQAAAAEAAAAMAA8AAQAAAAEAAAANAAsAAQAAAAEAAAANAAwAAQAAAAEAAAANAA0AAQAAAAEAAAANAA4AAQAAAAEAAAANAA8AAQAAAAEAAAAOAAsAAQAAAAEAAAAOAAwAAQAAAAEAAAAOAA0AAQAAAAEAAAAOAA4AAQAAAAEAAAAOAA8AAQAAAAEAAAAPAAsAAQAAAAEAAAAPAAwAAQAAAAEAAAAPAA0AAQAAAAEAAAAPAA4AAQAAAAEAAAAPAA8AAQAAAAEAAAAQAAsAAQAAAAEAAAAQAAwAAQAAAAEAAAAQAA0AAQAAAAEAAAAQAA4AAQAAAAEAAAAQAA8AAQAAAAEAAAARAAsAAQAAAAEAAAARAAwAAQAAAAEAAAARAA0AAQAAAAEAAAARAA4AAQAAAAEAAAARAA8AAQAAAAEAAAASAAsAAQAAAAEAAAASAAwAAQAAAAEAAAASAA0AAQAAAAEAAAASAA4AAQAAAAEAAAASAA8AAQAAAAEAAAATAAsAAQAAAAEAAAATAAwAAQAAAAEAAAATAA0AAQAAAAEAAAATAA4AAQAAAAEAAAATAA8AAQAAAAEAAAAUAAsAAQAAAAEAAAAUAAwAAQAAAAEAAAAUAA0AAQAAAAEAAAAUAA4AAQAAAAEAAAAUAA8AAQAAAAEAAAAVAAsAAQAAAAEAAAAVAAwAAQAAAAEAAAAVAA0AAQAAAAEAAAAVAA4AAQAAAAEAAAAVAA8AAQAAAAEAAAAWAAsAAQAAAAEAAAAWAAwAAQAAAAEAAAAWAA0AAQAAAAEAAAAWAA4AAQAAAAEAAAAWAA8AAQAAAAEAAAAXAAsAAQAAAAEAAAAXAAwAAQAAAAEAAAAXAA0AAQAAAAEAAAAXAA4AAQAAAAEAAAAXAA8AAQAAAAEAAAAYAAsAAQAAAAEAAAAYAAwAAQAAAAEAAAAYAA0AAQAAAAEAAAAYAA4AAQAAAAEAAAAYAA8AAQAAAAEAAAAZAAsAAQAAAAEAAAAZAAwAAQAAAAEAAAAZAA0AAQAAAAEAAAAZAA4AAQAAAAEAAAAZAA8AAQAAAAEAAAAaAAsAAQAAAAEAAAAaAAwAAQAAAAEAAAAaAA0AAQAAAAEAAAAaAA4AAQAAAAEAAAAaAA8AAQAAAAEAAAAbAAsAAQAAAAEAAAAbAAwAAQAAAAEAAAAbAA0AAQAAAAEAAAAbAA4AAQAAAAEAAAAbAA8AAQAAAAEAAAAcAAwAAQAAAAEAAAAcAA0AAQAAAAEAAAAcAA4AAQAAAAEAAAAcAA8AAQAAAAEAAAAdAAwAAQAAAAEAAAAdAA0AAQAAAAEAAAAdAA4AAQAAAAEAAAAdAA8AAQAAAAEAAAAeAAwAAQAAAAEAAAAeAA0AAQAAAAEAAAAeAA4AAQAAAAEAAAAeAA8AAQAAAAEAAAAfAAwAAQAAAAEAAAAfAA0AAQAAAAEAAAAfAA4AAQAAAAEAAAAfAA8AAQAAAAEAAAAgAAwAAQAAAAEAAAAgAA0AAQAAAAEAAAAgAA4AAQAAAAEAAAAgAA8AAQAAAAEAAAAhAAwAAQAAAAEAAAAhAA0AAQAAAAEAAAAhAA4AAQAAAAEAAAAhAA8AAQAAAAEAAAAiAAsAAQAAAAEAAAAiAAwAAQAAAAEAAAAiAA0AAQAAAAEAAAAiAA4AAQAAAAEAAAAiAA8AAQAAAAEAAAAjAAsAAQAAAAEAAAAjAAwAAQAAAAEAAAAjAA0AAQAAAAEAAAAjAA4AAQAAAAEAAAAjAA8AAQAAAAEAAAAkAAsAAQAAAAEAAAAkAAwAAQAAAAEAAAAkAA0AAQAAAAEAAAAkAA4AAQAAAAEAAAAkAA8AAQAAAAEAAAA=")
-tile_set = SubResource("TileSet_8m5wr")
 
 [node name="HUD" parent="." instance=ExtResource("5_hk3rh")]
 visible = false
@@ -115,47 +71,10 @@ unique_name_in_owner = true
 [node name="items" type="Node" parent="."]
 
 [node name="coffee" parent="items" instance=ExtResource("2_wkv4d")]
-visible = false
-position = Vector2(63, 117)
-
-[node name="coffee8" parent="items" instance=ExtResource("2_wkv4d")]
-visible = false
-position = Vector2(1627, 367)
-
-[node name="coffee2" parent="items" instance=ExtResource("2_wkv4d")]
-visible = false
-position = Vector2(351, -119)
-
-[node name="coffee3" parent="items" instance=ExtResource("2_wkv4d")]
-visible = false
-position = Vector2(540, 49)
-
-[node name="coffee5" parent="items" instance=ExtResource("2_wkv4d")]
-visible = false
-position = Vector2(1408, 367)
-
-[node name="coffee6" parent="items" instance=ExtResource("2_wkv4d")]
-visible = false
-position = Vector2(943, 369)
-
-[node name="coffee7" parent="items" instance=ExtResource("2_wkv4d")]
-visible = false
-position = Vector2(1175, 370)
-
-[node name="coffee4" parent="items" instance=ExtResource("2_wkv4d")]
-visible = false
-position = Vector2(349, 178)
-
-[node name="coffee_pot" parent="items" instance=ExtResource("2_6cst6")]
-visible = false
-position = Vector2(91, 82)
-
-[node name="coffee_pot2" parent="items" instance=ExtResource("2_6cst6")]
-visible = false
-position = Vector2(1918, 339)
+position = Vector2(288, 120)
 
 [node name="player" parent="." instance=ExtResource("1_wmqhn")]
-position = Vector2(56, 151)
+position = Vector2(24, 152)
 scale = Vector2(1.68594, 1.62774)
 
 [node name="Camera2D" type="Camera2D" parent="player"]
