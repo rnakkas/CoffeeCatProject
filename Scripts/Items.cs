@@ -3,29 +3,51 @@ using System;
 
 public partial class Items : Area2D
 {
-	private void PlayerCollectsItem(Node2D objectNode, AnimatedSprite2D animation, Node levelManager)
+    AnimatedSprite2D animation;
+    GameLevelManager gameLevelManager;
+
+    String itemType;
+    public override void _Ready()
     {
-        IncreaseScore(objectNode, levelManager);
+        gameLevelManager = GetNode<GameLevelManager>("../../../level_manager");
+        animation = GetNode<AnimatedSprite2D>("sprite");
+        animation.Play("idle");
 
-        Tween Tween_1 = objectNode.GetTree().CreateTween();
-        Tween Tween_2 = objectNode.GetTree().CreateTween();
+        this.BodyEntered += OnBodyEntered;
 
-        //animation.Play("collect");
-
-        Tween_1.TweenProperty(objectNode, "modulate:a", 0, 0.4);
-        Tween_2.TweenProperty(objectNode, "position", objectNode.Position - new Vector2(0, 50), 0.5);
-        Tween_2.TweenCallback(Callable.From(objectNode.QueueFree));
+        // Get item type based on the parent node
+        itemType = this.GetParent().Name;
     }
 
-    private void IncreaseScore(Node2D objectNode, Node levelManager)
+    private void OnBodyEntered(Node2D body)
     {
-        switch (objectNode.identifier)
+        if (body.Name == "player")
         {
-            case "coffee":
-                levelManager.IncreaseCoffeeScore(1);
+            PlayerCollectsItem();
+        }
+    }
+
+    private void PlayerCollectsItem()
+    {
+        IncreaseScore();
+
+        Tween Tween_1 = this.GetTree().CreateTween();
+        Tween Tween_2 = this.GetTree().CreateTween();
+
+        Tween_1.TweenProperty(this, "modulate:a", 0, 0.4);
+        Tween_2.TweenProperty(this, "position", this.Position - new Vector2(0, 50), 0.5);
+        Tween_2.TweenCallback(Callable.From(this.QueueFree));
+    }
+
+    private void IncreaseScore()
+    {
+        switch (itemType) // Logic based on name of item
+        {
+            case "items_coffee":
+                gameLevelManager.IncreaseCoffeeScore(1);
                 break;
-            case "coffee_pot":
-                levelManager.IncreaseCoffeeScore(5); 
+            case "items_coffee_pot":
+                gameLevelManager.IncreaseCoffeeScore(10);
                 break;
         }
     }

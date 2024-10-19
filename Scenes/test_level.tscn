@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cfmp4bpt0wwlb"]
+[gd_scene load_steps=9 format=3 uid="uid://cfmp4bpt0wwlb"]
 
 [ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Scenes/player.tscn" id="1_wmqhn"]
 [ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Scenes/coffee.tscn" id="2_wkv4d"]
 [ext_resource type="PackedScene" uid="uid://mxw523q5nx4f" path="res://Scenes/level_manager.tscn" id="4_lle7t"]
+[ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Scenes/coffee_pot.tscn" id="5_1oaxy"]
 [ext_resource type="PackedScene" uid="uid://srbck5hqyrvf" path="res://Scenes/hud.tscn" id="5_hk3rh"]
 [ext_resource type="PackedScene" uid="uid://bnpdedb212get" path="res://Scenes/level_end.tscn" id="6_ouf0m"]
 
@@ -70,11 +71,24 @@ unique_name_in_owner = true
 
 [node name="items" type="Node" parent="."]
 
-[node name="coffee" parent="items" instance=ExtResource("2_wkv4d")]
+[node name="items_coffee_pot" type="Node" parent="items"]
+
+[node name="coffee_pot" parent="items/items_coffee_pot" instance=ExtResource("5_1oaxy")]
+position = Vector2(124, 122)
+
+[node name="coffee_pot2" parent="items/items_coffee_pot" instance=ExtResource("5_1oaxy")]
+position = Vector2(176, 158)
+
+[node name="items_coffee" type="Node" parent="items"]
+
+[node name="coffee" parent="items/items_coffee" instance=ExtResource("2_wkv4d")]
 position = Vector2(288, 120)
 
+[node name="coffee2" parent="items/items_coffee" instance=ExtResource("2_wkv4d")]
+position = Vector2(333, 125)
+
 [node name="player" parent="." instance=ExtResource("1_wmqhn")]
-position = Vector2(24, 152)
+position = Vector2(247, 124)
 scale = Vector2(1.68594, 1.62774)
 
 [node name="Camera2D" type="Camera2D" parent="player"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://f41uy40r0hsp"]
 
 [ext_resource type="Texture2D" uid="uid://0k7oowkgbxd1" path="res://Assets/coffee_pot_spritesheet_v1.png" id="1_78t62"]
-[ext_resource type="Script" path="res://Scripts/coffee_pot.gd" id="1_ye5fj"]
+[ext_resource type="Script" path="res://Scripts/Items.cs" id="1_mgnwu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6wpg0"]
 atlas = ExtResource("1_78t62")
@@ -78,7 +78,7 @@ radius = 8.0
 [node name="coffee_pot" type="Area2D"]
 collision_layer = 4
 collision_mask = 2
-script = ExtResource("1_ye5fj")
+script = ExtResource("1_mgnwu")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.15, 0.15)
@@ -88,5 +88,3 @@ animation = &"idle"
 [node name="collider" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource("CircleShape2D_o754r")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
