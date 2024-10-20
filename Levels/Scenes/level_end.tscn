@@ -1,7 +1,7 @@
 [gd_scene load_steps=21 format=3 uid="uid://bnpdedb212get"]
 
+[ext_resource type="Script" path="res://Levels/Scripts/LevelEnd.cs" id="1_dkhnq"]
 [ext_resource type="Texture2D" uid="uid://opxvmr7jb4op" path="res://icon.svg" id="1_h886b"]
-[ext_resource type="Script" path="res://Scripts/level_end.gd" id="1_qdub1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_la4df"]
 atlas = ExtResource("1_h886b")
@@ -137,7 +137,7 @@ size = Vector2(34, 63)
 [node name="level_end" type="Area2D"]
 collision_layer = 8
 collision_mask = 2
-script = ExtResource("1_qdub1")
+script = ExtResource("1_dkhnq")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 modulate = Color(1, 0.929412, 0, 1)

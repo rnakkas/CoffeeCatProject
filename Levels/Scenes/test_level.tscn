@@ -1,12 +1,12 @@
 [gd_scene load_steps=10 format=3 uid="uid://cfmp4bpt0wwlb"]
 
-[ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Scenes/player.tscn" id="1_wmqhn"]
-[ext_resource type="PackedScene" uid="uid://dv1ycuaoyk5yv" path="res://Scenes/Items/Nodes/items.tscn" id="5_3nssr"]
-[ext_resource type="PackedScene" uid="uid://bnpdedb212get" path="res://Scenes/level_end.tscn" id="6_ouf0m"]
-[ext_resource type="PackedScene" uid="uid://77tyaj4jl48x" path="res://Scenes/Items/Nodes/items_coffee.tscn" id="6_suat2"]
-[ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Scenes/Items/Sprites/coffee.tscn" id="7_lpt5a"]
-[ext_resource type="PackedScene" uid="uid://wf6m2blo1d8u" path="res://Scenes/Items/Nodes/items_coffee_pot.tscn" id="8_m4r3g"]
-[ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Scenes/Items/Sprites/coffee_pot.tscn" id="9_gfue2"]
+[ext_resource type="PackedScene" uid="uid://bnpdedb212get" path="res://Levels/Scenes/level_end.tscn" id="1_2e8qi"]
+[ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Player/Scenes/player.tscn" id="2_4shgu"]
+[ext_resource type="PackedScene" uid="uid://dv1ycuaoyk5yv" path="res://Items/NodeScenes/items.tscn" id="3_4skx5"]
+[ext_resource type="PackedScene" uid="uid://77tyaj4jl48x" path="res://Items/NodeScenes/items_coffee.tscn" id="4_5r06v"]
+[ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Items/Scenes/coffee.tscn" id="5_igh1l"]
+[ext_resource type="PackedScene" uid="uid://wf6m2blo1d8u" path="res://Items/NodeScenes/items_coffee_pot.tscn" id="6_w2ons"]
+[ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Items/Scenes/coffee_pot.tscn" id="7_lp4a7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vc1sl"]
 size = Vector2(2576, 28)
@@ -61,10 +61,10 @@ offset_right = 45.0
 theme_override_font_sizes/font_size = 9
 text = "pot"
 
-[node name="level_end" parent="." instance=ExtResource("6_ouf0m")]
+[node name="level_end" parent="." instance=ExtResource("1_2e8qi")]
 position = Vector2(422, 129)
 
-[node name="player" parent="." instance=ExtResource("1_wmqhn")]
+[node name="player" parent="." instance=ExtResource("2_4shgu")]
 position = Vector2(247, 124)
 scale = Vector2(1.68594, 1.62774)
 
@@ -76,20 +76,20 @@ limit_bottom = 550
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
-[node name="items" parent="." instance=ExtResource("5_3nssr")]
+[node name="items" parent="." instance=ExtResource("3_4skx5")]
 
-[node name="items_coffee" parent="items" instance=ExtResource("6_suat2")]
+[node name="items_coffee" parent="items" instance=ExtResource("4_5r06v")]
 
-[node name="coffee" parent="items/items_coffee" instance=ExtResource("7_lpt5a")]
+[node name="coffee" parent="items/items_coffee" instance=ExtResource("5_igh1l")]
 position = Vector2(289, 115)
 
-[node name="coffee2" parent="items/items_coffee" instance=ExtResource("7_lpt5a")]
+[node name="coffee2" parent="items/items_coffee" instance=ExtResource("5_igh1l")]
 position = Vector2(249, 125)
 
-[node name="items_coffee_pot" parent="items" instance=ExtResource("8_m4r3g")]
+[node name="items_coffee_pot" parent="items" instance=ExtResource("6_w2ons")]
 
-[node name="coffee_pot" parent="items/items_coffee_pot" instance=ExtResource("9_gfue2")]
+[node name="coffee_pot" parent="items/items_coffee_pot" instance=ExtResource("7_lp4a7")]
 position = Vector2(124, 125)
 
-[node name="coffee_pot2" parent="items/items_coffee_pot" instance=ExtResource("9_gfue2")]
+[node name="coffee_pot2" parent="items/items_coffee_pot" instance=ExtResource("7_lp4a7")]
 position = Vector2(125, 102)

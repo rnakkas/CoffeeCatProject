@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://f41uy40r0hsp"]
 
 [ext_resource type="Texture2D" uid="uid://0k7oowkgbxd1" path="res://Assets/coffee_pot_spritesheet_v1.png" id="1_78t62"]
-[ext_resource type="Script" path="res://Scripts/Items.cs" id="1_mgnwu"]
+[ext_resource type="Script" path="res://Items/Scripts/Items.cs" id="1_mgnwu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6wpg0"]
 atlas = ExtResource("1_78t62")
