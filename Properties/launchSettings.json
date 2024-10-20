@@ -1,13 +1,13 @@
 {
-  "profiles": {
-    "CoffeeCatProject": {
-      "commandName": "Project"
-    },
-    "coffee_cat_debug_profile": {
-      "commandName": "Executable",
-      "executablePath": "C:\\GameDev\\Godot_v4.3-stable_mono_win64\\Godot_v4.3-stable_mono_win64.exe",
-      "workingDirectory": ".",
-      "nativeDebugging": true
-    }
-  }
+	"profiles": {
+		"CoffeeCatProject": {
+			"commandName": "Project"
+		},
+		"coffee_cat_debug_profile": {
+			"commandName": "Executable",
+			"executablePath": "C:\\GameDev\\Godot_v4.3-stable_mono_win64\\Godot_v4.3-stable_mono_win64.exe",
+			"workingDirectory": ".",
+			"nativeDebugging": true
+		}
+	}
 }
