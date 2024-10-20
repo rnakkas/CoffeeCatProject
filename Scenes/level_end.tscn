@@ -1,7 +1,7 @@
 [gd_scene load_steps=21 format=3 uid="uid://bnpdedb212get"]
 
 [ext_resource type="Texture2D" uid="uid://opxvmr7jb4op" path="res://icon.svg" id="1_h886b"]
-[ext_resource type="Script" path="res://Scenes/level_end.gd" id="1_qdub1"]
+[ext_resource type="Script" path="res://Scripts/level_end.gd" id="1_qdub1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_la4df"]
 atlas = ExtResource("1_h886b")

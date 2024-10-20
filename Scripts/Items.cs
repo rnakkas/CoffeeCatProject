@@ -4,21 +4,29 @@ using System;
 public partial class Items : Area2D
 {
     AnimatedSprite2D animation;
-    GameLevelManager gameLevelManager;
+    ScoreManager scoreManager;
+
+    private NodePath scoreManagerNodePath = "../../score_manager";
+    private int coffeeScore = 1;
+    private int coffeePotScore = 10;
 
     String itemType;
     public override void _Ready()
     {
-        gameLevelManager = GetNode<GameLevelManager>("../../../level_manager");
+        // Get the score manager node
+        scoreManager = GetNode<ScoreManager>(scoreManagerNodePath);
+
         animation = GetNode<AnimatedSprite2D>("sprite");
         animation.Play("idle");
 
+        // Signal of OnBodyEntered
         this.BodyEntered += OnBodyEntered;
 
         // Get item type based on the parent node
         itemType = this.GetParent().Name;
     }
 
+    // Godot signal when body enters area2D
     private void OnBodyEntered(Node2D body)
     {
         if (body.Name == "player")
@@ -41,13 +49,13 @@ public partial class Items : Area2D
 
     private void IncreaseScore()
     {
-        switch (itemType) // Logic based on name of item
+        switch (itemType) // Logic based on type of item
         {
             case "items_coffee":
-                gameLevelManager.IncreaseCoffeeScore(1);
+                scoreManager.IncreaseCoffeeScore(coffeeScore);
                 break;
             case "items_coffee_pot":
-                gameLevelManager.IncreaseCoffeeScore(10);
+                scoreManager.IncreaseCoffeeScore(coffeePotScore);
                 break;
         }
     }

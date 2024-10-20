@@ -1,11 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://cfmp4bpt0wwlb"]
+[gd_scene load_steps=10 format=3 uid="uid://cfmp4bpt0wwlb"]
 
 [ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Scenes/player.tscn" id="1_wmqhn"]
-[ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Scenes/coffee.tscn" id="2_wkv4d"]
-[ext_resource type="PackedScene" uid="uid://mxw523q5nx4f" path="res://Scenes/level_manager.tscn" id="4_lle7t"]
-[ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Scenes/coffee_pot.tscn" id="5_1oaxy"]
-[ext_resource type="PackedScene" uid="uid://srbck5hqyrvf" path="res://Scenes/hud.tscn" id="5_hk3rh"]
+[ext_resource type="PackedScene" uid="uid://dv1ycuaoyk5yv" path="res://Scenes/Items/Nodes/items.tscn" id="5_3nssr"]
 [ext_resource type="PackedScene" uid="uid://bnpdedb212get" path="res://Scenes/level_end.tscn" id="6_ouf0m"]
+[ext_resource type="PackedScene" uid="uid://77tyaj4jl48x" path="res://Scenes/Items/Nodes/items_coffee.tscn" id="6_suat2"]
+[ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Scenes/Items/Sprites/coffee.tscn" id="7_lpt5a"]
+[ext_resource type="PackedScene" uid="uid://wf6m2blo1d8u" path="res://Scenes/Items/Nodes/items_coffee_pot.tscn" id="8_m4r3g"]
+[ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Scenes/Items/Sprites/coffee_pot.tscn" id="9_gfue2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vc1sl"]
 size = Vector2(2576, 28)
@@ -63,30 +64,6 @@ text = "pot"
 [node name="level_end" parent="." instance=ExtResource("6_ouf0m")]
 position = Vector2(422, 129)
 
-[node name="HUD" parent="." instance=ExtResource("5_hk3rh")]
-visible = false
-
-[node name="level_manager" parent="." instance=ExtResource("4_lle7t")]
-unique_name_in_owner = true
-
-[node name="items" type="Node" parent="."]
-
-[node name="items_coffee_pot" type="Node" parent="items"]
-
-[node name="coffee_pot" parent="items/items_coffee_pot" instance=ExtResource("5_1oaxy")]
-position = Vector2(124, 122)
-
-[node name="coffee_pot2" parent="items/items_coffee_pot" instance=ExtResource("5_1oaxy")]
-position = Vector2(176, 158)
-
-[node name="items_coffee" type="Node" parent="items"]
-
-[node name="coffee" parent="items/items_coffee" instance=ExtResource("2_wkv4d")]
-position = Vector2(288, 120)
-
-[node name="coffee2" parent="items/items_coffee" instance=ExtResource("2_wkv4d")]
-position = Vector2(333, 125)
-
 [node name="player" parent="." instance=ExtResource("1_wmqhn")]
 position = Vector2(247, 124)
 scale = Vector2(1.68594, 1.62774)
@@ -98,3 +75,21 @@ limit_left = 0
 limit_bottom = 550
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
+
+[node name="items" parent="." instance=ExtResource("5_3nssr")]
+
+[node name="items_coffee" parent="items" instance=ExtResource("6_suat2")]
+
+[node name="coffee" parent="items/items_coffee" instance=ExtResource("7_lpt5a")]
+position = Vector2(289, 115)
+
+[node name="coffee2" parent="items/items_coffee" instance=ExtResource("7_lpt5a")]
+position = Vector2(249, 125)
+
+[node name="items_coffee_pot" parent="items" instance=ExtResource("8_m4r3g")]
+
+[node name="coffee_pot" parent="items/items_coffee_pot" instance=ExtResource("9_gfue2")]
+position = Vector2(124, 125)
+
+[node name="coffee_pot2" parent="items/items_coffee_pot" instance=ExtResource("9_gfue2")]
+position = Vector2(125, 102)

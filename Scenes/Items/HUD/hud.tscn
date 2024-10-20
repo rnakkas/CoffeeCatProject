@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://srbck5hqyrvf"]
 
-[ext_resource type="Script" path="res://Scripts/hud.gd" id="1_d51eb"]
 [ext_resource type="Texture2D" uid="uid://cp7stu7okphtc" path="res://Assets/coffee_mug_spritesheet_v1.png" id="1_swtkt"]
+[ext_resource type="Script" path="res://Scripts/Hud.cs" id="1_y2kk5"]
 [ext_resource type="FontFile" uid="uid://dsgv5b6heuugb" path="res://Assets/Fonts/PixelOperator8.ttf" id="2_pgmqy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_88ggg"]
@@ -20,7 +20,7 @@ animations = [{
 }]
 
 [node name="HUD" type="CanvasLayer"]
-script = ExtResource("1_d51eb")
+script = ExtResource("1_y2kk5")
 
 [node name="coffee_score_sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(50, 50)

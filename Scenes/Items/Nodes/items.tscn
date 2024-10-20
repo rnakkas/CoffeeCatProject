@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dv1ycuaoyk5yv"]
+
+[ext_resource type="PackedScene" uid="uid://bjny41yyscgv2" path="res://Scenes/Items/Nodes/score_manager.tscn" id="1_o60bn"]
+[ext_resource type="PackedScene" uid="uid://srbck5hqyrvf" path="res://Scenes/Items/HUD/hud.tscn" id="2_cdlfn"]
+
+[node name="items" type="Node"]
+
+[node name="score_manager" parent="." instance=ExtResource("1_o60bn")]
+
+[node name="HUD" parent="." instance=ExtResource("2_cdlfn")]
