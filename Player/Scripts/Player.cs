@@ -11,7 +11,7 @@ public partial class Player : CharacterBody2D
 	public const float Gravity = 750.0f;
     public const float WallSlideGravity = 500.0f;
 	public const float WallJumpVelocity = -200.0f;
-	//public const float FloorSnapLengthValue = 3.0f;
+	public const float FloorSnapLengthValue = 2.5f;
 
 	AnimatedSprite2D Animation;
 	RayCast2D LeftWallDetect, RightWallDetect;
@@ -33,7 +33,7 @@ public partial class Player : CharacterBody2D
         SetState(State.IDLE);
 
 		// Keeps player snapped to floors on slopes
-		//this.FloorSnapLength = FloorSnapLengthValue;
+		this.FloorSnapLength = FloorSnapLengthValue;
 
 		// Enable constant speed on floors and slopes
 		this.FloorConstantSpeed = true;
@@ -58,6 +58,7 @@ public partial class Player : CharacterBody2D
         switch (CurrentState)
 		{
 			case State.IDLE:
+				velocity.Y = 0;
 				Animation.Play("idle");
 				break;
 			case State.RUN:
@@ -94,7 +95,7 @@ public partial class Player : CharacterBody2D
 			case State.WALL_SLIDE:
 				break;
 			case State.FALL:
-				break;
+                break;
 			case State.WALL_JUMP:
 				break;
 		}
