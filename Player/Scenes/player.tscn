@@ -275,7 +275,7 @@ animations = [{
 top_level = true
 position = Vector2(-1, 5)
 collision_layer = 2
-collision_mask = 5
+collision_mask = 21
 script = ExtResource("1_stb7n")
 
 [node name="collider_capsule" type="CollisionShape2D" parent="."]
@@ -294,8 +294,10 @@ centered = false
 modulate = Color(0, 0.860542, 0.185596, 1)
 position = Vector2(-10, 0)
 target_position = Vector2(-6, 0)
+collision_mask = 16
 
 [node name="right_wall_detect" type="RayCast2D" parent="."]
 modulate = Color(0.0509804, 0.933333, 0.176471, 1)
 position = Vector2(-8, 0)
 target_position = Vector2(6, 0)
+collision_mask = 16

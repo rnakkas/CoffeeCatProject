@@ -1,9 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\",
+  "WorkspaceRootPath": "E:\\GameDev\\CoffeeCatProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|c:\\gamedev\\coffeecatproject\\coffeecatproject\\items\\scripts\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|e:\\gamedev\\coffeecatproject\\player\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|solutionrelative:player\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|e:\\gamedev\\coffeecatproject\\items\\scripts\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|solutionrelative:items\\scripts\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -19,10 +23,23 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Player.cs",
+              "DocumentMoniker": "E:\\GameDev\\CoffeeCatProject\\Player\\Scripts\\Player.cs",
+              "RelativeDocumentMoniker": "Player\\Scripts\\Player.cs",
+              "ToolTip": "E:\\GameDev\\CoffeeCatProject\\Player\\Scripts\\Player.cs",
+              "RelativeToolTip": "Player\\Scripts\\Player.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-20T23:38:51.283Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "ScoreManager.cs",
-              "DocumentMoniker": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\Items\\Scripts\\ScoreManager.cs",
+              "DocumentMoniker": "E:\\GameDev\\CoffeeCatProject\\Items\\Scripts\\ScoreManager.cs",
               "RelativeDocumentMoniker": "Items\\Scripts\\ScoreManager.cs",
-              "ToolTip": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\Items\\Scripts\\ScoreManager.cs",
+              "ToolTip": "E:\\GameDev\\CoffeeCatProject\\Items\\Scripts\\ScoreManager.cs",
               "RelativeToolTip": "Items\\Scripts\\ScoreManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
