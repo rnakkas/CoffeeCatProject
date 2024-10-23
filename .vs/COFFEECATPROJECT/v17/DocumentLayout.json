@@ -1,13 +1,21 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\GameDev\\CoffeeCatProject\\",
+  "WorkspaceRootPath": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|e:\\gamedev\\coffeecatproject\\player\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|c:\\gamedev\\coffeecatproject\\coffeecatproject\\enemies\\scripts\\enemies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|solutionrelative:enemies\\scripts\\enemies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|c:\\gamedev\\coffeecatproject\\coffeecatproject\\player\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|solutionrelative:player\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|e:\\gamedev\\coffeecatproject\\items\\scripts\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\Enemies\\Scripts\\EnemyRat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Enemies\\Scripts\\EnemyRat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|c:\\gamedev\\coffeecatproject\\coffeecatproject\\items\\scripts\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D79931B4-C41A-4157-B031-F1A58B4466E6}|CoffeeCatProject.csproj|solutionrelative:items\\scripts\\scoremanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -18,33 +26,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "EnemyRat.cs",
+              "DocumentMoniker": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\Enemies\\Scripts\\EnemyRat.cs",
+              "RelativeDocumentMoniker": "Enemies\\Scripts\\EnemyRat.cs",
+              "ToolTip": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\Enemies\\Scripts\\EnemyRat.cs",
+              "RelativeToolTip": "Enemies\\Scripts\\EnemyRat.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T10:51:42.443Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Enemies.cs",
+              "DocumentMoniker": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\Enemies\\Scripts\\Enemies.cs",
+              "RelativeDocumentMoniker": "Enemies\\Scripts\\Enemies.cs",
+              "ToolTip": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\Enemies\\Scripts\\Enemies.cs",
+              "RelativeToolTip": "Enemies\\Scripts\\Enemies.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAWwFAAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-23T10:20:16.627Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Player.cs",
-              "DocumentMoniker": "E:\\GameDev\\CoffeeCatProject\\Player\\Scripts\\Player.cs",
+              "DocumentMoniker": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\Player\\Scripts\\Player.cs",
               "RelativeDocumentMoniker": "Player\\Scripts\\Player.cs",
-              "ToolTip": "E:\\GameDev\\CoffeeCatProject\\Player\\Scripts\\Player.cs",
+              "ToolTip": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\Player\\Scripts\\Player.cs",
               "RelativeToolTip": "Player\\Scripts\\Player.cs",
-              "ViewState": "AgIAANEAAAAAAAAAAAAqwK8AAAA8AAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAAAUwBcAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-20T23:38:51.283Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "ScoreManager.cs",
-              "DocumentMoniker": "E:\\GameDev\\CoffeeCatProject\\Items\\Scripts\\ScoreManager.cs",
+              "DocumentMoniker": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\Items\\Scripts\\ScoreManager.cs",
               "RelativeDocumentMoniker": "Items\\Scripts\\ScoreManager.cs",
-              "ToolTip": "E:\\GameDev\\CoffeeCatProject\\Items\\Scripts\\ScoreManager.cs",
+              "ToolTip": "C:\\GameDev\\coffeecatproject\\CoffeeCatProject\\Items\\Scripts\\ScoreManager.cs",
               "RelativeToolTip": "Items\\Scripts\\ScoreManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-20T10:18:36.766Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-20T10:18:36.766Z"
             }
           ]
         }
