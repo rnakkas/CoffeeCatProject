@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://cfmp4bpt0wwlb"]
+[gd_scene load_steps=13 format=4 uid="uid://cfmp4bpt0wwlb"]
 
 [ext_resource type="PackedScene" uid="uid://bnpdedb212get" path="res://Levels/Scenes/level_end.tscn" id="1_2e8qi"]
 [ext_resource type="Texture2D" uid="uid://cu23mts0uo7fc" path="res://Assets/Tilemaps/garden_tilemap_v3.png" id="1_ohl1y"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Items/Scenes/coffee.tscn" id="5_igh1l"]
 [ext_resource type="PackedScene" uid="uid://wf6m2blo1d8u" path="res://Items/NodeScenes/items_coffee_pot.tscn" id="6_w2ons"]
 [ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Items/Scenes/coffee_pot.tscn" id="7_lp4a7"]
+[ext_resource type="PackedScene" uid="uid://crwvsdtmienw8" path="res://Player/Scenes/player_shotgun.tscn" id="9_0n4aj"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iy0cb"]
 texture = ExtResource("1_ohl1y")
@@ -153,3 +154,6 @@ position = Vector2(509, 122)
 
 [node name="coffee_pot2" parent="items/items_coffee_pot" instance=ExtResource("7_lp4a7")]
 position = Vector2(533, 122)
+
+[node name="player_shotgun" parent="." instance=ExtResource("9_0n4aj")]
+position = Vector2(-6, 112)
