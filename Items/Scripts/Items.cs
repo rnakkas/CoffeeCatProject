@@ -1,29 +1,31 @@
-using Godot;
 using System;
+using Godot;
+
+namespace CoffeeCatProject.Items.Scripts;
 
 public partial class Items : Area2D
 {
-    AnimatedSprite2D animation;
-    ScoreManager scoreManager;
+    private AnimatedSprite2D _animation;
+    private ScoreManager _scoreManager;
 
-    private NodePath scoreManagerNodePath = "../../score_manager";
-    private int coffeeScore = 1;
-    private int coffeePotScore = 10;
+    private NodePath _scoreManagerNodePath = "../../score_manager";
+    private int _coffeeScore = 1;
+    private int _coffeePotScore = 10;
 
-    String itemType;
+    private String _itemType;
     public override void _Ready()
     {
         // Get the score manager node
-        scoreManager = GetNode<ScoreManager>(scoreManagerNodePath);
+        _scoreManager = GetNode<ScoreManager>(_scoreManagerNodePath);
 
-        animation = GetNode<AnimatedSprite2D>("sprite");
-        animation.Play("idle");
+        _animation = GetNode<AnimatedSprite2D>("sprite");
+        _animation.Play("idle");
 
         // Signal of OnBodyEntered
         this.BodyEntered += OnBodyEntered;
 
         // Get item type based on the parent node
-        itemType = this.GetParent().Name;
+        _itemType = this.GetParent().Name;
     }
 
     // Godot signal when body enters area2D
@@ -39,23 +41,23 @@ public partial class Items : Area2D
     {
         IncreaseScore();
 
-        Tween Tween_1 = this.GetTree().CreateTween();
-        Tween Tween_2 = this.GetTree().CreateTween();
+        Tween tween1 = this.GetTree().CreateTween();
+        Tween tween2 = this.GetTree().CreateTween();
 
-        Tween_1.TweenProperty(this, "modulate:a", 0, 0.4);
-        Tween_2.TweenProperty(this, "position", this.Position - new Vector2(0, 50), 0.5);
-        Tween_2.TweenCallback(Callable.From(this.QueueFree));
+        tween1.TweenProperty(this, "modulate:a", 0, 0.4);
+        tween2.TweenProperty(this, "position", this.Position - new Vector2(0, 50), 0.5);
+        tween2.TweenCallback(Callable.From(this.QueueFree));
     }
 
     private void IncreaseScore()
     {
-        switch (itemType) // Logic based on type of item
+        switch (_itemType) // Logic based on type of item
         {
             case "items_coffee":
-                scoreManager.IncreaseCoffeeScore(coffeeScore);
+                _scoreManager.IncreaseCoffeeScore(_coffeeScore);
                 break;
             case "items_coffee_pot":
-                scoreManager.IncreaseCoffeeScore(coffeePotScore);
+                _scoreManager.IncreaseCoffeeScore(_coffeePotScore);
                 break;
         }
     }

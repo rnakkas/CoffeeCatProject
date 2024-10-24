@@ -1,55 +1,56 @@
 using Godot;
-using System;
+
+namespace CoffeeCatProject.Levels.Scripts;
 
 public partial class LevelEnd : Area2D
 {
-	AnimatedSprite2D animation;
+	private AnimatedSprite2D _animation;
 
-	bool playerEntered;
+	private bool _playerEntered;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-        animation = GetNode<AnimatedSprite2D>("sprite");
-		animation.Play("idle");
+		_animation = GetNode<AnimatedSprite2D>("sprite");
+		_animation.Play("idle");
 
 		// Signals
 		this.BodyEntered += OnBodyEntered;
 		this.BodyExited += OnBodyExited;
 	}
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
-    {
-        PlayerInteraction();
-    }
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+		PlayerInteraction();
+	}
 
-    //Signal
-    private void OnBodyEntered(Node2D body)
-    {
-        if (body.Name == "player")
-		{
-			playerEntered = true;
-			animation.Play("player_entered");
-		}
-    }
-
-	// Signal
-    private void OnBodyExited(Node2D body)
-    {
+	//Signal
+	private void OnBodyEntered(Node2D body)
+	{
 		if (body.Name == "player")
 		{
-			playerEntered = false;
-			animation.Play("idle");
+			_playerEntered = true;
+			_animation.Play("player_entered");
 		}
-    }
+	}
 
-    private void PlayerInteraction()
-    {
-       if (playerEntered && Input.IsActionJustPressed("move_up"))
+	// Signal
+	private void OnBodyExited(Node2D body)
+	{
+		if (body.Name == "player")
+		{
+			_playerEntered = false;
+			_animation.Play("idle");
+		}
+	}
+
+	private void PlayerInteraction()
+	{
+		if (_playerEntered && Input.IsActionJustPressed("move_up"))
 		{
 			GD.Print("entered");
-			///TODO: scene transition to level complete scene
+			//TODO: scene transition to level complete scene
 		}
-    }
+	}
 }

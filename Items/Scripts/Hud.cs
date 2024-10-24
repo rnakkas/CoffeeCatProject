@@ -1,23 +1,24 @@
 using Godot;
-using System;
+
+namespace CoffeeCatProject.Items.Scripts;
 
 public partial class Hud : CanvasLayer
 {
-	Label score;
-	ScoreManager scoreManager;
+	private Label _score;
+	private ScoreManager _scoreManager;
 
-	private NodePath scoreManagerNodePath = "../score_manager";
+	private NodePath _scoreManagerNodePath = "../score_manager";
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
 	{
-		score = GetNode<Label>("coffee_score");
-		scoreManager = GetNode<ScoreManager>(scoreManagerNodePath);
+		_score = GetNode<Label>("coffee_score");
+		_scoreManager = GetNode<ScoreManager>(_scoreManagerNodePath);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		score.Text = scoreManager.score.ToString();
+		_score.Text = _scoreManager.Score.ToString();
 	}
 }

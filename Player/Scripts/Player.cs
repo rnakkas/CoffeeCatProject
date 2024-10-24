@@ -1,36 +1,35 @@
 using Godot;
-using System;
-using System.Text.RegularExpressions;
-using static Godot.TextServer;
-using static Godot.WebSocketPeer;
+
+namespace CoffeeCatProject.Player.Scripts;
 
 public partial class Player : CharacterBody2D
 {
-    public const float Speed = 170.0f;
-    public const float JumpVelocity = -250.0f;
-    public const float Gravity = 750.0f;
-    public const float WallSlideGravity = 500.0f;
-    public const float WallJumpVelocity = -200.0f;
-    public const float FloorSnapLengthValue = 2.5f;
+    private const float Speed = 170.0f;
+    private const float JumpVelocity = -250.0f;
+    private const float Gravity = 750.0f;
+    private const float WallSlideGravity = 500.0f;
+    private const float WallJumpVelocity = -200.0f;
+    private const float FloorSnapLengthValue = 2.5f;
 
-    AnimatedSprite2D Animation;
-    RayCast2D LeftWallDetect, RightWallDetect;
+    private AnimatedSprite2D _animation;
+    private RayCast2D _leftWallDetect, _rightWallDetect;
 
-    enum State { IDLE, RUN, JUMP, WALL_SLIDE, FALL, WALL_JUMP };
-    State CurrentState;
+    private enum State { Idle, Run, Jump, WallSlide, Fall, WallJump };
 
-    float WallJumpDirection;
+    private State _currentState;
 
-    Vector2 velocity;
+    private float _wallJumpDirection;
+
+    private Vector2 _velocity;
 
     public override void _Ready()
     {
-        Animation = GetNode<AnimatedSprite2D>("sprite");
-        LeftWallDetect = GetNode<RayCast2D>("left_wall_detect");
-        RightWallDetect = GetNode<RayCast2D>("right_wall_detect");
+        _animation = GetNode<AnimatedSprite2D>("sprite");
+        _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
+        _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
 
-        Animation.FlipH = true;
-        SetState(State.IDLE);
+        _animation.FlipH = true;
+        SetState(State.Idle);
 
         // Keeps player snapped to floors on slopes
         this.FloorSnapLength = FloorSnapLengthValue;
@@ -39,44 +38,44 @@ public partial class Player : CharacterBody2D
         this.FloorConstantSpeed = true;
 
         // Set velocity
-        velocity = Velocity;
+        _velocity = Velocity;
     }
 
     // State Machine
-    private void SetState(State NewState)
+    private void SetState(State newState)
     {
-        if (NewState == CurrentState)
+        if (newState == _currentState)
             return;
 
         ExitState();
-        CurrentState = NewState;
+        _currentState = newState;
         EnterState();
     }
 
     private void EnterState()
     {
-        switch (CurrentState)
+        switch (_currentState)
         {
-            case State.IDLE:
-                velocity.Y = 0;
-                Animation.Play("idle");
+            case State.Idle:
+                _velocity.Y = 0;
+                _animation.Play("idle");
                 break;
-            case State.RUN:
-                Animation.Play("run");
+            case State.Run:
+                _animation.Play("run");
                 break;
-            case State.JUMP:
-                velocity.Y = JumpVelocity;
-                Animation.Play("jump");
+            case State.Jump:
+                _velocity.Y = JumpVelocity;
+                _animation.Play("jump");
                 break;
-            case State.WALL_SLIDE:
-                Animation.Play("wall_slide");
+            case State.WallSlide:
+                _animation.Play("wall_slide");
                 break;
-            case State.FALL:
-                Animation.Play("fall");
+            case State.Fall:
+                _animation.Play("fall");
                 break;
-            case State.WALL_JUMP:
-                velocity.Y = JumpVelocity;
-                Animation.Play("jump");
+            case State.WallJump:
+                _velocity.Y = WallJumpVelocity;
+                _animation.Play("jump");
                 break;
 
         }
@@ -84,163 +83,163 @@ public partial class Player : CharacterBody2D
 
     private void ExitState()
     {
-        switch (CurrentState)
+        switch (_currentState)
         {
-            case State.IDLE:
+            case State.Idle:
                 break;
-            case State.RUN:
+            case State.Run:
                 break;
-            case State.JUMP:
+            case State.Jump:
                 break;
-            case State.WALL_SLIDE:
+            case State.WallSlide:
                 break;
-            case State.FALL:
+            case State.Fall:
                 break;
-            case State.WALL_JUMP:
+            case State.WallJump:
                 break;
         }
     }
 
     private void UpdateState(float delta)
     {
-        Vector2 Direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+        Vector2 direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
 
-        switch (CurrentState)
+        switch (_currentState)
         {
-            case State.IDLE:
-                if (Direction.X != 0)
+            case State.Idle:
+                if (direction.X != 0)
                 {
-                    SetState(State.RUN);
+                    SetState(State.Run);
                 }
                 else if (Input.IsActionJustPressed("jump") && IsOnFloor())
                 {
-                    SetState(State.JUMP);
+                    SetState(State.Jump);
                 }
                 else if (!IsOnFloor())
                 {
-                    SetState(State.FALL);
+                    SetState(State.Fall);
                 }
                 break;
 
-            case State.RUN:
-                velocity.X = Direction.X * Speed;
-                FlipSprite(Direction.X);
+            case State.Run:
+                _velocity.X = direction.X * Speed;
+                FlipSprite(direction.X);
 
-                if (Direction.X == 0)
+                if (direction.X == 0)
                 {
-                    SetState(State.IDLE);
+                    SetState(State.Idle);
                 }
                 else if (Input.IsActionJustPressed("jump") && IsOnFloor())
                 {
-                    SetState(State.JUMP);
+                    SetState(State.Jump);
                 }
                 else if (!IsOnFloor())
                 {
-                    SetState(State.FALL);
+                    SetState(State.Fall);
                 }
 
-                Velocity = velocity;
+                Velocity = _velocity;
                 MoveAndSlide();
                 break;
 
-            case State.JUMP:
-                velocity.X = Direction.X * Speed;
-                FlipSprite(Direction.X);
+            case State.Jump:
+                _velocity.X = direction.X * Speed;
+                FlipSprite(direction.X);
 
                 if (!IsOnFloor())
                 {
-                    velocity.Y += Gravity * delta;
+                    _velocity.Y += Gravity * delta;
                     if (Velocity.Y > 0)
                     {
-                        SetState(State.FALL);
+                        SetState(State.Fall);
                     }
                     // Only detect wall tile (collision layer 5)
-                    else if (LeftWallDetect.IsColliding() || RightWallDetect.IsColliding())
+                    else if (_leftWallDetect.IsColliding() || _rightWallDetect.IsColliding())
                     {
-                        SetState(State.WALL_SLIDE);
+                        SetState(State.WallSlide);
                     }
                 }
 
-                Velocity = velocity;
+                Velocity = _velocity;
                 MoveAndSlide();
                 break;
 
-            case State.FALL:
-                velocity.X = Direction.X * Speed;
-                FlipSprite(Direction.X);
+            case State.Fall:
+                _velocity.X = direction.X * Speed;
+                FlipSprite(direction.X);
 
                 if (IsOnFloor())
                 {
-                    SetState(State.IDLE);
+                    SetState(State.Idle);
                 }
                 // Only detect wall tile (collision layer 5)
-                else if (LeftWallDetect.IsColliding() || RightWallDetect.IsColliding())
+                else if (_leftWallDetect.IsColliding() || _rightWallDetect.IsColliding())
                 {
-                    SetState(State.WALL_SLIDE);
+                    SetState(State.WallSlide);
                 }
                 else
                 {
-                    velocity.Y += Gravity * delta;
+                    _velocity.Y += Gravity * delta;
                 }
 
-                Velocity = velocity;
+                Velocity = _velocity;
                 MoveAndSlide();
                 break;
 
-            case State.WALL_SLIDE:
-                velocity.Y += WallSlideGravity * delta;
+            case State.WallSlide:
+                _velocity.Y += WallSlideGravity * delta;
 
                 if (Input.IsActionJustPressed("jump"))
                 {
-                    if (LeftWallDetect.IsColliding())
+                    if (_leftWallDetect.IsColliding())
                     {
-                        WallJumpDirection = 1.0f;
+                        _wallJumpDirection = 1.0f;
                     }
-                    else if (RightWallDetect.IsColliding())
+                    else if (_rightWallDetect.IsColliding())
                     {
-                        WallJumpDirection = -1.0f;
+                        _wallJumpDirection = -1.0f;
                     }
 
-                    SetState(State.WALL_JUMP);
+                    SetState(State.WallJump);
                     
                 }
                 else if (IsOnFloor())
                 {
-                    SetState(State.IDLE);
+                    SetState(State.Idle);
                 }
 
-                Velocity = velocity;
+                Velocity = _velocity;
                 MoveAndSlide();
                 break;
 
-            case State.WALL_JUMP:
-                velocity.X = WallJumpDirection * Speed;
-                FlipSprite(WallJumpDirection);
+            case State.WallJump:
+                _velocity.X = _wallJumpDirection * Speed;
+                FlipSprite(_wallJumpDirection);
 
                 if (!IsOnFloor())
                 {
-                    velocity.Y += Gravity * delta;
-                    if (velocity.Y > 0)
+                    _velocity.Y += Gravity * delta;
+                    if (_velocity.Y > 0)
                     {
-                        SetState(State.FALL);
+                        SetState(State.Fall);
                     }
                 }
 
-                Velocity = velocity;
+                Velocity = _velocity;
                 MoveAndSlide();
                 break;
         }
     }
 
-    private void FlipSprite(float DirectionX)
+    private void FlipSprite(float directionX)
     {
-        if (DirectionX < 0)
+        if (directionX < 0)
         {
-            Animation.FlipH = false;
+            _animation.FlipH = false;
         }
-        else if (DirectionX > 0)
+        else if (directionX > 0)
         {
-            Animation.FlipH = true;
+            _animation.FlipH = true;
         }
     }
 
