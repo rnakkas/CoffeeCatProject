@@ -1,14 +1,13 @@
-[gd_scene load_steps=13 format=4 uid="uid://cfmp4bpt0wwlb"]
+[gd_scene load_steps=12 format=4 uid="uid://cfmp4bpt0wwlb"]
 
 [ext_resource type="PackedScene" uid="uid://bnpdedb212get" path="res://Levels/Scenes/level_end.tscn" id="1_2e8qi"]
 [ext_resource type="Texture2D" uid="uid://cu23mts0uo7fc" path="res://Assets/Tilemaps/garden_tilemap_v3.png" id="1_ohl1y"]
-[ext_resource type="PackedScene" uid="uid://rnwicnm300tm" path="res://Player/Scenes/player.tscn" id="2_4shgu"]
 [ext_resource type="PackedScene" uid="uid://dv1ycuaoyk5yv" path="res://Items/NodeScenes/items.tscn" id="3_4skx5"]
+[ext_resource type="PackedScene" uid="uid://crwvsdtmienw8" path="res://Player/Scenes/player_shotgun.tscn" id="3_wk4k2"]
 [ext_resource type="PackedScene" uid="uid://77tyaj4jl48x" path="res://Items/NodeScenes/items_coffee.tscn" id="4_5r06v"]
 [ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Items/Scenes/coffee.tscn" id="5_igh1l"]
 [ext_resource type="PackedScene" uid="uid://wf6m2blo1d8u" path="res://Items/NodeScenes/items_coffee_pot.tscn" id="6_w2ons"]
 [ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Items/Scenes/coffee_pot.tscn" id="7_lp4a7"]
-[ext_resource type="PackedScene" uid="uid://bbgey6g8c53k6" path="res://Enemies/Scenes/enemy_rat.tscn" id="9_8hwua"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iy0cb"]
 texture = ExtResource("1_ohl1y")
@@ -129,17 +128,14 @@ shape = SubResource("RectangleShape2D_40mu1")
 debug_color = Color(0.859677, 0.315083, 0.471886, 0.42)
 
 [node name="level_end" parent="." instance=ExtResource("1_2e8qi")]
-position = Vector2(261, 29)
+position = Vector2(438, 68)
 
-[node name="player" parent="." instance=ExtResource("2_4shgu")]
-position = Vector2(247, 124)
-scale = Vector2(1.68594, 1.62774)
+[node name="player_shotgun" parent="." instance=ExtResource("3_wk4k2")]
+position = Vector2(-67, 60)
 
-[node name="Camera2D" type="Camera2D" parent="player"]
-position = Vector2(-9.49026, 0)
-zoom = Vector2(4.4, 4.4)
+[node name="Camera2D" type="Camera2D" parent="player_shotgun"]
+zoom = Vector2(4.145, 4.145)
 limit_left = 0
-limit_bottom = 550
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
@@ -162,6 +158,3 @@ position = Vector2(509, 122)
 position = Vector2(533, 122)
 
 [node name="enemies" type="Node" parent="."]
-
-[node name="enemy_rat" parent="enemies" instance=ExtResource("9_8hwua")]
-position = Vector2(362, 71)

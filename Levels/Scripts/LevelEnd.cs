@@ -28,7 +28,7 @@ public partial class LevelEnd : Area2D
 	//Signal
 	private void OnBodyEntered(Node2D body)
 	{
-		if (body.Name == "player")
+		if (body.Name == "player_shotgun")
 		{
 			_playerEntered = true;
 			_animation.Play("player_entered");
@@ -38,7 +38,7 @@ public partial class LevelEnd : Area2D
 	// Signal
 	private void OnBodyExited(Node2D body)
 	{
-		if (body.Name == "player")
+		if (body.Name == "player_shotgun")
 		{
 			_playerEntered = false;
 			_animation.Play("idle");

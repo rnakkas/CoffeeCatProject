@@ -30,6 +30,9 @@ public partial class Player : CharacterBody2D
 
         _animation.FlipH = true;
         SetState(State.Idle);
+        
+        // Set z index high so player is in front of all other objects
+        ZIndex = 100;
 
         // Keeps player snapped to floors on slopes
         this.FloorSnapLength = FloorSnapLengthValue;

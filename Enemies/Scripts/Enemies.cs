@@ -7,21 +7,29 @@ public partial class Enemies : CharacterBody2D
 	public float Speed = 200.0f;
 	public const float Gravity = 750.0f;
 
-	public AnimatedSprite2D Animation;
+	private  AnimatedSprite2D _animation;
 
-	public enum State { Idle, Run, Shoot, Hurt, Death};
-	public State CurrentState;
+	protected enum State
+	{ 
+		Idle, 
+		Run, 
+		Attack, 
+		Hurt, 
+		Death
+	};
+	protected State CurrentState;
 
 	private Vector2 _velocity;
 
-	public AnimatedSprite2D GetSprite()
+	protected AnimatedSprite2D GetSprite()
 	{
 		return GetNode<AnimatedSprite2D>("sprite");
 	}
 
-	public void SetState(State newState)
+	protected void SetState(State newState)
 	{
-		if (newState == CurrentState || CurrentState == State.Death) // Cannot exit death state
+		// Cannot exit death state
+		if (newState == CurrentState || CurrentState == State.Death) 
 		{
 			return;
 		}
@@ -31,7 +39,7 @@ public partial class Enemies : CharacterBody2D
 		EnterState();
 	}
 
-	public void ExitState()
+	private void ExitState()
 	{
 		switch (CurrentState)
 		{
@@ -39,40 +47,40 @@ public partial class Enemies : CharacterBody2D
 				break;
 			case State.Run:
 				break;
-			case State.Shoot:
+			case State.Attack:
 				break;
 			case State.Hurt:
 				break;
 		}
 	}
-	public void EnterState()
+	private void EnterState()
 	{
 		switch (CurrentState)
 		{
 			case State.Idle:
 				GD.Print("entered: IDLE");
-				Animation.Play("idle");
+				_animation.Play("idle");
 				break;
 			case State.Run:
 				GD.Print("entered: RUN");
-				Animation.Play("run");
+				_animation.Play("run");
 				break;
-			case State.Shoot:
-				GD.Print("entered: SHOOT");
-				Animation.Play("shoot");
+			case State.Attack:
+				GD.Print("entered: ATTACK");
+				_animation.Play("attack");
 				break;
 			case State.Hurt:
 				GD.Print("entered: HURT");
-				Animation.Play("hurt");
+				_animation.Play("hurt");
 				break;
 			case State.Death:
 				GD.Print("entered: DEATH");
-				Animation.Play("death");
+				_animation.Play("death");
 				break;
 		}
 	}
 
-	public void UpdateState(float delta)
+	protected void UpdateState(float delta)
 	{
 		if (!IsOnFloor())
 		{
