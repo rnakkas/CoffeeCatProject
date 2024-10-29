@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace CoffeeCatProject.Player.Scripts;
@@ -14,13 +15,24 @@ public partial class Player : CharacterBody2D
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
 
-    private enum State { Idle, Run, Jump, WallSlide, Fall, WallJump };
+    private enum State
+    {
+        Idle, 
+        Run, 
+        Jump, 
+        WallSlide, 
+        Fall, 
+        WallJump,
+        Shoot
+    };
 
     private State _currentState;
 
     private float _wallJumpDirection;
 
     private Vector2 _velocity;
+
+    private bool _isShooting; 
 
     public override void _Ready()
     {
@@ -42,45 +54,84 @@ public partial class Player : CharacterBody2D
 
         // Set velocity
         _velocity = Velocity;
+        
+        // // Animation finished signal
+        // _animation.AnimationFinished += AnimationOnAnimationFinished;
     }
 
     // State Machine
     private void SetState(State newState)
     {
-        if (newState == _currentState)
-            return;
-
+        // if (newState == _currentState)
+        //     return;
+        
         ExitState();
         _currentState = newState;
         EnterState();
     }
 
-    private void EnterState()
+    private async void EnterState()
     {
         switch (_currentState)
         {
             case State.Idle:
                 _velocity.Y = 0;
+                
+                if (_animation.Animation == "idle_shoot")
+                {
+                     await ToSignal(_animation, "animation_finished");
+                }
+                
                 _animation.Play("idle");
                 break;
+            
             case State.Run:
+                if (_animation.Animation == "idle_shoot")
+                {
+                    await ToSignal(_animation, "animation_finished");
+                }
+
                 _animation.Play("run");
                 break;
+            
             case State.Jump:
                 _velocity.Y = JumpVelocity;
+                
+                if (_animation.Animation == "idle_shoot")
+                {
+                    await ToSignal(_animation, "animation_finished");
+                }
+                
                 _animation.Play("jump");
                 break;
+            
             case State.WallSlide:
                 _animation.Play("wall_slide");
                 break;
             case State.Fall:
+                if (_animation.Animation == "idle_shoot")
+                {
+                    await ToSignal(_animation, "animation_finished");
+                }
+                
                 _animation.Play("fall");
                 break;
+            
             case State.WallJump:
                 _velocity.Y = WallJumpVelocity;
+                
+                if (_animation.Animation == "idle_shoot")
+                {
+                    await ToSignal(_animation, "animation_finished");
+                }
+                
                 _animation.Play("jump");
                 break;
-
+            
+            case State.Shoot:
+                GD.Print("Entering Shoot");
+                _animation.Play("idle_shoot");
+                break;
         }
     }
 
@@ -100,13 +151,23 @@ public partial class Player : CharacterBody2D
                 break;
             case State.WallJump:
                 break;
+            case State.Shoot:
+                _isShooting = false;
+                GD.Print("exit shoot, _isShooting: " + _isShooting);
+                break;
+            // case State.RunShoot:
+            //     _isShooting = false;
+            //     break;
+            // case State.JumpShoot:
+            //     _isShooting = false;
+            //     break;
         }
     }
 
     private void UpdateState(float delta)
     {
         Vector2 direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-
+        
         switch (_currentState)
         {
             case State.Idle:
@@ -122,6 +183,16 @@ public partial class Player : CharacterBody2D
                 {
                     SetState(State.Fall);
                 }
+                else if (Input.IsActionJustPressed("shoot"))
+                {
+                    _isShooting = true;
+                    SetState(State.Shoot);
+                }
+                else if (Input.IsActionJustReleased("shoot"))
+                {
+                    _isShooting = false;
+                }
+                
                 break;
 
             case State.Run:
@@ -139,6 +210,15 @@ public partial class Player : CharacterBody2D
                 else if (!IsOnFloor())
                 {
                     SetState(State.Fall);
+                }
+                else if (Input.IsActionJustPressed("shoot"))
+                {
+                    _isShooting = true;
+                    SetState(State.Shoot);
+                }
+                else if (Input.IsActionJustReleased("shoot"))
+                {
+                    _isShooting = false;
                 }
 
                 Velocity = _velocity;
@@ -160,6 +240,15 @@ public partial class Player : CharacterBody2D
                     else if (_leftWallDetect.IsColliding() || _rightWallDetect.IsColliding())
                     {
                         SetState(State.WallSlide);
+                    }
+                    else if (Input.IsActionJustPressed("shoot"))
+                    {
+                        _isShooting = true;
+                        SetState(State.Shoot);
+                    }
+                    else if (Input.IsActionJustReleased("shoot"))
+                    {
+                        _isShooting = false;
                     }
                 }
 
@@ -183,6 +272,16 @@ public partial class Player : CharacterBody2D
                 else
                 {
                     _velocity.Y += Gravity * delta;
+
+                    if (Input.IsActionJustPressed("shoot"))
+                    {
+                        _isShooting = true;
+                        SetState(State.Shoot);
+                    }
+                    else if (Input.IsActionJustReleased("shoot"))
+                    {
+                        _isShooting = false;
+                    }
                 }
 
                 Velocity = _velocity;
@@ -226,11 +325,113 @@ public partial class Player : CharacterBody2D
                     {
                         SetState(State.Fall);
                     }
+                    else if (Input.IsActionJustPressed("shoot"))
+                    {
+                        _isShooting = true;
+                        SetState(State.Shoot);
+                    }
+                    else if (Input.IsActionJustReleased("shoot"))
+                    {
+                        _isShooting = false;
+                    }
                 }
 
                 Velocity = _velocity;
                 MoveAndSlide();
                 break;
+
+            case State.Shoot:
+                _velocity.X = direction.X * Speed;
+                FlipSprite(direction.X);
+
+                if (!IsOnFloor())
+                {
+                    _velocity.Y += Gravity * delta;
+                }
+                
+                if (direction.X != 0)
+                {
+                    SetState(State.Run);
+                }
+                else if (direction.X == 0 && Input.IsActionJustPressed("shoot"))
+                {
+                    SetState(State.Shoot);
+                }
+                else if (Input.IsActionJustPressed("jump") && IsOnFloor())
+                {
+                    SetState(State.Jump);
+                }
+                else
+                {
+                    SetState(State.Idle);
+                }
+                
+                Velocity = _velocity;
+                MoveAndSlide();
+                
+                break;
+            
+            // case State.RunShoot:
+            //     _velocity.X = direction.X * Speed;
+            //     FlipSprite(direction.X);
+            //
+            //     if (direction.X == 0)
+            //     {
+            //         SetState(State.Idle);
+            //     }
+            //     else if (direction.X != 0)
+            //     {
+            //         SetState(State.Run);
+            //     }
+            //     else if (Input.IsActionJustPressed("jump") && IsOnFloor())
+            //     {
+            //         SetState(State.Jump);
+            //     }
+            //     else if (!IsOnFloor())
+            //     {
+            //         GD.Print("Running shoot fall");
+            //         _velocity.Y += Gravity * delta;
+            //         SetState(State.Fall);
+            //     }
+            //     else if (Input.IsActionJustPressed("shoot"))
+            //     {
+            //         SetState(State.RunShoot);
+            //     }
+            //
+            //     Velocity = _velocity;
+            //     MoveAndSlide();
+            //     break;
+            
+            // case State.JumpShoot:
+            //     _velocity.X = direction.X * Speed;
+            //     FlipSprite(direction.X);
+            //     
+            //     if (!IsOnFloor())
+            //     {
+            //         _velocity.Y += Gravity * delta;
+            //         if (Velocity.Y > 0 && !IsOnFloor())
+            //         {
+            //             SetState(State.Fall);
+            //         }
+            //         // Only detect wall tile (collision layer 5)
+            //         else if (_leftWallDetect.IsColliding() || _rightWallDetect.IsColliding())
+            //         {
+            //             SetState(State.WallSlide);
+            //         }
+            //         else if (Input.IsActionJustPressed("shoot"))
+            //         {
+            //             SetState(State.JumpShoot);
+            //         }
+            //     }
+            //     else
+            //     {
+            //         SetState(State.Idle);
+            //     }
+            //
+            //     Velocity = _velocity;
+            //     MoveAndSlide();
+            //     break;
+            
         }
     }
 
@@ -245,7 +446,6 @@ public partial class Player : CharacterBody2D
             _animation.FlipH = true;
         }
     }
-
     public override void _PhysicsProcess(double delta)
     {
         UpdateState((float)delta);

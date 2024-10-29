@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://crwvsdtmienw8"]
+[gd_scene load_steps=68 format=3 uid="uid://crwvsdtmienw8"]
 
 [ext_resource type="Script" path="res://Player/Scripts/Player.cs" id="1_7igfr"]
 [ext_resource type="Texture2D" uid="uid://cpg8j6613ar6i" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-1.png" id="1_runtf"]
@@ -141,6 +141,46 @@ region = Rect2(96, 32, 48, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_jadcx"]
 atlas = ExtResource("1_runtf")
 region = Rect2(144, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q032f"]
+atlas = ExtResource("1_runtf")
+region = Rect2(0, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eltur"]
+atlas = ExtResource("1_runtf")
+region = Rect2(48, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xxitn"]
+atlas = ExtResource("1_runtf")
+region = Rect2(96, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_abks1"]
+atlas = ExtResource("1_runtf")
+region = Rect2(144, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ihid8"]
+atlas = ExtResource("1_runtf")
+region = Rect2(192, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iqdv5"]
+atlas = ExtResource("1_runtf")
+region = Rect2(240, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c4o5o"]
+atlas = ExtResource("1_runtf")
+region = Rect2(288, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfkom"]
+atlas = ExtResource("1_runtf")
+region = Rect2(336, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_plk4a"]
+atlas = ExtResource("1_runtf")
+region = Rect2(384, 128, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0sm1x"]
+atlas = ExtResource("1_runtf")
+region = Rect2(432, 128, 48, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sp36u"]
 atlas = ExtResource("1_runtf")
@@ -326,7 +366,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_q4kat")
 }],
-"loop": true,
+"loop": false,
 "name": &"idle_shoot",
 "speed": 13.0
 }, {
@@ -346,6 +386,41 @@ animations = [{
 "loop": false,
 "name": &"jump",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q032f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eltur")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xxitn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_abks1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ihid8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iqdv5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c4o5o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nfkom")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_plk4a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0sm1x")
+}],
+"loop": false,
+"name": &"jump_shoot",
+"speed": 13.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -398,7 +473,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xxr1k")
 }],
-"loop": true,
+"loop": false,
 "name": &"run_shoot",
 "speed": 11.0
 }, {
@@ -442,4 +517,4 @@ collision_mask = 16
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_k3p2u")
-animation = &"jump"
+animation = &"run_shoot"
