@@ -41,7 +41,7 @@ public partial class Player : CharacterBody2D
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
 
         _animation.FlipH = true;
-        SetState(State.Idle);
+        _animation.Play("idle");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -62,8 +62,8 @@ public partial class Player : CharacterBody2D
     // State Machine
     private void SetState(State newState)
     {
-        // if (newState == _currentState)
-        //     return;
+        if (newState == _currentState)
+            return;
         
         ExitState();
         _currentState = newState;
@@ -77,6 +77,7 @@ public partial class Player : CharacterBody2D
             case State.Idle:
                 _velocity.Y = 0;
                 
+                // If shooting is the current animation, wait for it to finish before doing next animation 
                 if (_animation.Animation == "idle_shoot")
                 {
                      await ToSignal(_animation, "animation_finished");
@@ -86,7 +87,9 @@ public partial class Player : CharacterBody2D
                 break;
             
             case State.Run:
-                if (_animation.Animation == "idle_shoot")
+                // If shooting is the current animation, wait for it to finish before doing next animation
+                if (_animation.Animation == "idle_shoot" || 
+                    _animation.Animation == "run_shoot")
                 {
                     await ToSignal(_animation, "animation_finished");
                 }
@@ -97,7 +100,9 @@ public partial class Player : CharacterBody2D
             case State.Jump:
                 _velocity.Y = JumpVelocity;
                 
-                if (_animation.Animation == "idle_shoot")
+                // If shooting is the current animation, wait for it to finish before doing next animation
+                if (_animation.Animation == "idle_shoot" ||
+                    _animation.Animation == "run_shoot")
                 {
                     await ToSignal(_animation, "animation_finished");
                 }
@@ -109,7 +114,9 @@ public partial class Player : CharacterBody2D
                 _animation.Play("wall_slide");
                 break;
             case State.Fall:
-                if (_animation.Animation == "idle_shoot")
+                // If shooting is the current animation, wait for it to finish before doing next animation
+                if (_animation.Animation == "idle_shoot" || 
+                    _animation.Animation == "run_shoot")
                 {
                     await ToSignal(_animation, "animation_finished");
                 }
@@ -120,6 +127,7 @@ public partial class Player : CharacterBody2D
             case State.WallJump:
                 _velocity.Y = WallJumpVelocity;
                 
+                // If shooting is the current animation, wait for it to finish before doing next animation
                 if (_animation.Animation == "idle_shoot")
                 {
                     await ToSignal(_animation, "animation_finished");
@@ -130,7 +138,14 @@ public partial class Player : CharacterBody2D
             
             case State.Shoot:
                 GD.Print("Entering Shoot");
-                _animation.Play("idle_shoot");
+                if (_velocity.X != 0)
+                {
+                    _animation.Play("run_shoot");
+                }
+                else
+                {
+                    _animation.Play("idle_shoot");
+                }
                 break;
         }
     }
@@ -155,12 +170,6 @@ public partial class Player : CharacterBody2D
                 _isShooting = false;
                 GD.Print("exit shoot, _isShooting: " + _isShooting);
                 break;
-            // case State.RunShoot:
-            //     _isShooting = false;
-            //     break;
-            // case State.JumpShoot:
-            //     _isShooting = false;
-            //     break;
         }
     }
 
@@ -370,68 +379,6 @@ public partial class Player : CharacterBody2D
                 MoveAndSlide();
                 
                 break;
-            
-            // case State.RunShoot:
-            //     _velocity.X = direction.X * Speed;
-            //     FlipSprite(direction.X);
-            //
-            //     if (direction.X == 0)
-            //     {
-            //         SetState(State.Idle);
-            //     }
-            //     else if (direction.X != 0)
-            //     {
-            //         SetState(State.Run);
-            //     }
-            //     else if (Input.IsActionJustPressed("jump") && IsOnFloor())
-            //     {
-            //         SetState(State.Jump);
-            //     }
-            //     else if (!IsOnFloor())
-            //     {
-            //         GD.Print("Running shoot fall");
-            //         _velocity.Y += Gravity * delta;
-            //         SetState(State.Fall);
-            //     }
-            //     else if (Input.IsActionJustPressed("shoot"))
-            //     {
-            //         SetState(State.RunShoot);
-            //     }
-            //
-            //     Velocity = _velocity;
-            //     MoveAndSlide();
-            //     break;
-            
-            // case State.JumpShoot:
-            //     _velocity.X = direction.X * Speed;
-            //     FlipSprite(direction.X);
-            //     
-            //     if (!IsOnFloor())
-            //     {
-            //         _velocity.Y += Gravity * delta;
-            //         if (Velocity.Y > 0 && !IsOnFloor())
-            //         {
-            //             SetState(State.Fall);
-            //         }
-            //         // Only detect wall tile (collision layer 5)
-            //         else if (_leftWallDetect.IsColliding() || _rightWallDetect.IsColliding())
-            //         {
-            //             SetState(State.WallSlide);
-            //         }
-            //         else if (Input.IsActionJustPressed("shoot"))
-            //         {
-            //             SetState(State.JumpShoot);
-            //         }
-            //     }
-            //     else
-            //     {
-            //         SetState(State.Idle);
-            //     }
-            //
-            //     Velocity = _velocity;
-            //     MoveAndSlide();
-            //     break;
-            
         }
     }
 
