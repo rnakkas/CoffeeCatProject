@@ -14,6 +14,9 @@ public partial class Player : CharacterBody2D
 
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
+    private Marker2D _muzzle;
+    
+    private readonly PackedScene _playerBullet = ResourceLoader.Load<PackedScene>("res://Player/Scenes/player_bullet.tscn");
 
     private enum State
     {
@@ -32,13 +35,16 @@ public partial class Player : CharacterBody2D
 
     private Vector2 _velocity;
 
-    private bool _isShooting; 
+    private bool _isShooting;
+
+    private Vector2 _muzzlePosition;
 
     public override void _Ready()
     {
         _animation = GetNode<AnimatedSprite2D>("sprite");
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
+        _muzzle = GetNode<Marker2D>("marker");
 
         _animation.FlipH = true;
         _animation.Play("idle");
@@ -55,8 +61,9 @@ public partial class Player : CharacterBody2D
         // Set velocity
         _velocity = Velocity;
         
-        // // Animation finished signal
-        // _animation.AnimationFinished += AnimationOnAnimationFinished;
+        // Set muzzle position
+        _muzzlePosition = _muzzle.GlobalPosition;
+        GD.Print("Muzzle pos: " + _muzzlePosition);
     }
 
     // State Machine
@@ -78,7 +85,8 @@ public partial class Player : CharacterBody2D
                 _velocity.Y = 0;
                 
                 // If shooting is the current animation, wait for it to finish before doing next animation 
-                if (_animation.Animation == "idle_shoot")
+                if (_animation.Animation == "idle_shoot" || 
+                    _animation.Animation == "run_shoot")
                 {
                      await ToSignal(_animation, "animation_finished");
                 }
@@ -137,15 +145,7 @@ public partial class Player : CharacterBody2D
                 break;
             
             case State.Shoot:
-                GD.Print("Entering Shoot");
-                if (_velocity.X != 0)
-                {
-                    _animation.Play("run_shoot");
-                }
-                else
-                {
-                    _animation.Play("idle_shoot");
-                }
+                _animation.Play("run_shoot");
                 break;
         }
     }
@@ -168,7 +168,6 @@ public partial class Player : CharacterBody2D
                 break;
             case State.Shoot:
                 _isShooting = false;
-                GD.Print("exit shoot, _isShooting: " + _isShooting);
                 break;
         }
     }
@@ -350,6 +349,11 @@ public partial class Player : CharacterBody2D
                 break;
 
             case State.Shoot:
+                
+                var bulletInstance = (Node2D)_playerBullet.Instantiate();
+                bulletInstance.GlobalPosition = _muzzle.GlobalPosition;
+                GetTree().Root.AddChild(bulletInstance);
+                
                 _velocity.X = direction.X * Speed;
                 FlipSprite(direction.X);
 

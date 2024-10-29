@@ -131,7 +131,7 @@ debug_color = Color(0.859677, 0.315083, 0.471886, 0.42)
 position = Vector2(438, 68)
 
 [node name="player_shotgun" parent="." instance=ExtResource("3_wk4k2")]
-position = Vector2(-4, -179)
+position = Vector2(-12, 60)
 
 [node name="Camera2D" type="Camera2D" parent="player_shotgun"]
 zoom = Vector2(4.145, 4.145)
