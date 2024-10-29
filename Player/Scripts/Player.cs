@@ -16,6 +16,7 @@ public partial class Player : CharacterBody2D
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Marker2D _muzzle;
     
+    // Load packed scene of bullet
     private readonly PackedScene _playerBullet = ResourceLoader.Load<PackedScene>("res://Player/Scenes/player_bullet.tscn");
 
     private enum State
@@ -30,14 +31,11 @@ public partial class Player : CharacterBody2D
     };
 
     private State _currentState;
-
     private float _wallJumpDirection;
-
     private Vector2 _velocity;
-
     private bool _isShooting;
-
     private Vector2 _muzzlePosition;
+    private float _direction = 1.0f;
 
     public override void _Ready()
     {
@@ -350,8 +348,25 @@ public partial class Player : CharacterBody2D
 
             case State.Shoot:
                 
-                var bulletInstance = (Node2D)_playerBullet.Instantiate();
-                bulletInstance.GlobalPosition = _muzzle.GlobalPosition;
+                // Instantiate the bullet scene, cast PackedScene as type Node
+                var bulletInstance = (PlayerBullet)_playerBullet.Instantiate();
+                
+                // Set bullet's direction based on player's direction
+                bulletInstance.Direction = _direction;
+                
+                // Set bullet's location to muzzle location
+                //TODO: Figure out the muzzle flipping 
+                if (_direction < 0)
+                {
+                    bulletInstance.GlobalPosition = _muzzle.GlobalPosition;
+                }
+
+                if (_direction > 0)
+                {
+                    bulletInstance.GlobalPosition = -_muzzle.GlobalPosition;
+                }
+                
+                // Add bullet scene to scene tree
                 GetTree().Root.AddChild(bulletInstance);
                 
                 _velocity.X = direction.X * Speed;
@@ -391,10 +406,12 @@ public partial class Player : CharacterBody2D
         if (directionX < 0)
         {
             _animation.FlipH = false;
+            _direction = -1;
         }
         else if (directionX > 0)
         {
             _animation.FlipH = true;
+            _direction = 1;
         }
     }
     public override void _PhysicsProcess(double delta)
