@@ -9,7 +9,6 @@ public partial class PlayerBullet : CharacterBody2D
 	
 	private AnimatedSprite2D _animation;
 	private Vector2 _velocity = Vector2.Zero;
-	private Timer _timer;
 
 	private float _direction;
 
@@ -24,7 +23,6 @@ public partial class PlayerBullet : CharacterBody2D
 	{
 		_animation = GetNode<AnimatedSprite2D>("sprite");
 		_velocity = Velocity;
-		_timer = GetNode<Timer>("Timer");
 		
 		FloorMaxAngle = 0;
 		

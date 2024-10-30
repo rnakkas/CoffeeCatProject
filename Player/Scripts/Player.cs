@@ -5,6 +5,7 @@ namespace CoffeeCatProject.Player.Scripts;
 
 public partial class Player : CharacterBody2D
 {
+    // Constants
     private const float Speed = 170.0f;
     private const float JumpVelocity = -250.0f;
     private const float Gravity = 750.0f;
@@ -12,14 +13,17 @@ public partial class Player : CharacterBody2D
     private const float WallJumpVelocity = -200.0f;
     private const float FloorSnapLengthValue = 2.5f;
 
+    // Nodes
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Marker2D _muzzle;
+    private Timer _shotCooldown;
     
     // Load packed scene of bullet
     private readonly PackedScene _playerBullet = 
         ResourceLoader.Load<PackedScene>("res://Player/Scenes/player_bullet.tscn");
 
+    // State enum
     private enum State
     {
         Idle, 
@@ -31,31 +35,32 @@ public partial class Player : CharacterBody2D
         Shoot
     };
 
+    // Variables
     private State _currentState;
     private float _wallJumpDirection;
     private Vector2 _velocity;
-    private bool _isShooting;
+    // private bool _isShooting;
     private Vector2 _muzzlePosition;
     private float _direction;
+    private bool _onCooldown;
 
     public override void _Ready()
     {
+        // Get the child nodes
         _animation = GetNode<AnimatedSprite2D>("sprite");
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _muzzle = GetNode<Marker2D>("marker");
-
-        _animation.FlipH = true;
-        _animation.Play("idle");
+        _shotCooldown = GetNode<Timer>("Timer");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
 
         // Keeps player snapped to floors on slopes
-        this.FloorSnapLength = FloorSnapLengthValue;
+        FloorSnapLength = FloorSnapLengthValue;
 
         // Enable constant speed on floors and slopes
-        this.FloorConstantSpeed = true;
+        FloorConstantSpeed = true;
 
         // Set velocity
         _velocity = Velocity;
@@ -65,6 +70,17 @@ public partial class Player : CharacterBody2D
         
         // Set default direction
         _direction = 1.0f;
+        
+        // Set timer values
+        _shotCooldown.SetOneShot(true);
+        _shotCooldown.SetWaitTime(0.9);
+        
+        // Animation to play on ready
+        _animation.FlipH = true;
+        _animation.Play("idle");
+        
+        // Signals/Actions
+        _shotCooldown.Timeout += OnTimerTimeout;
     }
 
     // State Machine
@@ -122,6 +138,7 @@ public partial class Player : CharacterBody2D
             case State.WallSlide:
                 _animation.Play("wall_slide");
                 break;
+            
             case State.Fall:
                 // If shooting is the current animation, wait for it to finish before doing next animation
                 if (_animation.Animation == "idle_shoot" || 
@@ -146,6 +163,8 @@ public partial class Player : CharacterBody2D
                 break;
             
             case State.Shoot:
+                _onCooldown = true;
+                _shotCooldown.Start();
                 _animation.Play("run_shoot");
                 break;
         }
@@ -168,7 +187,6 @@ public partial class Player : CharacterBody2D
             case State.WallJump:
                 break;
             case State.Shoot:
-                _isShooting = false;
                 break;
         }
     }
@@ -192,14 +210,9 @@ public partial class Player : CharacterBody2D
                 {
                     SetState(State.Fall);
                 }
-                else if (Input.IsActionJustPressed("shoot"))
+                else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
                 {
-                    _isShooting = true;
                     SetState(State.Shoot);
-                }
-                else if (Input.IsActionJustReleased("shoot"))
-                {
-                    _isShooting = false;
                 }
 
                 break;
@@ -220,14 +233,9 @@ public partial class Player : CharacterBody2D
                 {
                     SetState(State.Fall);
                 }
-                else if (Input.IsActionJustPressed("shoot"))
+                else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
                 {
-                    _isShooting = true;
                     SetState(State.Shoot);
-                }
-                else if (Input.IsActionJustReleased("shoot"))
-                {
-                    _isShooting = false;
                 }
 
                 Velocity = _velocity;
@@ -250,14 +258,9 @@ public partial class Player : CharacterBody2D
                     {
                         SetState(State.WallSlide);
                     }
-                    else if (Input.IsActionJustPressed("shoot"))
+                    else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
                     {
-                        _isShooting = true;
                         SetState(State.Shoot);
-                    }
-                    else if (Input.IsActionJustReleased("shoot"))
-                    {
-                        _isShooting = false;
                     }
                 }
 
@@ -282,14 +285,9 @@ public partial class Player : CharacterBody2D
                 {
                     _velocity.Y += Gravity * delta;
 
-                    if (Input.IsActionJustPressed("shoot"))
+                    if (Input.IsActionJustPressed("shoot") && !_onCooldown)
                     {
-                        _isShooting = true;
                         SetState(State.Shoot);
-                    }
-                    else if (Input.IsActionJustReleased("shoot"))
-                    {
-                        _isShooting = false;
                     }
                 }
 
@@ -334,14 +332,9 @@ public partial class Player : CharacterBody2D
                     {
                         SetState(State.Fall);
                     }
-                    else if (Input.IsActionJustPressed("shoot"))
+                    else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
                     {
-                        _isShooting = true;
                         SetState(State.Shoot);
-                    }
-                    else if (Input.IsActionJustReleased("shoot"))
-                    {
-                        _isShooting = false;
                     }
                 }
 
@@ -382,7 +375,7 @@ public partial class Player : CharacterBody2D
                 {
                     SetState(State.Run);
                 }
-                else if (direction.X == 0 && Input.IsActionJustPressed("shoot"))
+                else if (direction.X == 0 && Input.IsActionJustPressed("shoot") && !_onCooldown)
                 {
                     SetState(State.Shoot);
                 }
@@ -418,5 +411,12 @@ public partial class Player : CharacterBody2D
     public override void _PhysicsProcess(double delta)
     {
         UpdateState((float)delta);
+    }
+    
+    // Signals/Actions methods
+    
+    private void OnTimerTimeout()
+    {
+        _onCooldown = false;
     }
 }
