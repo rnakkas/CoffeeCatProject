@@ -522,4 +522,4 @@ animation = &"idle"
 [node name="marker" type="Marker2D" parent="."]
 position = Vector2(-17, -2)
 
-[node name="Timer" type="Timer" parent="."]
+[node name="shotCoolDownTimer" type="Timer" parent="."]

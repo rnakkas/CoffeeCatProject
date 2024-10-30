@@ -51,7 +51,7 @@ public partial class Player : CharacterBody2D
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _muzzle = GetNode<Marker2D>("marker");
-        _shotCooldown = GetNode<Timer>("Timer");
+        _shotCooldown = GetNode<Timer>("shotCoolDownTimer");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
