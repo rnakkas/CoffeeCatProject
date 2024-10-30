@@ -9,6 +9,7 @@ public partial class PlayerBullet : CharacterBody2D
 	
 	private AnimatedSprite2D _animation;
 	private Vector2 _velocity = Vector2.Zero;
+	private Timer _timer;
 
 	private float _direction;
 
@@ -23,6 +24,7 @@ public partial class PlayerBullet : CharacterBody2D
 	{
 		_animation = GetNode<AnimatedSprite2D>("sprite");
 		_velocity = Velocity;
+		_timer = GetNode<Timer>("Timer");
 		
 		FloorMaxAngle = 0;
 		
@@ -30,7 +32,6 @@ public partial class PlayerBullet : CharacterBody2D
 		FlipSprite();
 		
 		_animation.Play("fly");
-		GD.Print("Bullet direction: " + _direction);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -39,6 +40,7 @@ public partial class PlayerBullet : CharacterBody2D
 		// Flip sprite based on direction
 		FlipSprite();
 
+		// If bullet hits floor or wall, bullet disappears
 		if (IsOnFloor() || IsOnWall())
 		{
 			_animation.Play("hit");

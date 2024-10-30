@@ -17,7 +17,8 @@ public partial class Player : CharacterBody2D
     private Marker2D _muzzle;
     
     // Load packed scene of bullet
-    private readonly PackedScene _playerBullet = ResourceLoader.Load<PackedScene>("res://Player/Scenes/player_bullet.tscn");
+    private readonly PackedScene _playerBullet = 
+        ResourceLoader.Load<PackedScene>("res://Player/Scenes/player_bullet.tscn");
 
     private enum State
     {
@@ -35,7 +36,7 @@ public partial class Player : CharacterBody2D
     private Vector2 _velocity;
     private bool _isShooting;
     private Vector2 _muzzlePosition;
-    private float _direction = 1.0f;
+    private float _direction;
 
     public override void _Ready()
     {
@@ -60,8 +61,10 @@ public partial class Player : CharacterBody2D
         _velocity = Velocity;
         
         // Set muzzle position
-        _muzzlePosition = _muzzle.GlobalPosition;
-        GD.Print("Muzzle pos: " + _muzzlePosition);
+        _muzzlePosition = _muzzle.Position;
+        
+        // Set default direction
+        _direction = 1.0f;
     }
 
     // State Machine
@@ -173,7 +176,7 @@ public partial class Player : CharacterBody2D
     private void UpdateState(float delta)
     {
         Vector2 direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-        
+
         switch (_currentState)
         {
             case State.Idle:
@@ -198,7 +201,7 @@ public partial class Player : CharacterBody2D
                 {
                     _isShooting = false;
                 }
-                
+
                 break;
 
             case State.Run:
@@ -309,7 +312,7 @@ public partial class Player : CharacterBody2D
                     }
 
                     SetState(State.WallJump);
-                    
+
                 }
                 else if (IsOnFloor())
                 {
@@ -347,31 +350,29 @@ public partial class Player : CharacterBody2D
                 break;
 
             case State.Shoot:
-                
                 // Instantiate the bullet scene, cast PackedScene as type Node
                 var bulletInstance = (PlayerBullet)_playerBullet.Instantiate();
-                
+
                 // Set bullet's direction based on player's direction
                 bulletInstance.Direction = _direction;
                 
-                // Set bullet's location to muzzle location
-                //TODO: Figure out the muzzle flipping 
+                // Set bullet's location to muzzle location, flip muzzle position when sprite is flipped
                 if (_direction < 0)
                 {
+                    _muzzle.Position = _muzzlePosition;
                     bulletInstance.GlobalPosition = _muzzle.GlobalPosition;
                 }
-
+                
                 if (_direction > 0)
                 {
-                    bulletInstance.GlobalPosition = -_muzzle.GlobalPosition;
+                    _muzzle.Position = -_muzzlePosition;
+                    bulletInstance.GlobalPosition = _muzzle.GlobalPosition;
                 }
                 
                 // Add bullet scene to scene tree
                 GetTree().Root.AddChild(bulletInstance);
                 
-                _velocity.X = direction.X * Speed;
-                FlipSprite(direction.X);
-
+                
                 if (!IsOnFloor())
                 {
                     _velocity.Y += Gravity * delta;
