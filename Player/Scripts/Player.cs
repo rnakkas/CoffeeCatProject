@@ -18,6 +18,7 @@ public partial class Player : CharacterBody2D
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Marker2D _muzzle;
     private Timer _shotCooldown;
+    private CpuParticles2D _gunshotParticles;
     
     // Load packed scene of bullet
     private readonly PackedScene _playerBullet = 
@@ -39,7 +40,6 @@ public partial class Player : CharacterBody2D
     private State _currentState;
     private float _wallJumpDirection;
     private Vector2 _velocity;
-    // private bool _isShooting;
     private Vector2 _muzzlePosition;
     private float _direction;
     private bool _onCooldown;
@@ -52,6 +52,7 @@ public partial class Player : CharacterBody2D
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _muzzle = GetNode<Marker2D>("marker");
         _shotCooldown = GetNode<Timer>("shotCoolDownTimer");
+        _gunshotParticles = GetNode<CpuParticles2D>("marker/gunshot_particle_effect");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -166,6 +167,7 @@ public partial class Player : CharacterBody2D
                 _onCooldown = true;
                 _shotCooldown.Start();
                 _animation.Play("run_shoot");
+                _gunshotParticles.Emitting = true;
                 break;
         }
     }
