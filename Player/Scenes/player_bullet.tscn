@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://c30weg8jste12"]
+[gd_scene load_steps=19 format=3 uid="uid://c30weg8jste12"]
 
 [ext_resource type="Script" path="res://Player/Scripts/PlayerBullet.cs" id="1_5mmtc"]
 [ext_resource type="Texture2D" uid="uid://cpg8j6613ar6i" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-1.png" id="1_qp2wq"]
+[ext_resource type="PackedScene" uid="uid://cxffdu30saba8" path="res://Misc/ParticleEffects/Scenes/gunshot_particle_effect.tscn" id="3_c6edx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xyaln"]
 atlas = ExtResource("1_qp2wq")
@@ -127,3 +128,5 @@ collision_mask = 81
 position = Vector2(-5, -1.5)
 shape = SubResource("RectangleShape2D_eulma")
 debug_color = Color(0.956307, 0.130976, 0.417223, 0.42)
+
+[node name="gunshot_particle_effect" parent="." instance=ExtResource("3_c6edx")]

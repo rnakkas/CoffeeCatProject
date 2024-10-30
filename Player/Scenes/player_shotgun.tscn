@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Player/Scripts/Player.cs" id="1_7igfr"]
 [ext_resource type="Texture2D" uid="uid://cpg8j6613ar6i" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-1.png" id="1_runtf"]
-[ext_resource type="PackedScene" uid="uid://cc1smeaavg2r1" path="res://Misc/ParticleEffects/Scenes/gunshot_particle_effect.tscn" id="3_0iddt"]
+[ext_resource type="PackedScene" uid="uid://cxffdu30saba8" path="res://Misc/ParticleEffects/Scenes/gunshot_particle_effect.tscn" id="3_0iddt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v1o4q"]
 size = Vector2(11.5, 16)

@@ -18,7 +18,6 @@ public partial class Player : CharacterBody2D
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Marker2D _muzzle;
     private Timer _shotCooldown;
-    private CpuParticles2D _gunshotParticles;
     
     // Load packed scene of bullet
     private readonly PackedScene _playerBullet = 
@@ -41,7 +40,7 @@ public partial class Player : CharacterBody2D
     private float _wallJumpDirection;
     private Vector2 _velocity;
     private Vector2 _muzzlePosition;
-    private float _direction;
+    private float _spriteDirection;
     private bool _onCooldown;
 
     public override void _Ready()
@@ -52,7 +51,6 @@ public partial class Player : CharacterBody2D
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _muzzle = GetNode<Marker2D>("marker");
         _shotCooldown = GetNode<Timer>("shotCoolDownTimer");
-        _gunshotParticles = GetNode<CpuParticles2D>("marker/gunshot_particle_effect");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -70,7 +68,7 @@ public partial class Player : CharacterBody2D
         _muzzlePosition = _muzzle.Position;
         
         // Set default direction
-        _direction = 1.0f;
+        _spriteDirection = 1.0f;
         
         // Set timer values
         _shotCooldown.SetOneShot(true);
@@ -167,7 +165,6 @@ public partial class Player : CharacterBody2D
                 _onCooldown = true;
                 _shotCooldown.Start();
                 _animation.Play("run_shoot");
-                _gunshotParticles.Emitting = true;
                 break;
         }
     }
@@ -345,20 +342,22 @@ public partial class Player : CharacterBody2D
                 break;
 
             case State.Shoot:
+                FlipSprite(direction.X);
+                
                 // Instantiate the bullet scene, cast PackedScene as type Node
                 var bulletInstance = (PlayerBullet)_playerBullet.Instantiate();
 
                 // Set bullet's direction based on player's direction
-                bulletInstance.Direction = _direction;
+                bulletInstance.Direction = _spriteDirection;
                 
                 // Set bullet's location to muzzle location, flip muzzle position when sprite is flipped
-                if (_direction < 0)
+                if (_spriteDirection < 0)
                 {
                     _muzzle.Position = _muzzlePosition;
                     bulletInstance.GlobalPosition = _muzzle.GlobalPosition;
                 }
                 
-                if (_direction > 0)
+                if (_spriteDirection > 0)
                 {
                     _muzzle.Position = -_muzzlePosition;
                     bulletInstance.GlobalPosition = _muzzle.GlobalPosition;
@@ -402,12 +401,12 @@ public partial class Player : CharacterBody2D
         if (directionX < 0)
         {
             _animation.FlipH = false;
-            _direction = -1;
+            _spriteDirection = -1;
         }
         else if (directionX > 0)
         {
             _animation.FlipH = true;
-            _direction = 1;
+            _spriteDirection = 1;
         }
     }
     public override void _PhysicsProcess(double delta)
