@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dveqdtiaxt6fi"
-path="res://.godot/imported/placeholder-rat.png-3846011069710e9e3fbf8de3c9575d90.ctex"
+uid="uid://bb421xs4l8nvw"
+path="res://.godot/imported/shell_fly-1.png-43adf5fc7ac518e82e075b1fbfb976e7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/placeholder-rat.png"
-dest_files=["res://.godot/imported/placeholder-rat.png-3846011069710e9e3fbf8de3c9575d90.ctex"]
+source_file="res://Assets/Sprites/PlayerSprites/shell_fly-1.png"
+dest_files=["res://.godot/imported/shell_fly-1.png-43adf5fc7ac518e82e075b1fbfb976e7.ctex"]
 
 [params]
 

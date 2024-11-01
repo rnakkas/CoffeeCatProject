@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2twd4etojq1j"
-path="res://.godot/imported/coffee-1.png-01b78c823061417dc886458a766c0b11.ctex"
+uid="uid://bsvggjovluns8"
+path="res://.godot/imported/shell_connect-1.png-507be034fcf3435be63e4ddfa3a8a988.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/coffee-1.png"
-dest_files=["res://.godot/imported/coffee-1.png-01b78c823061417dc886458a766c0b11.ctex"]
+source_file="res://Assets/Sprites/PlayerSprites/shell_connect-1.png"
+dest_files=["res://.godot/imported/shell_connect-1.png-507be034fcf3435be63e4ddfa3a8a988.ctex"]
 
 [params]
 

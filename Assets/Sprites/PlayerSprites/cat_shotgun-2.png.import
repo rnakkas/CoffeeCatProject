@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b823buqoavkrx"
-path="res://.godot/imported/cat-1.png-38ec4d4b133c1ce02ab69f137c4dccf3.ctex"
+uid="uid://rwk8vjrh3xrp"
+path="res://.godot/imported/cat_shotgun-2.png-f655d778aa19f48e3d979ee68198e069.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/cat-1.png"
-dest_files=["res://.godot/imported/cat-1.png-38ec4d4b133c1ce02ab69f137c4dccf3.ctex"]
+source_file="res://Assets/Sprites/PlayerSprites/cat_shotgun-2.png"
+dest_files=["res://.godot/imported/cat_shotgun-2.png-f655d778aa19f48e3d979ee68198e069.ctex"]
 
 [params]
 
