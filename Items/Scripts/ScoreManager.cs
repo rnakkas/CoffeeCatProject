@@ -1,13 +1,14 @@
 using Godot;
-using System;
+
+namespace CoffeeCatProject.Items.Scripts;
 
 public partial class ScoreManager : Node
 {
-    public int score = 0;
+    public int Score;
 
     public void IncreaseCoffeeScore(int count)
     {
-        score += count;
-        GD.Print("Score: " + score);
+        Score += count;
+        GD.Print("Score: " + Score);
     }
 }

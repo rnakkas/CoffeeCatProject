@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://da3jiitknrkpe"]
+
+[ext_resource type="Texture2D" uid="uid://bc44u073vlos8" path="res://Assets/Sprites/Placeholders/bean_bear-1.png" id="1_orph1"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3uxu7"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yg3kt"]
+radius = 19.0
+height = 38.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vlkjx"]
+atlas = ExtResource("1_orph1")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tbxw0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vlkjx")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="enemy_bean_bear" type="CharacterBody2D"]
+collision_layer = 32
+collision_mask = 17
+
+[node name="collider" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 1)
+shape = SubResource("CapsuleShape2D_3uxu7")
+
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 0
+
+[node name="hitbox_collider" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(-2, -1)
+shape = SubResource("CapsuleShape2D_yg3kt")
+debug_color = Color(0.896565, 0.284615, 0.36789, 0.42)
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_tbxw0")
+animation = &"idle"

@@ -1,82 +1,91 @@
 using Godot;
-using System;
+
+namespace CoffeeCatProject.Enemies.Scripts;
 
 public partial class Enemies : CharacterBody2D
 {
 	public float Speed = 200.0f;
-    public const float Gravity = 750.0f;
+	public const float Gravity = 750.0f;
 
-	public AnimatedSprite2D animation;
+	private  AnimatedSprite2D _animation;
 
-	public enum State { IDLE, RUN, SHOOT, HURT, DEATH};
-	public State currentState;
+	protected enum State
+	{ 
+		Idle, 
+		Run, 
+		Attack, 
+		Hurt, 
+		Death
+	};
+	protected State CurrentState;
 
-	Vector2 velocity;
+	private Vector2 _velocity;
 
-    public AnimatedSprite2D GetSprite()
-    {
-		return GetNode<AnimatedSprite2D>("sprite");
-    }
-
-    public void SetState(State newState)
+	protected AnimatedSprite2D GetSprite()
 	{
-		if (newState == currentState || currentState == State.DEATH) // Cannot exit death state
+		return GetNode<AnimatedSprite2D>("sprite");
+	}
+
+	protected void SetState(State newState)
+	{
+		// Cannot exit death state
+		if (newState == CurrentState || CurrentState == State.Death) 
 		{
 			return;
 		}
 
 		ExitState();
-		currentState = newState;
+		CurrentState = newState;
 		EnterState();
 	}
 
-    public void ExitState()
-    {
-        switch (currentState)
+	private void ExitState()
+	{
+		switch (CurrentState)
 		{
-			case State.IDLE:
+			case State.Idle:
 				break;
-			case State.RUN:
+			case State.Run:
 				break;
-			case State.SHOOT:
+			case State.Attack:
 				break;
-			case State.HURT:
+			case State.Hurt:
 				break;
 		}
-    }
-    public void EnterState()
-    {
-		switch (currentState)
+	}
+	private void EnterState()
+	{
+		switch (CurrentState)
 		{
-			case State.IDLE:
+			case State.Idle:
 				GD.Print("entered: IDLE");
-				animation.Play("idle");
+				_animation.Play("idle");
 				break;
-			case State.RUN:
-                GD.Print("entered: RUN");
-                animation.Play("run");
+			case State.Run:
+				GD.Print("entered: RUN");
+				_animation.Play("run");
 				break;
-			case State.SHOOT:
-                GD.Print("entered: SHOOT");
-                animation.Play("shoot");
+			case State.Attack:
+				GD.Print("entered: ATTACK");
+				_animation.Play("attack");
 				break;
-			case State.HURT:
-                GD.Print("entered: HURT");
-                animation.Play("hurt");
+			case State.Hurt:
+				GD.Print("entered: HURT");
+				_animation.Play("hurt");
 				break;
-			case State.DEATH:
-                GD.Print("entered: DEATH");
-                animation.Play("death");
+			case State.Death:
+				GD.Print("entered: DEATH");
+				_animation.Play("death");
 				break;
 		}
-    }
+	}
 
-	public void UpdateState(float delta)
+	protected void UpdateState(float delta)
 	{
 		if (!IsOnFloor())
 		{
-			velocity.Y += Gravity * delta;
-			Velocity = velocity;
+			_velocity.Y += Gravity * delta;
+			Velocity = _velocity;
 			MoveAndSlide();
 		}
 

@@ -278,7 +278,7 @@ collision_layer = 2
 collision_mask = 21
 script = ExtResource("1_stb7n")
 
-[node name="collider_capsule" type="CollisionShape2D" parent="."]
+[node name="collider" type="CollisionShape2D" parent="."]
 position = Vector2(-9, 0)
 shape = SubResource("RectangleShape2D_f70d7")
 debug_color = Color(0, 0, 0, 0.419608)

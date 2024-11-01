@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://br3kx6h2du01c"]
+
+[ext_resource type="Texture2D" uid="uid://cjr86ionikox4" path="res://Assets/Sprites/Placeholders/fatty-1.png" id="1_l6pg5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qtau2"]
+radius = 15.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l5k65"]
+radius = 23.0868
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ryclu"]
+atlas = ExtResource("1_l6pg5")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8tbk3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ryclu")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="enemy_fatty" type="CharacterBody2D"]
+collision_layer = 32
+collision_mask = 17
+
+[node name="collider" type="CollisionShape2D" parent="."]
+position = Vector2(1, 2)
+shape = SubResource("CircleShape2D_qtau2")
+
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 0
+
+[node name="hitbox_collider" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(1, 0)
+shape = SubResource("CircleShape2D_l5k65")
+debug_color = Color(0.94089, 0.158416, 0.468851, 0.42)
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_8tbk3")
+animation = &"idle"

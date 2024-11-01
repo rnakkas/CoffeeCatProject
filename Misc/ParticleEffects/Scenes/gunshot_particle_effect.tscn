@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxffdu30saba8"]
+
+[sub_resource type="Curve" id="Curve_tkmjt"]
+max_value = 1.2
+_data = [Vector2(0.0288462, 1.13407), 0.0, 0.0, 0, 0, Vector2(0.975962, 0.186813), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_vqymo"]
+offsets = PackedFloat32Array(0, 0.0111111)
+
+[node name="gunshot_particle_effect" type="CPUParticles2D"]
+emitting = false
+amount = 90
+lifetime = 0.27
+one_shot = true
+explosiveness = 1.0
+direction = Vector2(-1, 0)
+spread = 55.0
+gravity = Vector2(0, -100)
+initial_velocity_min = 15.0
+initial_velocity_max = 300.0
+scale_amount_min = 2.0
+scale_amount_max = 3.0
+scale_amount_curve = SubResource("Curve_tkmjt")
+color = Color(0.911836, 0.911837, 7.70092e-07, 1)
+color_initial_ramp = SubResource("Gradient_vqymo")
