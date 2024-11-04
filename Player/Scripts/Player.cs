@@ -81,6 +81,9 @@ public partial class Player : CharacterBody2D
         
         // Signals/Actions
         _shotCooldown.Timeout += OnTimerTimeout;
+        
+        // Hide mouse cursor when playing game
+        Input.SetMouseMode(Input.MouseModeEnum.Hidden);
     }
 
     // State Machine
