@@ -1,46 +1,44 @@
-[gd_scene load_steps=15 format=3 uid="uid://c30weg8jste12"]
+[gd_scene load_steps=13 format=3 uid="uid://c30weg8jste12"]
 
 [ext_resource type="Script" path="res://Player/Scripts/PlayerBullet.cs" id="1_5mmtc"]
-[ext_resource type="Texture2D" uid="uid://bb421xs4l8nvw" path="res://Assets/Sprites/PlayerSprites/shell_fly-1.png" id="2_ix738"]
-[ext_resource type="Texture2D" uid="uid://bsvggjovluns8" path="res://Assets/Sprites/PlayerSprites/shell_connect-1.png" id="3_0q715"]
-[ext_resource type="PackedScene" uid="uid://cxffdu30saba8" path="res://Misc/ParticleEffects/Scenes/gunshot_particle_effect.tscn" id="3_c6edx"]
+[ext_resource type="Texture2D" uid="uid://rwk8vjrh3xrp" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-2.png" id="2_50uhe"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_yphh1"]
-atlas = ExtResource("2_ix738")
-region = Rect2(0, 0, 48, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmuv6"]
+atlas = ExtResource("2_50uhe")
+region = Rect2(0, 224, 48, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_m0vrd"]
-atlas = ExtResource("2_ix738")
-region = Rect2(48, 0, 48, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_oralr"]
+atlas = ExtResource("2_50uhe")
+region = Rect2(48, 224, 48, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_pqlpi"]
-atlas = ExtResource("3_0q715")
-region = Rect2(0, 0, 48, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcma7"]
+atlas = ExtResource("2_50uhe")
+region = Rect2(0, 256, 48, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_cr7uf"]
-atlas = ExtResource("3_0q715")
-region = Rect2(48, 0, 48, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_0eldk"]
+atlas = ExtResource("2_50uhe")
+region = Rect2(48, 256, 48, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_a1x8r"]
-atlas = ExtResource("3_0q715")
-region = Rect2(96, 0, 48, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_whwa3"]
+atlas = ExtResource("2_50uhe")
+region = Rect2(96, 256, 48, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_pogwn"]
-atlas = ExtResource("3_0q715")
-region = Rect2(144, 0, 48, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_uide2"]
+atlas = ExtResource("2_50uhe")
+region = Rect2(144, 256, 48, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_p0wyp"]
-atlas = ExtResource("3_0q715")
-region = Rect2(192, 0, 48, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_ggepx"]
+atlas = ExtResource("2_50uhe")
+region = Rect2(192, 256, 48, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vhin4"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_yphh1")
+"texture": SubResource("AtlasTexture_jmuv6")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_m0vrd")
+"texture": SubResource("AtlasTexture_oralr")
 }],
 "loop": true,
 "name": &"fly",
@@ -48,19 +46,19 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_pqlpi")
+"texture": SubResource("AtlasTexture_lcma7")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_cr7uf")
+"texture": SubResource("AtlasTexture_0eldk")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_a1x8r")
+"texture": SubResource("AtlasTexture_whwa3")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_pogwn")
+"texture": SubResource("AtlasTexture_uide2")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_p0wyp")
+"texture": SubResource("AtlasTexture_ggepx")
 }],
 "loop": false,
 "name": &"hit",
@@ -71,7 +69,7 @@ animations = [{
 size = Vector2(14.1944, 10.1731)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eulma"]
-size = Vector2(8, 10.7692)
+size = Vector2(3.77778, 10.7692)
 
 [node name="player_bullet" type="CharacterBody2D"]
 collision_layer = 2
@@ -79,9 +77,9 @@ collision_mask = 81
 script = ExtResource("1_5mmtc")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.45, 0.45)
+scale = Vector2(0.35, 0.35)
 sprite_frames = SubResource("SpriteFrames_vhin4")
-animation = &"hit"
+animation = &"fly"
 
 [node name="collider" type="CollisionShape2D" parent="."]
 position = Vector2(1.19375, 0)
@@ -93,9 +91,7 @@ collision_layer = 2
 collision_mask = 81
 
 [node name="hitbox_collider" type="CollisionShape2D" parent="hitbox"]
-position = Vector2(-4, 0)
+position = Vector2(-3.85, 0)
 scale = Vector2(0.45, 0.45)
 shape = SubResource("RectangleShape2D_eulma")
 debug_color = Color(0.956307, 0.130976, 0.417223, 0.42)
-
-[node name="gunshot_particle_effect" parent="." instance=ExtResource("3_c6edx")]

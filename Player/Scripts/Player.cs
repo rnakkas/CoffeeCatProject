@@ -12,6 +12,7 @@ public partial class Player : CharacterBody2D
     private const float WallSlideGravity = 500.0f;
     private const float WallJumpVelocity = -200.0f;
     private const float FloorSnapLengthValue = 2.5f;
+    private const float BulletAngle = 3.5f;
 
     // Nodes
     private AnimatedSprite2D _animation;
@@ -345,27 +346,38 @@ public partial class Player : CharacterBody2D
                 FlipSprite(direction.X);
                 
                 // Instantiate the bullet scene, cast PackedScene as type Node
-                var bulletInstance = (PlayerBullet)_playerBullet.Instantiate();
+                var bulletInstance1 = (PlayerBullet)_playerBullet.Instantiate();
+                var bulletInstance2 = (PlayerBullet)_playerBullet.Instantiate();
+                var bulletInstance3= (PlayerBullet)_playerBullet.Instantiate();
 
                 // Set bullet's direction based on player's direction
-                bulletInstance.Direction = _spriteDirection;
+                bulletInstance1.Direction = _spriteDirection;
+                bulletInstance2.Direction = _spriteDirection;
+                bulletInstance3.Direction = _spriteDirection;
+                
+                // Set bullets rotations
+                bulletInstance2.RotationDegrees = BulletAngle;
+                bulletInstance3.RotationDegrees = -BulletAngle;
                 
                 // Set bullet's location to muzzle location, flip muzzle position when sprite is flipped
                 if (_spriteDirection < 0)
                 {
                     _muzzle.Position = _muzzlePosition;
-                    bulletInstance.GlobalPosition = _muzzle.GlobalPosition;
                 }
                 
                 if (_spriteDirection > 0)
                 {
                     _muzzle.Position = -_muzzlePosition;
-                    bulletInstance.GlobalPosition = _muzzle.GlobalPosition;
                 }
                 
-                // Add bullet scene to scene tree
-                GetTree().Root.AddChild(bulletInstance);
+                bulletInstance1.GlobalPosition = _muzzle.GlobalPosition;
+                bulletInstance2.GlobalPosition = _muzzle.GlobalPosition;
+                bulletInstance3.GlobalPosition = _muzzle.GlobalPosition;
                 
+                // Add bullet scene to scene tree
+                GetTree().Root.AddChild(bulletInstance1);
+                GetTree().Root.AddChild(bulletInstance2);
+                GetTree().Root.AddChild(bulletInstance3);
                 
                 if (!IsOnFloor())
                 {

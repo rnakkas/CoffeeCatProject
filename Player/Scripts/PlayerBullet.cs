@@ -9,7 +9,6 @@ public partial class PlayerBullet : CharacterBody2D
 	
 	private AnimatedSprite2D _animation;
 	private Vector2 _velocity = Vector2.Zero;
-	private CpuParticles2D _gunshotParticles;
 
 	private float _direction;
 
@@ -23,7 +22,6 @@ public partial class PlayerBullet : CharacterBody2D
 	public override void _Ready()
 	{
 		_animation = GetNode<AnimatedSprite2D>("sprite");
-		_gunshotParticles = GetNode<CpuParticles2D>("gunshot_particle_effect");
 		
 		_velocity = Velocity;
 		
@@ -31,10 +29,6 @@ public partial class PlayerBullet : CharacterBody2D
 		
 		// Flip sprite based on direction
 		FlipSprite();
-		
-		// Gunshot particles 
-		_gunshotParticles.ZIndex = 101;
-		_gunshotParticles.Emitting = true;
 		
 		_animation.Play("fly");
 	}
@@ -64,13 +58,11 @@ public partial class PlayerBullet : CharacterBody2D
 		if (_direction < 0)
 		{
 			_animation.FlipH = false;
-			_gunshotParticles.SetDirection(Vector2.Left);
 		}
 
 		if (_direction > 0)
 		{
 			_animation.FlipH = true;
-			_gunshotParticles.SetDirection(Vector2.Right);
 		}
 	} 
 }
