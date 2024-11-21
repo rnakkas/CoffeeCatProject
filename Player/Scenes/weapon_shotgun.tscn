@@ -1,3 +1,60 @@
-[gd_scene format=3 uid="uid://drpahi3hbgjsg"]
+[gd_scene load_steps=8 format=3 uid="uid://drpahi3hbgjsg"]
+
+[ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="1_ypq5f"]
+[ext_resource type="Script" path="res://Player/Scripts/WeaponShotgun.cs" id="2_el7ue"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oneta"]
+atlas = ExtResource("1_ypq5f")
+region = Rect2(0, 192, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jti5v"]
+atlas = ExtResource("1_ypq5f")
+region = Rect2(48, 192, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4atcc"]
+atlas = ExtResource("1_ypq5f")
+region = Rect2(96, 192, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3x1kq"]
+atlas = ExtResource("1_ypq5f")
+region = Rect2(144, 192, 48, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ujwik"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oneta")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jti5v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4atcc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3x1kq")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 3.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"reload",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"shoot",
+"speed": 5.0
+}]
 
 [node name="weapon_shotgun" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_ujwik")
+animation = &"shoot"
+script = ExtResource("2_el7ue")

@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace CoffeeCatProject.Player.Scripts;
@@ -18,10 +19,15 @@ public partial class Player : CharacterBody2D
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Marker2D _muzzle;
     private Timer _shotCooldown;
+    private Area2D _playerArea;
     
-    // Load packed scene of bullet
+    // Packed scene: bullets
     private readonly PackedScene _playerBullet = 
         ResourceLoader.Load<PackedScene>("res://Player/Scenes/player_bullet.tscn");
+    
+    // Packed scene: weapons
+    private readonly PackedScene _weaponShotgun = 
+        ResourceLoader.Load<PackedScene>("res://Player/Scenes/weapon_shotgun.tscn");
 
     // State enum
     private enum State
@@ -42,6 +48,7 @@ public partial class Player : CharacterBody2D
     private Vector2 _muzzlePosition;
     private float _spriteDirection;
     private bool _onCooldown;
+    private string _currentWeapon;
 
     public override void _Ready()
     {
@@ -51,6 +58,7 @@ public partial class Player : CharacterBody2D
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _muzzle = GetNode<Marker2D>("marker");
         _shotCooldown = GetNode<Timer>("shotCoolDownTimer");
+        _playerArea = GetNode<Area2D>("player_area");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -80,7 +88,8 @@ public partial class Player : CharacterBody2D
         
         // Signals/Actions
         _shotCooldown.Timeout += OnTimerTimeout;
-        
+        _playerArea.AreaEntered += OnAreaEntered;
+
         // // Hide mouse cursor when playing game
         // Input.SetMouseMode(Input.MouseModeEnum.Hidden);
     }
@@ -347,7 +356,7 @@ public partial class Player : CharacterBody2D
             case State.Shoot:
                 FlipSprite(direction.X);
                 
-                // Instantiate the bullet scene, cast PackedScene as type Node
+                // Instantiate the bullet scene, cast PackedScene as type PlayerBullet node
                 var bulletInstance1 = (PlayerBullet)_playerBullet.Instantiate();
                 var bulletInstance2 = (PlayerBullet)_playerBullet.Instantiate();
                 var bulletInstance3= (PlayerBullet)_playerBullet.Instantiate();
@@ -428,10 +437,41 @@ public partial class Player : CharacterBody2D
         UpdateState((float)delta);
     }
     
+    // Equip weapon based on which weapon was picked up
+    private void EquipWeapon(string weaponName)
+    {
+        switch (weaponName)
+        {
+            case not null when weaponName.Contains("shotgun"):
+                // Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
+                var weaponInstance = (WeaponShotgun)_weaponShotgun.Instantiate();
+                weaponInstance.Direction = _spriteDirection;
+                AddChild(weaponInstance);
+                break;
+            
+            case not null when weaponName.Contains("machine_gun"):
+                GD.Print("machine gun");
+                break;
+            
+            default:
+                throw new Exception("weapon type " + weaponName + "not found");
+        }
+    }
+    
     // Signals/Actions methods
     
     private void OnTimerTimeout()
     {
         _onCooldown = false;
+    }
+    
+    private void OnAreaEntered(Node2D area)
+    {
+        // If the area entered is weapon, get weapon's node name
+        if (area.Name.ToString().ToLower().Contains("weapon"))
+        {
+            _currentWeapon = area.Name.ToString();
+            EquipWeapon(_currentWeapon);
+        }
     }
 }

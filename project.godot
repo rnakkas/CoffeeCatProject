@@ -70,7 +70,7 @@ shoot={
 
 2d_physics/layer_1="floor"
 2d_physics/layer_2="player"
-2d_physics/layer_3="coffee"
+2d_physics/layer_3="pickups"
 2d_physics/layer_4="door"
 2d_physics/layer_5="wall"
 2d_physics/layer_6="enemies_collider"

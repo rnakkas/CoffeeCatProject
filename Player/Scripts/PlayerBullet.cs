@@ -1,24 +1,24 @@
 using Godot;
-using System;
 
 namespace CoffeeCatProject.Player.Scripts;
 
 public partial class PlayerBullet : CharacterBody2D
 {
+	// Constants
 	private const float BulletSpeed = 500f;
 	
+	// Nodes
 	private AnimatedSprite2D _animation;
 	private Vector2 _velocity = Vector2.Zero;
 
+	// Variables
 	private float _direction;
-
 	public float Direction
 	{
 		get => _direction;
 		set => _direction = value;
 	}
 	
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		_animation = GetNode<AnimatedSprite2D>("sprite");
@@ -33,7 +33,6 @@ public partial class PlayerBullet : CharacterBody2D
 		_animation.Play("fly");
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override async void _PhysicsProcess(double delta)
 	{
 		// Flip sprite based on direction
