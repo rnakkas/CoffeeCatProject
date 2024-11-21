@@ -49,6 +49,7 @@ public partial class Player : CharacterBody2D
     private float _spriteDirection;
     private bool _onCooldown;
     private string _currentWeapon;
+    private WeaponShotgun _weaponInstance;
 
     public override void _Ready()
     {
@@ -87,7 +88,7 @@ public partial class Player : CharacterBody2D
         _animation.Play("idle");
         
         // Signals/Actions
-        _shotCooldown.Timeout += OnTimerTimeout;
+        // _shotCooldown.Timeout += OnTimerTimeout;
         _playerArea.AreaEntered += OnAreaEntered;
 
         // // Hide mouse cursor when playing game
@@ -356,39 +357,40 @@ public partial class Player : CharacterBody2D
             case State.Shoot:
                 FlipSprite(direction.X);
                 
-                // Instantiate the bullet scene, cast PackedScene as type PlayerBullet node
-                var bulletInstance1 = (PlayerBullet)_playerBullet.Instantiate();
-                var bulletInstance2 = (PlayerBullet)_playerBullet.Instantiate();
-                var bulletInstance3= (PlayerBullet)_playerBullet.Instantiate();
-
-                // Set bullet's direction based on player's direction
-                bulletInstance1.Direction = _spriteDirection;
-                bulletInstance2.Direction = _spriteDirection;
-                bulletInstance3.Direction = _spriteDirection;
-                
-                // Set bullets rotations
-                bulletInstance2.RotationDegrees = BulletAngle;
-                bulletInstance3.RotationDegrees = -BulletAngle;
-                
-                // Set bullet's location to muzzle location, flip muzzle position when sprite is flipped
-                if (_spriteDirection < 0)
-                {
-                    _muzzle.Position = _muzzlePosition;
-                }
-                
-                if (_spriteDirection > 0)
-                {
-                    _muzzle.Position = -_muzzlePosition;
-                }
-                
-                bulletInstance1.GlobalPosition = _muzzle.GlobalPosition;
-                bulletInstance2.GlobalPosition = _muzzle.GlobalPosition;
-                bulletInstance3.GlobalPosition = _muzzle.GlobalPosition;
-                
-                // Add bullet scene to scene tree
-                GetTree().Root.AddChild(bulletInstance1);
-                GetTree().Root.AddChild(bulletInstance2);
-                GetTree().Root.AddChild(bulletInstance3);
+                //TODO: Remove
+                // // Instantiate the bullet scene, cast PackedScene as type PlayerBullet node
+                // var bulletInstance1 = (PlayerBullet)_playerBullet.Instantiate();
+                // var bulletInstance2 = (PlayerBullet)_playerBullet.Instantiate();
+                // var bulletInstance3= (PlayerBullet)_playerBullet.Instantiate();
+                //
+                // // Set bullet's direction based on player's direction
+                // bulletInstance1.Direction = _spriteDirection;
+                // bulletInstance2.Direction = _spriteDirection;
+                // bulletInstance3.Direction = _spriteDirection;
+                //
+                // // Set bullets rotations
+                // bulletInstance2.RotationDegrees = BulletAngle;
+                // bulletInstance3.RotationDegrees = -BulletAngle;
+                //
+                // // Set bullet's location to muzzle location, flip muzzle position when sprite is flipped
+                // if (_spriteDirection < 0)
+                // {
+                //     _muzzle.Position = _muzzlePosition;
+                // }
+                //
+                // if (_spriteDirection > 0)
+                // {
+                //     _muzzle.Position = -_muzzlePosition;
+                // }
+                //
+                // bulletInstance1.GlobalPosition = _muzzle.GlobalPosition;
+                // bulletInstance2.GlobalPosition = _muzzle.GlobalPosition;
+                // bulletInstance3.GlobalPosition = _muzzle.GlobalPosition;
+                //
+                // // Add bullet scene to scene tree
+                // GetTree().Root.AddChild(bulletInstance1);
+                // GetTree().Root.AddChild(bulletInstance2);
+                // GetTree().Root.AddChild(bulletInstance3);
                 
                 if (!IsOnFloor())
                 {
@@ -431,6 +433,12 @@ public partial class Player : CharacterBody2D
             _animation.FlipH = true;
             _spriteDirection = 1;
         }
+
+        if (_weaponInstance != null)
+        {
+            _weaponInstance.Direction = _spriteDirection;
+        }
+        
     }
     public override void _PhysicsProcess(double delta)
     {
@@ -444,9 +452,9 @@ public partial class Player : CharacterBody2D
         {
             case not null when weaponName.Contains("shotgun"):
                 // Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
-                var weaponInstance = (WeaponShotgun)_weaponShotgun.Instantiate();
-                weaponInstance.Direction = _spriteDirection;
-                AddChild(weaponInstance);
+                _weaponInstance = (WeaponShotgun)_weaponShotgun.Instantiate();
+                _weaponInstance.Direction = _spriteDirection;
+                AddChild(_weaponInstance);
                 break;
             
             case not null when weaponName.Contains("machine_gun"):
@@ -460,10 +468,10 @@ public partial class Player : CharacterBody2D
     
     // Signals/Actions methods
     
-    private void OnTimerTimeout()
-    {
-        _onCooldown = false;
-    }
+    // private void OnTimerTimeout()
+    // {
+    //     _onCooldown = false;
+    // }
     
     private void OnAreaEntered(Node2D area)
     {

@@ -75,6 +75,7 @@ shoot={
 2d_physics/layer_5="wall"
 2d_physics/layer_6="enemies_collider"
 2d_physics/layer_7="enemis_hitbox"
+2d_physics/layer_8="player_bullets"
 
 [physics]
 
