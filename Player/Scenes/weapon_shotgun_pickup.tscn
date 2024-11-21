@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3 uid="uid://cb1m5epeedwhl"]
+
+[ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="1_j3ww3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xvd1k"]
+radius = 9.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_244h3"]
+atlas = ExtResource("1_j3ww3")
+region = Rect2(0, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v4pmx"]
+atlas = ExtResource("1_j3ww3")
+region = Rect2(48, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6cg2e"]
+atlas = ExtResource("1_j3ww3")
+region = Rect2(96, 32, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1laf"]
+atlas = ExtResource("1_j3ww3")
+region = Rect2(144, 32, 48, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dbf23"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_244h3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v4pmx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6cg2e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1laf")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[node name="weapon_shotgun_pickup" type="Area2D"]
+
+[node name="collider" type="CollisionShape2D" parent="."]
+position = Vector2(1, 7)
+shape = SubResource("CircleShape2D_xvd1k")
+debug_color = Color(0.878209, 0.266446, 0.545585, 0.42)
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_dbf23")
+animation = &"idle"

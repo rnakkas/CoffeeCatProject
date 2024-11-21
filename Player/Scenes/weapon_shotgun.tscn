@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://drpahi3hbgjsg"]
+
+[node name="weapon_shotgun" type="AnimatedSprite2D"]
