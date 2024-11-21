@@ -1,15 +1,16 @@
-[gd_scene load_steps=13 format=3 uid="uid://c30weg8jste12"]
+[gd_scene load_steps=15 format=3 uid="uid://c30weg8jste12"]
 
 [ext_resource type="Script" path="res://Player/Scripts/PlayerBullet.cs" id="1_5mmtc"]
 [ext_resource type="Texture2D" uid="uid://rwk8vjrh3xrp" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-2.png" id="2_50uhe"]
+[ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="2_kwux2"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jmuv6"]
-atlas = ExtResource("2_50uhe")
-region = Rect2(0, 224, 48, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_v7lit"]
+atlas = ExtResource("2_kwux2")
+region = Rect2(0, 512, 48, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_oralr"]
-atlas = ExtResource("2_50uhe")
-region = Rect2(48, 224, 48, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_oxyoa"]
+atlas = ExtResource("2_kwux2")
+region = Rect2(48, 512, 48, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lcma7"]
 atlas = ExtResource("2_50uhe")
@@ -35,10 +36,10 @@ region = Rect2(192, 256, 48, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_jmuv6")
+"texture": SubResource("AtlasTexture_v7lit")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_oralr")
+"texture": SubResource("AtlasTexture_oxyoa")
 }],
 "loop": true,
 "name": &"fly",
@@ -71,6 +72,10 @@ size = Vector2(14.1944, 10.1731)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eulma"]
 size = Vector2(3.77778, 10.7692)
 
+[sub_resource type="Curve" id="Curve_x302o"]
+_data = [Vector2(0.0505618, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.153846), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [node name="player_bullet" type="CharacterBody2D"]
 collision_layer = 128
 collision_mask = 81
@@ -95,3 +100,15 @@ position = Vector2(-3.85, 0)
 scale = Vector2(0.45, 0.45)
 shape = SubResource("RectangleShape2D_eulma")
 debug_color = Color(0.956307, 0.130976, 0.417223, 0.42)
+
+[node name="particles" type="CPUParticles2D" parent="."]
+emitting = false
+lifetime = 0.2
+explosiveness = 0.16
+emission_shape = 1
+emission_sphere_radius = 0.9
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 111.11
+scale_amount_curve = SubResource("Curve_x302o")
+color = Color(0.988235, 1, 0.0352941, 1)

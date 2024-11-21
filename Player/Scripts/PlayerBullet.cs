@@ -5,7 +5,7 @@ namespace CoffeeCatProject.Player.Scripts;
 public partial class PlayerBullet : CharacterBody2D
 {
 	// Constants
-	private const float BulletSpeed = 500f;
+	private const float BulletSpeed = 750f;
 	
 	// Nodes
 	private AnimatedSprite2D _animation;

@@ -37,8 +37,7 @@ public partial class Player : CharacterBody2D
         Jump, 
         WallSlide, 
         Fall, 
-        WallJump,
-        Shoot
+        WallJump
     };
 
     // Variables
@@ -148,6 +147,11 @@ public partial class Player : CharacterBody2D
                 break;
             
             case State.WallSlide:
+                if (_weaponInstance != null)
+                {
+                    _weaponInstance.WallSlide = true;
+                }
+                
                 _animation.Play("wall_slide");
                 break;
             
@@ -173,12 +177,6 @@ public partial class Player : CharacterBody2D
                 
                 _animation.Play("jump");
                 break;
-            
-            case State.Shoot:
-                _onCooldown = true;
-                _shotCooldown.Start();
-                _animation.Play("run_shoot");
-                break;
         }
     }
 
@@ -193,12 +191,14 @@ public partial class Player : CharacterBody2D
             case State.Jump:
                 break;
             case State.WallSlide:
+                if (_weaponInstance != null)
+                {
+                    _weaponInstance.WallSlide = false;
+                }
                 break;
             case State.Fall:
                 break;
             case State.WallJump:
-                break;
-            case State.Shoot:
                 break;
         }
     }
@@ -222,10 +222,6 @@ public partial class Player : CharacterBody2D
                 {
                     SetState(State.Fall);
                 }
-                else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-                {
-                    SetState(State.Shoot);
-                }
 
                 break;
 
@@ -244,10 +240,6 @@ public partial class Player : CharacterBody2D
                 else if (!IsOnFloor())
                 {
                     SetState(State.Fall);
-                }
-                else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-                {
-                    SetState(State.Shoot);
                 }
 
                 Velocity = _velocity;
@@ -269,10 +261,6 @@ public partial class Player : CharacterBody2D
                     else if (_leftWallDetect.IsColliding() || _rightWallDetect.IsColliding())
                     {
                         SetState(State.WallSlide);
-                    }
-                    else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-                    {
-                        SetState(State.Shoot);
                     }
                 }
 
@@ -296,11 +284,6 @@ public partial class Player : CharacterBody2D
                 else
                 {
                     _velocity.Y += Gravity * delta;
-
-                    if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-                    {
-                        SetState(State.Shoot);
-                    }
                 }
 
                 Velocity = _velocity;
@@ -344,79 +327,10 @@ public partial class Player : CharacterBody2D
                     {
                         SetState(State.Fall);
                     }
-                    else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-                    {
-                        SetState(State.Shoot);
-                    }
                 }
 
                 Velocity = _velocity;
                 MoveAndSlide();
-                break;
-
-            case State.Shoot:
-                FlipSprite(direction.X);
-                
-                //TODO: Remove
-                // // Instantiate the bullet scene, cast PackedScene as type PlayerBullet node
-                // var bulletInstance1 = (PlayerBullet)_playerBullet.Instantiate();
-                // var bulletInstance2 = (PlayerBullet)_playerBullet.Instantiate();
-                // var bulletInstance3= (PlayerBullet)_playerBullet.Instantiate();
-                //
-                // // Set bullet's direction based on player's direction
-                // bulletInstance1.Direction = _spriteDirection;
-                // bulletInstance2.Direction = _spriteDirection;
-                // bulletInstance3.Direction = _spriteDirection;
-                //
-                // // Set bullets rotations
-                // bulletInstance2.RotationDegrees = BulletAngle;
-                // bulletInstance3.RotationDegrees = -BulletAngle;
-                //
-                // // Set bullet's location to muzzle location, flip muzzle position when sprite is flipped
-                // if (_spriteDirection < 0)
-                // {
-                //     _muzzle.Position = _muzzlePosition;
-                // }
-                //
-                // if (_spriteDirection > 0)
-                // {
-                //     _muzzle.Position = -_muzzlePosition;
-                // }
-                //
-                // bulletInstance1.GlobalPosition = _muzzle.GlobalPosition;
-                // bulletInstance2.GlobalPosition = _muzzle.GlobalPosition;
-                // bulletInstance3.GlobalPosition = _muzzle.GlobalPosition;
-                //
-                // // Add bullet scene to scene tree
-                // GetTree().Root.AddChild(bulletInstance1);
-                // GetTree().Root.AddChild(bulletInstance2);
-                // GetTree().Root.AddChild(bulletInstance3);
-                
-                if (!IsOnFloor())
-                {
-                    _velocity.Y += Gravity * delta;
-                }
-                
-                if (direction.X != 0)
-                {
-                    SetState(State.Run);
-                }
-                else if (direction.X == 0 && Input.IsActionJustPressed("shoot") && !_onCooldown)
-                {
-                    SetState(State.Shoot);
-                }
-                else if (Input.IsActionJustPressed("jump") && IsOnFloor())
-                {
-                    SetState(State.Jump);
-                }
-                else
-                {
-                    SetState(State.Idle);
-                }
-                
-                Velocity = _velocity;
-                MoveAndSlide();
-                
                 break;
         }
     }
@@ -466,13 +380,7 @@ public partial class Player : CharacterBody2D
         }
     }
     
-    // Signals/Actions methods
-    
-    // private void OnTimerTimeout()
-    // {
-    //     _onCooldown = false;
-    // }
-    
+    // Signal methods
     private void OnAreaEntered(Node2D area)
     {
         // If the area entered is weapon, get weapon's node name

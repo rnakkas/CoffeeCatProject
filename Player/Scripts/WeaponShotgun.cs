@@ -21,8 +21,7 @@ public partial class WeaponShotgun : Node2D
 	{
 		Idle,
 		WallSlide,
-		Shoot,
-		Reload
+		Shoot
 	}
 	
 	// Variables
@@ -74,7 +73,7 @@ public partial class WeaponShotgun : Node2D
 	{
 		if (newState == _currentState)
 			return;
-        
+		
 		ExitState();
 		_currentState = newState;
 		EnterState();
@@ -90,8 +89,6 @@ public partial class WeaponShotgun : Node2D
 				break;
 			case State.Shoot:
 				break;
-			case State.Reload:
-				break;
 		}
 	}
 
@@ -100,8 +97,9 @@ public partial class WeaponShotgun : Node2D
 		switch (_currentState)
 		{
 			case State.Idle:
-				if (_animation.Animation == "shoot" || _animation.Animation == "reload")
+				if (_animation.Animation == "shoot")
 				{
+					GD.Print("shoot/reload to idle");
 					await ToSignal(_animation, "animation_finished");
 				}
 				_animation.Play("idle");
@@ -112,22 +110,9 @@ public partial class WeaponShotgun : Node2D
 				break;
 			
 			case State.Shoot:
-				if (_animation.Animation == "reload" )
-				{
-					await ToSignal(_animation, "animation_finished");
-				}
 				_onCooldown = true;
 				_shotCooldown.Start();
 				_animation.Play("shoot");
-				break;
-			
-			case State.Reload:
-				if (_animation.Animation == "shoot" )
-				{
-					await ToSignal(_animation, "animation_finished");
-				}
-				GD.Print("Reload");
-				_animation.Play("reload");
 				break;
 		}
 	}
@@ -164,25 +149,11 @@ public partial class WeaponShotgun : Node2D
 				{
 					SetState(State.WallSlide);
 				}
-				
-				SetState(State.Reload);
-				
-				break;
-			
-			case State.Reload:
-				if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-				{
-					SetState(State.Shoot);
-				}
-				else if (_wallSlide)
-				{
-					SetState(State.WallSlide);
-				}
 				else
 				{
 					SetState(State.Idle);
 				}
-
+				
 				break;
 		}
 	}
