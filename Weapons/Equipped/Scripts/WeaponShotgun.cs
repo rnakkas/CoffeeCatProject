@@ -1,6 +1,6 @@
-using CoffeeCatProject.Player.Scripts;
 using Godot;
 
+//TODO: Refactor code to use the shooting component, still use the muzzle location etc but get rid of state machine
 namespace CoffeeCatProject.Weapons.Equipped.Scripts;
 public partial class WeaponShotgun : Node2D
 {
@@ -10,11 +10,11 @@ public partial class WeaponShotgun : Node2D
 	// Nodes
 	private AnimatedSprite2D _animation;
 	private Marker2D _muzzle;
-	private Timer _shotCooldown;
+	// private Timer _shotCooldown;
 	
 	// Packed scene: bullets
 	private readonly PackedScene _playerBullet = 
-		ResourceLoader.Load<PackedScene>("res://Player/Scenes/player_bullet.tscn");
+		ResourceLoader.Load<PackedScene>("res://Weapons/Equipped/Scenes/bullet_shotgun.tscn");
 	
 	// State enum
 	private enum State
@@ -47,7 +47,7 @@ public partial class WeaponShotgun : Node2D
 		// Get the child nodes
 		_animation = GetNode<AnimatedSprite2D>("sprite");
 		_muzzle = GetNode<Marker2D>("marker");
-		_shotCooldown = GetNode<Timer>("shotCoolDownTimer");
+		// _shotCooldown = GetNode<Timer>("shotCoolDownTimer");
 		
 		// Set muzzle position
 		_muzzlePosition = _muzzle.Position;
@@ -55,135 +55,135 @@ public partial class WeaponShotgun : Node2D
 		// Set default direction
 		_direction = 1.0f;
 		
-		// Set timer values
-		_shotCooldown.SetOneShot(true);
-		_shotCooldown.SetWaitTime(0.9);
+		// // Set timer values
+		// _shotCooldown.SetOneShot(true);
+		// _shotCooldown.SetWaitTime(0.9);
 		
 		// Animation to play on ready
 		// _animation.Play("idle");
 		// FlipSprite();
 		
-		// Signals/Actions
-		_shotCooldown.Timeout += OnTimerTimeout;
+		// // Signals/Actions
+		// _shotCooldown.Timeout += OnTimerTimeout;
 
 	}
 	
-	// // State Machine
-	// private void SetState(State newState)
-	// {
-	// 	if (newState == _currentState)
-	// 		return;
-	// 	
-	// 	ExitState();
-	// 	_currentState = newState;
-	// 	EnterState();
-	// }
-	//
-	// private void ExitState()
-	// {
-	// 	switch (_currentState)
-	// 	{
-	// 		case State.Idle:
-	// 			break;
-	// 		case State.WallSlide:
-	// 			break;
-	// 		case State.Shoot:
-	// 			break;
-	// 	}
-	// }
-	//
-	// private async void EnterState()
-	// {
-	// 	switch (_currentState)
-	// 	{
-	// 		case State.Idle:
-	// 			if (_animation.Animation == "shoot")
-	// 			{
-	// 				GD.Print("shoot/reload to idle");
-	// 				await ToSignal(_animation, "animation_finished");
-	// 			}
-	// 			_animation.Play("idle");
-	// 			break;
-	// 		
-	// 		case State.WallSlide:
-	// 			_animation.Play("wall_slide");
-	// 			break;
-	// 		
-	// 		case State.Shoot:
-	// 			_onCooldown = true;
-	// 			_shotCooldown.Start();
-	// 			_animation.Play("shoot");
-	// 			break;
-	// 	}
-	// }
-	//
-	// private void UpdateState()
-	// {
-	// 	switch (_currentState)
-	// 	{
-	// 		case State.Idle:
-	// 			if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-	// 			{
-	// 				SetState(State.Shoot);
-	// 			}
-	// 			else if (_wallSlide)
-	// 			{
-	// 				SetState(State.WallSlide);
-	// 			}
-	// 			
-	// 			break;
-	// 		
-	// 		case State.WallSlide:
-	// 			if (!_wallSlide)
-	// 			{
-	// 				SetState(State.Idle);
-	// 			}
-	//
-	// 			break;
-	// 		
-	// 		case State.Shoot:
-	// 			
-	// 			Shoot();
-	// 				
-	// 			if (_wallSlide)
-	// 			{
-	// 				SetState(State.WallSlide);
-	// 			}
-	// 			else
-	// 			{
-	// 				SetState(State.Idle);
-	// 			}
-	// 			
-	// 			break;
-	// 	}
-	// }
-	//
-	// public override void _Process(double delta)
-	// {
-	// 	UpdateState();
-	// 	FlipSprite();
-	// }
-	//
-	// private void FlipSprite()
-	// {
-	// 	// Flip sprite based on direction
-	// 	if (_direction < 0)
-	// 	{
-	// 		_animation.FlipH = false;
-	// 	}
-	//
-	// 	if (_direction > 0)
-	// 	{
-	// 		_animation.FlipH = true;
-	// 	}
-	// }
+	// State Machine
+	private void SetState(State newState)
+	{
+		if (newState == _currentState)
+			return;
+		
+		ExitState();
+		_currentState = newState;
+		EnterState();
+	}
+	
+	private void ExitState()
+	{
+		switch (_currentState)
+		{
+			case State.Idle:
+				break;
+			case State.WallSlide:
+				break;
+			case State.Shoot:
+				break;
+		}
+	}
+	
+	private async void EnterState()
+	{
+		switch (_currentState)
+		{
+			case State.Idle:
+				if (_animation.Animation == "shoot")
+				{
+					GD.Print("shoot/reload to idle");
+					await ToSignal(_animation, "animation_finished");
+				}
+				_animation.Play("idle");
+				break;
+			
+			case State.WallSlide:
+				_animation.Play("wall_slide");
+				break;
+			
+			case State.Shoot:
+				_onCooldown = true;
+				// _shotCooldown.Start();
+				_animation.Play("shoot");
+				break;
+		}
+	}
+	
+	private void UpdateState()
+	{
+		switch (_currentState)
+		{
+			case State.Idle:
+				if (Input.IsActionJustPressed("shoot"))
+				{
+					SetState(State.Shoot);
+				}
+				else if (_wallSlide)
+				{
+					SetState(State.WallSlide);
+				}
+				
+				break;
+			
+			case State.WallSlide:
+				if (!_wallSlide)
+				{
+					SetState(State.Idle);
+				}
+	
+				break;
+			
+			case State.Shoot:
+				
+				Shoot();
+					
+				if (_wallSlide)
+				{
+					SetState(State.WallSlide);
+				}
+				else
+				{
+					SetState(State.Idle);
+				}
+				
+				break;
+		}
+	}
+	
+	public override void _Process(double delta)
+	{
+		UpdateState();
+		FlipSprite();
+	}
+	
+	private void FlipSprite()
+	{
+		// Flip sprite based on direction
+		if (_direction < 0)
+		{
+			_animation.FlipH = false;
+		}
+	
+		if (_direction > 0)
+		{
+			_animation.FlipH = true;
+		}
+	}
 
 	private void Shoot()
 	{
 		// Instantiate the bullet scene, cast PackedScene as type PlayerBullet node
-		var bulletInstance1 = (PlayerBullet)_playerBullet.Instantiate();
-		var bulletInstance2 = (PlayerBullet)_playerBullet.Instantiate();
-		var bulletInstance3= (PlayerBullet)_playerBullet.Instantiate();
+		var bulletInstance1 = (BulletShotgun)_playerBullet.Instantiate();
+		var bulletInstance2 = (BulletShotgun)_playerBullet.Instantiate();
+		var bulletInstance3= (BulletShotgun)_playerBullet.Instantiate();
 
 		// Set bullet's direction based on player's direction
 		bulletInstance1.Direction = _direction;
@@ -215,10 +215,10 @@ public partial class WeaponShotgun : Node2D
 		GetTree().Root.AddChild(bulletInstance3);
 	}
 	
-	// Signals/Actions methods
-	
-	private void OnTimerTimeout()
-	{
-		_onCooldown = false;
-	}
+	// // Signals/Actions methods
+	//
+	// private void OnTimerTimeout()
+	// {
+	// 	_onCooldown = false;
+	// } 
 }
