@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://cfmp4bpt0wwlb"]
+[gd_scene load_steps=14 format=4 uid="uid://cfmp4bpt0wwlb"]
 
 [ext_resource type="PackedScene" uid="uid://bnpdedb212get" path="res://Levels/Scenes/level_end.tscn" id="1_2e8qi"]
 [ext_resource type="Texture2D" uid="uid://cu23mts0uo7fc" path="res://Assets/Tilemaps/garden_tilemap_v3.png" id="1_ohl1y"]
@@ -8,7 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Items/Scenes/coffee.tscn" id="5_igh1l"]
 [ext_resource type="PackedScene" uid="uid://wf6m2blo1d8u" path="res://Items/NodeScenes/items_coffee_pot.tscn" id="6_w2ons"]
 [ext_resource type="PackedScene" uid="uid://f41uy40r0hsp" path="res://Items/Scenes/coffee_pot.tscn" id="7_lp4a7"]
-[ext_resource type="PackedScene" uid="uid://cb1m5epeedwhl" path="res://Player/Scenes/weapon_shotgun_pickup.tscn" id="9_dhje7"]
+[ext_resource type="PackedScene" uid="uid://xgbwu1var27k" path="res://Weapons/Pickups/Scenes/weapon_pickup_shotgun.tscn" id="10_dyv2w"]
+[ext_resource type="PackedScene" uid="uid://0e8r4l08v0gy" path="res://Weapons/Pickups/Scenes/weapon_pickup_revolver.tscn" id="10_m8g7i"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iy0cb"]
 texture = ExtResource("1_ohl1y")
@@ -124,6 +125,7 @@ collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+visible = false
 position = Vector2(-7, 99)
 shape = SubResource("RectangleShape2D_40mu1")
 debug_color = Color(0.859677, 0.315083, 0.471886, 0.42)
@@ -160,5 +162,8 @@ position = Vector2(533, 122)
 
 [node name="enemies" type="Node" parent="."]
 
-[node name="weapon_shotgun" parent="." instance=ExtResource("9_dhje7")]
-position = Vector2(-65, 126)
+[node name="weapon_pickup_revolver" parent="." instance=ExtResource("10_m8g7i")]
+position = Vector2(148, 126)
+
+[node name="weapon_pickup_shotgun" parent="." instance=ExtResource("10_dyv2w")]
+position = Vector2(-72, 124)

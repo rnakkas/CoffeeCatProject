@@ -12,13 +12,10 @@ public partial class Player : CharacterBody2D
     private const float WallSlideGravity = 500.0f;
     private const float WallJumpVelocity = -200.0f;
     private const float FloorSnapLengthValue = 2.5f;
-    private const float BulletAngle = 3.5f;
 
     // Nodes
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
-    private Marker2D _muzzle;
-    private Timer _shotCooldown;
     private Area2D _playerArea;
     
     // Packed scene: bullets
@@ -56,8 +53,6 @@ public partial class Player : CharacterBody2D
         _animation = GetNode<AnimatedSprite2D>("sprite");
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
-        _muzzle = GetNode<Marker2D>("marker");
-        _shotCooldown = GetNode<Timer>("shotCoolDownTimer");
         _playerArea = GetNode<Area2D>("player_area");
         
         // Set z index high so player is in front of all other objects
@@ -72,22 +67,14 @@ public partial class Player : CharacterBody2D
         // Set velocity
         _velocity = Velocity;
         
-        // Set muzzle position
-        _muzzlePosition = _muzzle.Position;
-        
         // Set default direction
         _spriteDirection = 1.0f;
-        
-        // Set timer values
-        _shotCooldown.SetOneShot(true);
-        _shotCooldown.SetWaitTime(0.9);
         
         // Animation to play on ready
         _animation.FlipH = true;
         _animation.Play("idle");
         
         // Signals/Actions
-        // _shotCooldown.Timeout += OnTimerTimeout;
         _playerArea.AreaEntered += OnAreaEntered;
 
         // // Hide mouse cursor when playing game
@@ -375,6 +362,10 @@ public partial class Player : CharacterBody2D
                 GD.Print("machine gun");
                 break;
             
+            case not null when weaponName.Contains("revolver"):
+                GD.Print("revolver picked up");
+                break;
+            
             default:
                 throw new Exception("weapon type " + weaponName + "not found");
         }
@@ -383,11 +374,13 @@ public partial class Player : CharacterBody2D
     // Signal methods
     private void OnAreaEntered(Node2D area)
     {
-        // If the area entered is weapon, get weapon's node name
-        if (area.Name.ToString().ToLower().Contains("weapon"))
+        // If the area entered is weapon_pickups, get weapon's parent node name
+        if (area.Name.ToString().ToLower() == "weapon_pickups")
         {
-            _currentWeapon = area.Name.ToString();
+            _currentWeapon = area.GetParent().Name.ToString();
+            GD.Print(_currentWeapon);
             EquipWeapon(_currentWeapon);
         }
     }
+
 }

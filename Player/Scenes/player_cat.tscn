@@ -310,8 +310,3 @@ collision_mask = 16
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_k3p2u")
 animation = &"idle"
-
-[node name="marker" type="Marker2D" parent="."]
-position = Vector2(-17, -2)
-
-[node name="shotCoolDownTimer" type="Timer" parent="."]

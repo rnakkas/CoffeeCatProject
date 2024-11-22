@@ -19,8 +19,11 @@ public partial class PlayerBullet : CharacterBody2D
 		set => _direction = value;
 	}
 	
+	private Vector2 _directionVector = Vector2.Zero;
+	
 	public override void _Ready()
 	{
+		// Get nodes
 		_animation = GetNode<AnimatedSprite2D>("sprite");
 		
 		_velocity = Velocity;
@@ -63,5 +66,6 @@ public partial class PlayerBullet : CharacterBody2D
 		{
 			_animation.FlipH = true;
 		}
+		
 	} 
 }

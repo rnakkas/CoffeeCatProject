@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://0e8r4l08v0gy"]
+
+[ext_resource type="PackedScene" uid="uid://jrk5sgo60jhm" path="res://Weapons/Pickups/Scenes/weapon_pickups.tscn" id="1_qlv8u"]
+[ext_resource type="Texture2D" uid="uid://cywupqthyqppa" path="res://Assets/Sprites/PlayerSprites/cat_revolver-1.png" id="2_pg1yx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hbdj0"]
+atlas = ExtResource("2_pg1yx")
+region = Rect2(48, 0, 48, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s72kk"]
+atlas = ExtResource("2_pg1yx")
+region = Rect2(144, 0, 48, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w24x3"]
+atlas = ExtResource("2_pg1yx")
+region = Rect2(240, 0, 48, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_50y1i"]
+atlas = ExtResource("2_pg1yx")
+region = Rect2(336, 0, 48, 40)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mqtj4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hbdj0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s72kk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w24x3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_50y1i")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 9.0
+}]
+
+[node name="weapon_pickup_revolver" type="Node2D"]
+
+[node name="weapon_pickups" parent="." instance=ExtResource("1_qlv8u")]
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, 9)
+sprite_frames = SubResource("SpriteFrames_mqtj4")
+animation = &"idle"
+frame = 2
+frame_progress = 0.701645
