@@ -18,6 +18,7 @@ public partial class Player : CharacterBody2D
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Area2D _playerArea;
+    private WeaponManager _weaponManager;
     
     // Packed scene: bullets
     private readonly PackedScene _playerBullet = 
@@ -46,7 +47,6 @@ public partial class Player : CharacterBody2D
     private float _spriteDirection;
     private bool _onCooldown;
     private string _currentWeapon;
-    private WeaponShotgun _weaponInstance;
 
     public override void _Ready()
     {
@@ -55,6 +55,7 @@ public partial class Player : CharacterBody2D
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _playerArea = GetNode<Area2D>("player_area");
+        _weaponManager = GetNode<WeaponManager>("weapon_manager");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -93,76 +94,39 @@ public partial class Player : CharacterBody2D
         EnterState();
     }
 
-    private async void EnterState()
+    private void EnterState()
     {
         switch (_currentState)
         {
             case State.Idle:
                 _velocity.Y = 0;
-                
-                // If shooting is the current animation, wait for it to finish before doing next animation 
-                if (_animation.Animation == "idle_shoot" || 
-                    _animation.Animation == "run_shoot")
-                {
-                     await ToSignal(_animation, "animation_finished");
-                }
-                
                 _animation.Play("idle");
                 break;
             
             case State.Run:
-                // If shooting is the current animation, wait for it to finish before doing next animation
-                if (_animation.Animation == "idle_shoot" || 
-                    _animation.Animation == "run_shoot")
-                {
-                    await ToSignal(_animation, "animation_finished");
-                }
-
                 _animation.Play("run");
                 break;
             
             case State.Jump:
                 _velocity.Y = JumpVelocity;
-                
-                // If shooting is the current animation, wait for it to finish before doing next animation
-                if (_animation.Animation == "idle_shoot" ||
-                    _animation.Animation == "run_shoot")
-                {
-                    await ToSignal(_animation, "animation_finished");
-                }
-                
                 _animation.Play("jump");
                 break;
             
             case State.WallSlide:
-                if (_weaponInstance != null)
-                {
-                    _weaponInstance.WallSlide = true;
-                }
+                // if (_weaponManager != null)
+                // {
+                //     _weaponManager.WallSlide = true;
+                // }
                 
                 _animation.Play("wall_slide");
                 break;
             
             case State.Fall:
-                // If shooting is the current animation, wait for it to finish before doing next animation
-                if (_animation.Animation == "idle_shoot" || 
-                    _animation.Animation == "run_shoot")
-                {
-                    await ToSignal(_animation, "animation_finished");
-                }
-                
                 _animation.Play("fall");
                 break;
             
             case State.WallJump:
                 _velocity.Y = WallJumpVelocity;
-                
-                // If shooting is the current animation, wait for it to finish before doing next animation
-                if (_animation.Animation == "idle_shoot")
-                {
-                    await ToSignal(_animation, "animation_finished");
-                }
-                
                 _animation.Play("jump");
                 break;
         }
@@ -179,10 +143,10 @@ public partial class Player : CharacterBody2D
             case State.Jump:
                 break;
             case State.WallSlide:
-                if (_weaponInstance != null)
-                {
-                    _weaponInstance.WallSlide = false;
-                }
+                // if (_weaponManager != null)
+                // {
+                //     _weaponManager.WallSlide = false;
+                // }
                 break;
             case State.Fall:
                 break;
@@ -336,9 +300,9 @@ public partial class Player : CharacterBody2D
             _spriteDirection = 1;
         }
 
-        if (_weaponInstance != null)
+        if (_currentWeapon != null)
         {
-            _weaponInstance.Direction = _spriteDirection;
+            _weaponManager.SpriteDirection = _spriteDirection;
         }
         
     }
@@ -347,40 +311,14 @@ public partial class Player : CharacterBody2D
         UpdateState((float)delta);
     }
     
-    // Equip weapon based on which weapon was picked up
-    private void EquipWeapon(string weaponName)
-    {
-        switch (weaponName)
-        {
-            case not null when weaponName.Contains("shotgun"):
-                // Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
-                _weaponInstance = (Weapons.Equipped.Scripts.WeaponShotgun)_weaponShotgun.Instantiate();
-                _weaponInstance.Direction = _spriteDirection;
-                AddChild(_weaponInstance);
-                break;
-            
-            case not null when weaponName.Contains("machine_gun"):
-                GD.Print("machine gun");
-                break;
-            
-            case not null when weaponName.Contains("revolver"):
-                GD.Print("revolver picked up");
-                break;
-            
-            default:
-                throw new Exception("weapon type " + weaponName + "not found");
-        }
-    }
-    
     // Signal methods
     private void OnAreaEntered(Node2D area)
     {
-        // If the area entered is weapon_pickups, get weapon's parent node name
         if (area.Name.ToString().ToLower() == "weapon_pickups")
         {
+            // If the area entered is weapon_pickups, get weapon's parent node name and equip the weapon
             _currentWeapon = area.GetParent().Name.ToString();
-            GD.Print(_currentWeapon);
-            EquipWeapon(_currentWeapon);
+            _weaponManager.EquipWeapon(_currentWeapon);
         }
     }
 

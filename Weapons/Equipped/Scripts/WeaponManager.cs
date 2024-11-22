@@ -1,29 +1,29 @@
 using Godot;
 using System;
-// using CoffeeCatProject.Player.Scripts;
 
 namespace CoffeeCatProject.Weapons.Equipped.Scripts;
 
 public partial class WeaponManager : Node
 {
-	
 	// Variables
 	private string _currentWeapon;
-	private bool _idle;
-	private bool _wallSlide;
-	private float _spriteDirection;
-	public float Test;
-	
+	public float SpriteDirection { get; set; }
+
 	// Packed scene: shotgun
 	private readonly PackedScene _weaponShotgun = 
 		ResourceLoader.Load<PackedScene>("res://Weapons/Equipped/Scenes/weapon_shotgun.tscn");
+	
+	// Packed scene: revolver
+	/// <summary>
+	/// TODO
+	/// </summary>
 	
 	public override void _Ready()
 	{
 		GD.Print("weapon manager ready");
 	}
 
-	private void EquipWeapon(string weaponName)
+	public void EquipWeapon(string weaponName)
 	{
 		_currentWeapon = weaponName;
 		
@@ -32,8 +32,8 @@ public partial class WeaponManager : Node
 			case not null when weaponName.Contains("shotgun"):
 				// Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
 				var weaponInstance = (WeaponShotgun)_weaponShotgun.Instantiate();
-				weaponInstance.Direction = _spriteDirection;
-				AddChild(weaponInstance);
+				weaponInstance.Direction = SpriteDirection;
+				GetParent().AddChild(weaponInstance);
 				break;
             
 			case not null when weaponName.Contains("machine_gun"):
@@ -49,20 +49,17 @@ public partial class WeaponManager : Node
 		}
 	}
 
-	private void ShootWeapon()
+	private void SwapWeapon()
 	{
 		if (_currentWeapon != null)
 		{
-			GD.Print("Shoot");
+			GD.Print("swap");
 		}
 		
 	}
 
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionPressed("shoot"))
-		{
-			GD.Print("Shooting");
-		}
+		
 	}
 }
