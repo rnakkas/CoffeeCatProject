@@ -1,10 +1,12 @@
 using Godot;
 
 namespace CoffeeCatProject.Weapons.Equipped.Scripts;
+
+// This component only handles the shooting logic for weapons
 public partial class ShootingComponent : Node
 {
 	// Variables
-	private bool _onCooldown;
+	public bool OnCooldown { get; set; }
 	
 	[Export]
 	public Timer ShotCooldownTimer { get; set; }
@@ -17,9 +19,9 @@ public partial class ShootingComponent : Node
 	
 	public override void _Ready()
 	{
-		// Set timer values
-		ShotCooldownTimer.SetOneShot(true);
-		ShotCooldownTimer.SetWaitTime(0.9);
+		// // Set timer values
+		// ShotCooldownTimer.SetOneShot(true);
+		// ShotCooldownTimer.SetWaitTime(0.9);
 		
 		// Connecting signals
 		ShotCooldownTimer.Timeout += OnTimerTimeout;
@@ -28,21 +30,19 @@ public partial class ShootingComponent : Node
 
 	private void ShootStart()
 	{
-		GD.Print("Start shooting");
 		EmitSignal(SignalName.ShootingStart);
 		ShotCooldownTimer.Start();
-		_onCooldown = true;
+		OnCooldown = true;
 	}
 
 	private void ShootEnd()
 	{
-		GD.Print("Stop shooting");
 		EmitSignal(SignalName.ShootingEnd);
 	}
 	
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionJustPressed("shoot") && !_onCooldown)
+		if (Input.IsActionJustPressed("shoot") && !OnCooldown)
 		{
 			ShootStart();
 		}
@@ -56,6 +56,6 @@ public partial class ShootingComponent : Node
 	// Connecting signals
 	private void OnTimerTimeout()
 	{
-		_onCooldown = false;
+		OnCooldown = false;
 	}
 }

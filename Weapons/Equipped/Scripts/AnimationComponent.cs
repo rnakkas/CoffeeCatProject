@@ -1,6 +1,8 @@
 using Godot;
 
 namespace CoffeeCatProject.Weapons.Equipped.Scripts;
+
+// This component only handles the animation logic for the weapons
 public partial class AnimationComponent : Node
 {
 	// Const
@@ -30,7 +32,6 @@ public partial class AnimationComponent : Node
 		Animation.Play("idle");
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override async void _Process(double delta)
 	{
 		//Flip sprite based on direction

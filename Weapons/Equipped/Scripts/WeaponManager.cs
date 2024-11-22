@@ -33,7 +33,7 @@ public partial class WeaponManager : Node
 			case not null when weaponName.Contains("shotgun"):
 				// Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
 				var weaponInstance = (WeaponShotgun)_weaponShotgun.Instantiate();
-				weaponInstance.Direction = SpriteDirection;
+				// weaponInstance.Direction = SpriteDirection;
 				GetParent().AddChild(weaponInstance);
 				break;
             

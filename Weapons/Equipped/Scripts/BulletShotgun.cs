@@ -1,8 +1,6 @@
 using Godot;
 
 namespace CoffeeCatProject.Weapons.Equipped.Scripts;
-
-//TODO: flipping sprites based on shooting direction
 public partial class BulletShotgun : Area2D
 {
 	// Constants
@@ -72,7 +70,7 @@ public partial class BulletShotgun : Area2D
 	// Connect signals methods
 	private async void OnBodyEntered(Node body)
 	{
-		if (body is TileMapLayer)
+		if (body is TileMapLayer || body.Name.ToString().ToLower().Contains("enemy"))
 		{
 			_hitStatus = true;
 		}

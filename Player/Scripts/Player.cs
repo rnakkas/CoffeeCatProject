@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using CoffeeCatProject.Weapons.Equipped.Scripts;
 
@@ -19,14 +18,6 @@ public partial class Player : CharacterBody2D
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Area2D _playerArea;
     private WeaponManager _weaponManager;
-    
-    // Packed scene: bullets
-    private readonly PackedScene _playerBullet = 
-        ResourceLoader.Load<PackedScene>("res://Player/Scenes/player_bullet.tscn");
-    
-    // Packed scene: weapons
-    private readonly PackedScene _weaponShotgun = 
-        ResourceLoader.Load<PackedScene>("res://Player/Scenes/weapon_shotgun.tscn");
 
     // State enum
     private enum State

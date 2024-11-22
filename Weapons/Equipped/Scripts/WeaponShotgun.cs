@@ -1,208 +1,81 @@
 using Godot;
 
-//TODO: Refactor code to use the shooting component, still use the muzzle location etc but get rid of state machine
+//TODO: Fix issue with shooting continuously and multiple times when shoot button is pressed or held
 namespace CoffeeCatProject.Weapons.Equipped.Scripts;
+
 public partial class WeaponShotgun : Node2D
 {
 	// Constants
 	private const float BulletAngle = 3.5f;
+	private const float CoolDownTime = 0.9f;
 	
 	// Nodes
-	private AnimatedSprite2D _animation;
 	private Marker2D _muzzle;
-	// private Timer _shotCooldown;
+	private ShootingComponent _shootingComponent;
+	private WeaponManager _weaponManager;
+	private Timer _cooldownTimer;
 	
 	// Packed scene: bullets
-	private readonly PackedScene _playerBullet = 
+	private readonly PackedScene _bulletShotgun = 
 		ResourceLoader.Load<PackedScene>("res://Weapons/Equipped/Scenes/bullet_shotgun.tscn");
 	
-	// State enum
-	private enum State
-	{
-		Idle,
-		WallSlide,
-		Shoot
-	}
-	
 	// Variables
-	private State _currentState;
 	private Vector2 _muzzlePosition;
-	private bool _onCooldown;
-	private float _direction;
-	public float Direction
-	{
-		get => _direction;
-		set => _direction = value;
-	}
-	
-	private bool _wallSlide;
-	public bool WallSlide
-	{
-		get => _wallSlide;
-		set => _wallSlide = value;
-	}
+	private bool _shoot;
 	
 	public override void _Ready()
 	{
 		// Get the child nodes
-		_animation = GetNode<AnimatedSprite2D>("sprite");
 		_muzzle = GetNode<Marker2D>("marker");
-		// _shotCooldown = GetNode<Timer>("shotCoolDownTimer");
+		_shootingComponent = GetNode<ShootingComponent>("shooting_component");
+		_weaponManager = GetNode<WeaponManager>("../weapon_manager");
+		_cooldownTimer = GetNode<Timer>("shotCoolDownTimer");
 		
 		// Set muzzle position
 		_muzzlePosition = _muzzle.Position;
 		
-		// Set default direction
-		_direction = 1.0f;
+		// Set timer values
+		_cooldownTimer.SetOneShot(true);
+		_cooldownTimer.SetWaitTime(CoolDownTime);
 		
-		// // Set timer values
-		// _shotCooldown.SetOneShot(true);
-		// _shotCooldown.SetWaitTime(0.9);
-		
-		// Animation to play on ready
-		// _animation.Play("idle");
-		// FlipSprite();
-		
-		// // Signals/Actions
-		// _shotCooldown.Timeout += OnTimerTimeout;
-
-	}
-	
-	// State Machine
-	private void SetState(State newState)
-	{
-		if (newState == _currentState)
-			return;
-		
-		ExitState();
-		_currentState = newState;
-		EnterState();
-	}
-	
-	private void ExitState()
-	{
-		switch (_currentState)
-		{
-			case State.Idle:
-				break;
-			case State.WallSlide:
-				break;
-			case State.Shoot:
-				break;
-		}
-	}
-	
-	private async void EnterState()
-	{
-		switch (_currentState)
-		{
-			case State.Idle:
-				if (_animation.Animation == "shoot")
-				{
-					GD.Print("shoot/reload to idle");
-					await ToSignal(_animation, "animation_finished");
-				}
-				_animation.Play("idle");
-				break;
-			
-			case State.WallSlide:
-				_animation.Play("wall_slide");
-				break;
-			
-			case State.Shoot:
-				_onCooldown = true;
-				// _shotCooldown.Start();
-				_animation.Play("shoot");
-				break;
-		}
-	}
-	
-	private void UpdateState()
-	{
-		switch (_currentState)
-		{
-			case State.Idle:
-				if (Input.IsActionJustPressed("shoot"))
-				{
-					SetState(State.Shoot);
-				}
-				else if (_wallSlide)
-				{
-					SetState(State.WallSlide);
-				}
-				
-				break;
-			
-			case State.WallSlide:
-				if (!_wallSlide)
-				{
-					SetState(State.Idle);
-				}
-	
-				break;
-			
-			case State.Shoot:
-				
-				Shoot();
-					
-				if (_wallSlide)
-				{
-					SetState(State.WallSlide);
-				}
-				else
-				{
-					SetState(State.Idle);
-				}
-				
-				break;
-		}
+		// Connect to signals
+		_shootingComponent.ShootingStart += OnShootingStart;
+		_shootingComponent.ShootingEnd += OnShootingEnd;
 	}
 	
 	public override void _Process(double delta)
 	{
-		UpdateState();
-		FlipSprite();
-	}
-	
-	private void FlipSprite()
-	{
-		// Flip sprite based on direction
-		if (_direction < 0)
+		if (_shoot & !_shootingComponent.OnCooldown)
 		{
-			_animation.FlipH = false;
-		}
-	
-		if (_direction > 0)
-		{
-			_animation.FlipH = true;
+			ShootBullets();
 		}
 	}
-
-	private void Shoot()
+	
+	private void ShootBullets()
 	{
 		// Instantiate the bullet scene, cast PackedScene as type PlayerBullet node
-		var bulletInstance1 = (BulletShotgun)_playerBullet.Instantiate();
-		var bulletInstance2 = (BulletShotgun)_playerBullet.Instantiate();
-		var bulletInstance3= (BulletShotgun)_playerBullet.Instantiate();
+		var bulletInstance1 = (BulletShotgun)_bulletShotgun.Instantiate();
+		var bulletInstance2 = (BulletShotgun)_bulletShotgun.Instantiate();
+		var bulletInstance3= (BulletShotgun)_bulletShotgun.Instantiate();
 
 		// Set bullet's direction based on player's direction
-		bulletInstance1.Direction = _direction;
-		bulletInstance2.Direction = _direction;
-		bulletInstance3.Direction = _direction;
+		bulletInstance1.Direction = _weaponManager.SpriteDirection;
+		bulletInstance2.Direction = _weaponManager.SpriteDirection;;
+		bulletInstance3.Direction = _weaponManager.SpriteDirection;;
                 
 		// Set bullets rotations
 		bulletInstance2.RotationDegrees = BulletAngle;
 		bulletInstance3.RotationDegrees = -BulletAngle;
                 
 		// Set bullet's location to muzzle location, flip muzzle position when sprite is flipped
-		if (_direction < 0)
+		if (_weaponManager.SpriteDirection < 0)
 		{
-			_muzzle.Position = _muzzlePosition;
+			_muzzle.Position = new Vector2(_muzzlePosition.X, _muzzlePosition.Y);
 		}
                 
-		if (_direction > 0)
+		if (_weaponManager.SpriteDirection > 0)
 		{
-			_muzzle.Position = -_muzzlePosition;
+			_muzzle.Position = new Vector2(-_muzzlePosition.X, _muzzlePosition.Y);
 		}
                 
 		bulletInstance1.GlobalPosition = _muzzle.GlobalPosition;
@@ -215,10 +88,14 @@ public partial class WeaponShotgun : Node2D
 		GetTree().Root.AddChild(bulletInstance3);
 	}
 	
-	// // Signals/Actions methods
-	//
-	// private void OnTimerTimeout()
-	// {
-	// 	_onCooldown = false;
-	// } 
+	// Signal connection methods
+	private void OnShootingStart()
+	{
+		_shoot = true;
+	}
+
+	private void OnShootingEnd()
+	{
+		_shoot = false;
+	}
 }
