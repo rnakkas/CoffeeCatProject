@@ -3,11 +3,11 @@ using Godot;
 namespace CoffeeCatProject.Weapons.Equipped.Scripts;
 public partial class ShootingComponent : Node
 {
-	// Node
-	private Timer _shotCooldownTimer;
-	
 	// Variables
 	private bool _onCooldown;
+	
+	[Export]
+	public Timer ShotCooldownTimer { get; set; }
 	
 	[Signal]
 	public delegate void ShootingStartEventHandler();
@@ -15,30 +15,26 @@ public partial class ShootingComponent : Node
 	[Signal]
 	public delegate void ShootingEndEventHandler();
 	
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		// Get nodes
-		_shotCooldownTimer = GetNode<Timer>("shotCoolDownTimer");
-		
 		// Set timer values
-		_shotCooldownTimer.SetOneShot(true);
-		_shotCooldownTimer.SetWaitTime(0.9);
+		ShotCooldownTimer.SetOneShot(true);
+		ShotCooldownTimer.SetWaitTime(0.9);
 		
 		// Connecting signals
-		_shotCooldownTimer.Timeout += OnTimerTimeout;
+		ShotCooldownTimer.Timeout += OnTimerTimeout;
 
 	}
 
-	public void ShootStart()
+	private void ShootStart()
 	{
 		GD.Print("Start shooting");
 		EmitSignal(SignalName.ShootingStart);
-		_shotCooldownTimer.Start();
+		ShotCooldownTimer.Start();
 		_onCooldown = true;
 	}
 
-	public void ShootEnd()
+	private void ShootEnd()
 	{
 		GD.Print("Stop shooting");
 		EmitSignal(SignalName.ShootingEnd);

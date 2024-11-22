@@ -113,10 +113,10 @@ public partial class Player : CharacterBody2D
                 break;
             
             case State.WallSlide:
-                // if (_weaponManager != null)
-                // {
-                //     _weaponManager.WallSlide = true;
-                // }
+                if (_weaponManager != null)
+                {
+                    _weaponManager.WallSlide = true;
+                }
                 
                 _animation.Play("wall_slide");
                 break;
@@ -143,10 +143,10 @@ public partial class Player : CharacterBody2D
             case State.Jump:
                 break;
             case State.WallSlide:
-                // if (_weaponManager != null)
-                // {
-                //     _weaponManager.WallSlide = false;
-                // }
+                if (_weaponManager != null)
+                {
+                    _weaponManager.WallSlide = false;
+                }
                 break;
             case State.Fall:
                 break;

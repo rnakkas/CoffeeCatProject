@@ -8,6 +8,7 @@ public partial class WeaponManager : Node
 	// Variables
 	private string _currentWeapon;
 	public float SpriteDirection { get; set; }
+	public bool WallSlide { get; set; }
 
 	// Packed scene: shotgun
 	private readonly PackedScene _weaponShotgun = 
@@ -57,7 +58,7 @@ public partial class WeaponManager : Node
 		}
 		
 	}
-
+	
 	public override void _Process(double delta)
 	{
 		

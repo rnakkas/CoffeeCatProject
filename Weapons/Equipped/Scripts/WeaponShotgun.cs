@@ -60,123 +60,123 @@ public partial class WeaponShotgun : Node2D
 		_shotCooldown.SetWaitTime(0.9);
 		
 		// Animation to play on ready
-		_animation.Play("idle");
-		FlipSprite();
+		// _animation.Play("idle");
+		// FlipSprite();
 		
 		// Signals/Actions
 		_shotCooldown.Timeout += OnTimerTimeout;
 
 	}
 	
-	// State Machine
-	private void SetState(State newState)
-	{
-		if (newState == _currentState)
-			return;
-		
-		ExitState();
-		_currentState = newState;
-		EnterState();
-	}
-	
-	private void ExitState()
-	{
-		switch (_currentState)
-		{
-			case State.Idle:
-				break;
-			case State.WallSlide:
-				break;
-			case State.Shoot:
-				break;
-		}
-	}
-
-	private async void EnterState()
-	{
-		switch (_currentState)
-		{
-			case State.Idle:
-				if (_animation.Animation == "shoot")
-				{
-					GD.Print("shoot/reload to idle");
-					await ToSignal(_animation, "animation_finished");
-				}
-				_animation.Play("idle");
-				break;
-			
-			case State.WallSlide:
-				_animation.Play("wall_slide");
-				break;
-			
-			case State.Shoot:
-				_onCooldown = true;
-				_shotCooldown.Start();
-				_animation.Play("shoot");
-				break;
-		}
-	}
-
-	private void UpdateState()
-	{
-		switch (_currentState)
-		{
-			case State.Idle:
-				if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-				{
-					SetState(State.Shoot);
-				}
-				else if (_wallSlide)
-				{
-					SetState(State.WallSlide);
-				}
-				
-				break;
-			
-			case State.WallSlide:
-				if (!_wallSlide)
-				{
-					SetState(State.Idle);
-				}
-
-				break;
-			
-			case State.Shoot:
-				
-				Shoot();
-					
-				if (_wallSlide)
-				{
-					SetState(State.WallSlide);
-				}
-				else
-				{
-					SetState(State.Idle);
-				}
-				
-				break;
-		}
-	}
-
-	public override void _Process(double delta)
-	{
-		UpdateState();
-		FlipSprite();
-	}
-	
-	private void FlipSprite()
-	{
-		// Flip sprite based on direction
-		if (_direction < 0)
-		{
-			_animation.FlipH = false;
-		}
-
-		if (_direction > 0)
-		{
-			_animation.FlipH = true;
-		}
-	}
+	// // State Machine
+	// private void SetState(State newState)
+	// {
+	// 	if (newState == _currentState)
+	// 		return;
+	// 	
+	// 	ExitState();
+	// 	_currentState = newState;
+	// 	EnterState();
+	// }
+	//
+	// private void ExitState()
+	// {
+	// 	switch (_currentState)
+	// 	{
+	// 		case State.Idle:
+	// 			break;
+	// 		case State.WallSlide:
+	// 			break;
+	// 		case State.Shoot:
+	// 			break;
+	// 	}
+	// }
+	//
+	// private async void EnterState()
+	// {
+	// 	switch (_currentState)
+	// 	{
+	// 		case State.Idle:
+	// 			if (_animation.Animation == "shoot")
+	// 			{
+	// 				GD.Print("shoot/reload to idle");
+	// 				await ToSignal(_animation, "animation_finished");
+	// 			}
+	// 			_animation.Play("idle");
+	// 			break;
+	// 		
+	// 		case State.WallSlide:
+	// 			_animation.Play("wall_slide");
+	// 			break;
+	// 		
+	// 		case State.Shoot:
+	// 			_onCooldown = true;
+	// 			_shotCooldown.Start();
+	// 			_animation.Play("shoot");
+	// 			break;
+	// 	}
+	// }
+	//
+	// private void UpdateState()
+	// {
+	// 	switch (_currentState)
+	// 	{
+	// 		case State.Idle:
+	// 			if (Input.IsActionJustPressed("shoot") && !_onCooldown)
+	// 			{
+	// 				SetState(State.Shoot);
+	// 			}
+	// 			else if (_wallSlide)
+	// 			{
+	// 				SetState(State.WallSlide);
+	// 			}
+	// 			
+	// 			break;
+	// 		
+	// 		case State.WallSlide:
+	// 			if (!_wallSlide)
+	// 			{
+	// 				SetState(State.Idle);
+	// 			}
+	//
+	// 			break;
+	// 		
+	// 		case State.Shoot:
+	// 			
+	// 			Shoot();
+	// 				
+	// 			if (_wallSlide)
+	// 			{
+	// 				SetState(State.WallSlide);
+	// 			}
+	// 			else
+	// 			{
+	// 				SetState(State.Idle);
+	// 			}
+	// 			
+	// 			break;
+	// 	}
+	// }
+	//
+	// public override void _Process(double delta)
+	// {
+	// 	UpdateState();
+	// 	FlipSprite();
+	// }
+	//
+	// private void FlipSprite()
+	// {
+	// 	// Flip sprite based on direction
+	// 	if (_direction < 0)
+	// 	{
+	// 		_animation.FlipH = false;
+	// 	}
+	//
+	// 	if (_direction > 0)
+	// 	{
+	// 		_animation.FlipH = true;
+	// 	}
+	// }
 
 	private void Shoot()
 	{

@@ -4,5 +4,3 @@
 
 [node name="shooting_component" type="Node"]
 script = ExtResource("1_60ab8")
-
-[node name="shotCoolDownTimer" type="Timer" parent="."]
