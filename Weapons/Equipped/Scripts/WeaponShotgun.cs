@@ -1,7 +1,7 @@
+using CoffeeCatProject.Player.Scripts;
 using Godot;
-using System;
 
-namespace CoffeeCatProject.Player.Scripts;
+namespace CoffeeCatProject.Weapons.Equipped.Scripts;
 public partial class WeaponShotgun : Node2D
 {
 	// Constants

@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using CoffeeCatProject.Weapons.Equipped.Scripts;
 
 namespace CoffeeCatProject.Player.Scripts;
 
@@ -353,7 +354,7 @@ public partial class Player : CharacterBody2D
         {
             case not null when weaponName.Contains("shotgun"):
                 // Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
-                _weaponInstance = (WeaponShotgun)_weaponShotgun.Instantiate();
+                _weaponInstance = (Weapons.Equipped.Scripts.WeaponShotgun)_weaponShotgun.Instantiate();
                 _weaponInstance.Direction = _spriteDirection;
                 AddChild(_weaponInstance);
                 break;
