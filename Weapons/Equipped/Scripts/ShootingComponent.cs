@@ -3,6 +3,7 @@ using Godot;
 namespace CoffeeCatProject.Weapons.Equipped.Scripts;
 
 // This component only handles the shooting logic for weapons
+//TODO: make shooting logic similar to re4, if button held keep shooting with cooldown between shots
 public partial class ShootingComponent : Node
 {
 	// Variables
@@ -19,24 +20,21 @@ public partial class ShootingComponent : Node
 	
 	public override void _Ready()
 	{
-		// // Set timer values
-		// ShotCooldownTimer.SetOneShot(true);
-		// ShotCooldownTimer.SetWaitTime(0.9);
-		
 		// Connecting signals
 		ShotCooldownTimer.Timeout += OnTimerTimeout;
-
 	}
 
-	private void ShootStart()
+	private void Shooting()
 	{
 		EmitSignal(SignalName.ShootingStart);
+		GD.Print("shooting comp start");
 		ShotCooldownTimer.Start();
 		OnCooldown = true;
 	}
 
-	private void ShootEnd()
+	private void StopShooting()
 	{
+		GD.Print("Shooting comp end");
 		EmitSignal(SignalName.ShootingEnd);
 	}
 	

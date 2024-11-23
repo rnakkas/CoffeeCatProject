@@ -45,7 +45,7 @@ public partial class WeaponShotgun : Node2D
 	
 	public override void _Process(double delta)
 	{
-		if (_shoot & !_shootingComponent.OnCooldown)
+		if (_shoot)
 		{
 			ShootBullets();
 		}
