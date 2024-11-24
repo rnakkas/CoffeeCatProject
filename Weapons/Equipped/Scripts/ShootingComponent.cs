@@ -42,12 +42,12 @@ public partial class ShootingComponent : Node
 	{
 		if (Input.IsActionJustPressed("shoot") && !OnCooldown)
 		{
-			Shooting();
+			ShootStart();
 		}
 
 		if (Input.IsActionJustReleased("shoot"))
 		{
-			StopShooting();
+			ShootEnd();
 		}
 	}
 	
