@@ -9,11 +9,22 @@ public partial class WeaponShotgun : Node2D
 	private const float BulletAngle = 3.5f;
 	private const float CoolDownTime = 0.9f;
 	
+	// Exports
+	[Export]
+	private ShootingComponent ShootingComponent { get; set; }
+	
+	[Export]
+	private Timer CooldownTimer { get; set; }
+	
+	[Export]
+	private BulletShotgun BulletShotgun { get; set; }
+	
+	[Export]
+	private Marker2D Muzzle { get; set; }
+	
 	// Nodes
-	private Marker2D _muzzle;
-	private ShootingComponent _shootingComponent;
+	// private Marker2D _muzzle;
 	private WeaponManager _weaponManager;
-	private Timer _cooldownTimer;
 	
 	// Packed scene: bullets
 	private readonly PackedScene _bulletShotgun = 
@@ -26,21 +37,20 @@ public partial class WeaponShotgun : Node2D
 	public override void _Ready()
 	{
 		// Get the child nodes
-		_muzzle = GetNode<Marker2D>("marker");
-		_shootingComponent = GetNode<ShootingComponent>("shooting_component");
 		_weaponManager = GetNode<WeaponManager>("../weapon_manager");
-		_cooldownTimer = GetNode<Timer>("shotCoolDownTimer");
+		
+		BulletShotgun.SetVisible(false);
 		
 		// Set muzzle position
-		_muzzlePosition = _muzzle.Position;
+		_muzzlePosition = Muzzle.Position;
 		
 		// Set timer values
-		_cooldownTimer.SetOneShot(true);
-		_cooldownTimer.SetWaitTime(CoolDownTime);
+		CooldownTimer.SetOneShot(true);
+		CooldownTimer.SetWaitTime(CoolDownTime);
 		
 		// Connect to signals
-		_shootingComponent.ShootingStart += OnShootingStart;
-		_shootingComponent.ShootingEnd += OnShootingEnd;
+		ShootingComponent.ShootingStart += OnShootingStart;
+		ShootingComponent.ShootingEnd += OnShootingEnd;
 	}
 	
 	public override void _Process(double delta)
@@ -70,17 +80,17 @@ public partial class WeaponShotgun : Node2D
 		// Set bullet's location to muzzle location, flip muzzle position when sprite is flipped
 		if (_weaponManager.SpriteDirection < 0)
 		{
-			_muzzle.Position = new Vector2(_muzzlePosition.X, _muzzlePosition.Y);
+			Muzzle.Position = new Vector2(_muzzlePosition.X, _muzzlePosition.Y);
 		}
                 
 		if (_weaponManager.SpriteDirection > 0)
 		{
-			_muzzle.Position = new Vector2(-_muzzlePosition.X, _muzzlePosition.Y);
+			Muzzle.Position = new Vector2(-_muzzlePosition.X, _muzzlePosition.Y);
 		}
                 
-		bulletInstance1.GlobalPosition = _muzzle.GlobalPosition;
-		bulletInstance2.GlobalPosition = _muzzle.GlobalPosition;
-		bulletInstance3.GlobalPosition = _muzzle.GlobalPosition;
+		bulletInstance1.GlobalPosition = Muzzle.GlobalPosition;
+		bulletInstance2.GlobalPosition = Muzzle.GlobalPosition;
+		bulletInstance3.GlobalPosition = Muzzle.GlobalPosition;
                 
 		// Add bullet scene to scene tree
 		GetTree().Root.AddChild(bulletInstance1);

@@ -26,23 +26,32 @@ public partial class WeaponManager : Node
 
 	public void EquipWeapon(string weaponName)
 	{
+		weaponName = weaponName.ToLower();
 		_currentWeapon = weaponName;
 		
 		switch (weaponName)
 		{
-			case not null when weaponName.Contains("shotgun"):
+			case not null when weaponName.Contains(WeaponTypes.Shotgun.ToString().ToLower()):
+				
 				// Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
 				var weaponInstance = (WeaponShotgun)_weaponShotgun.Instantiate();
 				// weaponInstance.Direction = SpriteDirection;
 				GetParent().AddChild(weaponInstance);
 				break;
             
-			case not null when weaponName.Contains("machine_gun"):
+			case not null when weaponName.Contains(WeaponTypes.MachineGun.ToString().ToLower()):
+				
 				GD.Print("machine gun");
 				break;
             
-			case not null when weaponName.Contains("revolver"):
+			case not null when weaponName.Contains(WeaponTypes.Revolver.ToString().ToLower()):
+				
 				GD.Print("revolver picked up");
+				break;
+			
+			case not null when weaponName.Contains(WeaponTypes.PlasmaRifle.ToString().ToLower()):
+				
+				GD.Print("plasma-rifle picked up");
 				break;
             
 			default:
