@@ -1,6 +1,6 @@
 using Godot;
 
-namespace CoffeeCatProject.Weapons.Pickups.Scripts;
+namespace CoffeeCatProject.Player.Weapons.Pickups.Scripts;
 public partial class WeaponPickups : Area2D
 {
 	//Nodes

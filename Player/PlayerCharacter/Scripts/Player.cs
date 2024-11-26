@@ -1,7 +1,7 @@
 using Godot;
-using CoffeeCatProject.Weapons.Equipped.Scripts;
+using CoffeeCatProject.Player.WeaponManager.Scripts;
 
-namespace CoffeeCatProject.Player.Scripts;
+namespace CoffeeCatProject.Player.PlayerCharacter.Scripts;
 
 public partial class Player : CharacterBody2D
 {
@@ -17,7 +17,7 @@ public partial class Player : CharacterBody2D
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Area2D _playerArea;
-    private WeaponManager _weaponManager;
+    private WeaponManagerScript _weaponManager;
 
     // State enum
     private enum State
@@ -46,7 +46,7 @@ public partial class Player : CharacterBody2D
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _playerArea = GetNode<Area2D>("player_area");
-        _weaponManager = GetNode<WeaponManager>("weapon_manager");
+        _weaponManager = GetNode<WeaponManager.Scripts.WeaponManagerScript>("weapon_manager");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;

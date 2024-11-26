@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://lhes8rvtwg6i"]
-
-[ext_resource type="Script" path="res://Weapons/Equipped/Scripts/AnimationComponent.cs" id="1_c28rm"]
-
-[node name="animation_component" type="Node"]
-script = ExtResource("1_c28rm")

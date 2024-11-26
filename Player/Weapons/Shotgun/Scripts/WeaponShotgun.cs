@@ -1,7 +1,8 @@
 using Godot;
+using CoffeeCatProject.Player.WeaponManager.Scripts;
 
 //TODO: Fix issue with shooting continuously and multiple times when shoot button is pressed or held
-namespace CoffeeCatProject.Weapons.Equipped.Scripts;
+namespace CoffeeCatProject.Player.Weapons.Shotgun.Scripts;
 
 public partial class WeaponShotgun : Node2D
 {
@@ -11,21 +12,17 @@ public partial class WeaponShotgun : Node2D
 	
 	// Exports
 	[Export]
-	private ShootingComponent ShootingComponent { get; set; }
-	
-	[Export]
 	private Timer CooldownTimer { get; set; }
 	
 	[Export]
 	private Marker2D Muzzle { get; set; }
 	
 	// Nodes
-	// private Marker2D _muzzle;
-	private WeaponManager _weaponManager;
+	private WeaponManagerScript _weaponManagerScript;
 	
 	// Packed scene: bullets
 	private readonly PackedScene _bulletShotgun = 
-		ResourceLoader.Load<PackedScene>("res://Weapons/Equipped/Scenes/bullet_shotgun.tscn");
+		ResourceLoader.Load<PackedScene>("res://Player/Weapons/Shotgun/Scenes/bullet_shotgun.tscn");
 	
 	// Variables
 	private Vector2 _muzzlePosition;
@@ -34,7 +31,7 @@ public partial class WeaponShotgun : Node2D
 	public override void _Ready()
 	{
 		// Get the child nodes
-		_weaponManager = GetNode<WeaponManager>("../weapon_manager");
+		_weaponManagerScript = GetNode<WeaponManagerScript>("../weapon_manager");
 		
 		// Set muzzle position
 		_muzzlePosition = Muzzle.Position;
@@ -42,10 +39,6 @@ public partial class WeaponShotgun : Node2D
 		// Set timer values
 		CooldownTimer.SetOneShot(true);
 		CooldownTimer.SetWaitTime(CoolDownTime);
-		
-		// Connect to signals
-		ShootingComponent.ShootingStart += OnShootingStart;
-		ShootingComponent.ShootingEnd += OnShootingEnd;
 	}
 	
 	public override void _Process(double delta)
@@ -65,21 +58,21 @@ public partial class WeaponShotgun : Node2D
 		var bulletInstance3= (BulletShotgun)_bulletShotgun.Instantiate();
 
 		// Set bullet's direction based on player's direction
-		bulletInstance1.Direction = _weaponManager.SpriteDirection;
-		bulletInstance2.Direction = _weaponManager.SpriteDirection;;
-		bulletInstance3.Direction = _weaponManager.SpriteDirection;;
+		bulletInstance1.Direction = _weaponManagerScript.SpriteDirection;
+		bulletInstance2.Direction = _weaponManagerScript.SpriteDirection;
+		bulletInstance3.Direction = _weaponManagerScript.SpriteDirection;
                 
 		// Set bullets rotations
 		bulletInstance2.RotationDegrees = BulletAngle;
 		bulletInstance3.RotationDegrees = -BulletAngle;
                 
 		// Set bullet's location to muzzle location, flip muzzle position when sprite is flipped
-		if (_weaponManager.SpriteDirection < 0)
+		if (_weaponManagerScript.SpriteDirection < 0)
 		{
 			Muzzle.Position = new Vector2(_muzzlePosition.X, _muzzlePosition.Y);
 		}
                 
-		if (_weaponManager.SpriteDirection > 0)
+		if (_weaponManagerScript.SpriteDirection > 0)
 		{
 			Muzzle.Position = new Vector2(-_muzzlePosition.X, _muzzlePosition.Y);
 		}

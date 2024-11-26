@@ -1,19 +1,27 @@
-using Godot;
 using System;
+using Godot;
 
-namespace CoffeeCatProject.Weapons.Equipped.Scripts;
+namespace CoffeeCatProject.Player.WeaponManager.Scripts;
 
-public partial class WeaponManager : Node
+public partial class WeaponManagerScript : Node
 {
 	// Variables
 	private string _currentWeapon;
 	public float SpriteDirection { get; set; }
 	public bool WallSlide { get; set; }
-	private Node Weapon;
+	private Node _weapon;
+
+	private enum WeaponTypes
+	{
+		Shotgun,
+		Revolver,
+		MachineGun,
+		PlasmaRifle
+	}
 	
 	// Packed scene: shotgun
 	private readonly PackedScene _weaponShotgun = 
-		ResourceLoader.Load<PackedScene>("res://Weapons/Equipped/Scenes/weapon_shotgun.tscn");
+		ResourceLoader.Load<PackedScene>("res://Player/Weapons/Shotgun/Scenes/weapon_shotgun.tscn");
 	
 	// Packed scene: revolver
 	/// <summary>
@@ -45,8 +53,8 @@ public partial class WeaponManager : Node
 			case not null when weaponName.Contains(WeaponTypes.Shotgun.ToString().ToLower()):
 				
 				// Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
-				Weapon = ResourceLoader.Load<PackedScene>("res://Weapons/Equipped/Scenes/weapon_shotgun.tscn").Instantiate();
-				GetParent().AddChild(Weapon);
+				_weapon = _weaponShotgun.Instantiate();
+				GetParent().AddChild(_weapon);
 				break;
             
 			case not null when weaponName.Contains(WeaponTypes.MachineGun.ToString().ToLower()):

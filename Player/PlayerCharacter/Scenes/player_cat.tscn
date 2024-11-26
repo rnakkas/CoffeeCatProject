@@ -1,8 +1,8 @@
 [gd_scene load_steps=40 format=3 uid="uid://dlyfs7e3himjx"]
 
-[ext_resource type="Script" path="res://Player/Scripts/Player.cs" id="1_dgt52"]
+[ext_resource type="Script" path="res://Player/PlayerCharacter/Scripts/Player.cs" id="1_dgt52"]
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="2_2ql0j"]
-[ext_resource type="PackedScene" uid="uid://dmbsjapq5hdtm" path="res://Weapons/Equipped/Scenes/weapon_manager.tscn" id="3_s4x3g"]
+[ext_resource type="PackedScene" uid="uid://dmbsjapq5hdtm" path="res://Player/WeaponManager/Scenes/weapon_manager.tscn" id="3_s4x3g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_divmg"]
 size = Vector2(18, 24)

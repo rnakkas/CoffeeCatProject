@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://xgbwu1var27k"]
 
-[ext_resource type="PackedScene" uid="uid://jrk5sgo60jhm" path="res://Weapons/Pickups/Scenes/weapon_pickups.tscn" id="1_8whpw"]
+[ext_resource type="PackedScene" uid="uid://jrk5sgo60jhm" path="res://Player/Weapons/Pickups/Scenes/weapon_pickups.tscn" id="1_8whpw"]
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="2_lt7pk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0h2br"]

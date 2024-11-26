@@ -1,16 +1,13 @@
 using Godot;
 
-namespace CoffeeCatProject.Player.Scripts;
-
-//TODO: Remove this script altogether
-public partial class PlayerBullet : CharacterBody2D
+namespace CoffeeCatProject.Player.Weapons.Shotgun.Scripts;
+public partial class BulletShotgun : Area2D
 {
 	// Constants
-	private const float BulletSpeed = 750f;
+	private const float BulletSpeed = 100f;
 	
 	// Nodes
 	private AnimatedSprite2D _animation;
-	private Vector2 _velocity = Vector2.Zero;
 
 	// Variables
 	private float _direction;
@@ -21,20 +18,20 @@ public partial class PlayerBullet : CharacterBody2D
 	}
 	
 	private Vector2 _directionVector = Vector2.Zero;
+	private bool _hitStatus;
 	
 	public override void _Ready()
 	{
 		// Get nodes
 		_animation = GetNode<AnimatedSprite2D>("sprite");
 		
-		_velocity = Velocity;
-		
-		FloorMaxAngle = 0;
-		
 		// Flip sprite based on direction
 		FlipSprite();
 		
 		_animation.Play("fly");
+
+		// Connect signals
+		BodyEntered += OnBodyEntered;
 	}
 
 	public override async void _PhysicsProcess(double delta)
@@ -42,17 +39,17 @@ public partial class PlayerBullet : CharacterBody2D
 		// Flip sprite based on direction
 		FlipSprite();
 
-		// If bullet hits floor or wall, bullet disappears
-		if (IsOnFloor() || IsOnWall())
+		if (!_hitStatus)
 		{
+			MoveLocalX(BulletSpeed * (float)delta * _direction);
+		}
+		else
+		{
+			MoveLocalX(0);
 			_animation.Play("hit");
 			await ToSignal(_animation, "animation_finished");
 			QueueFree();
 		}
-
-		MoveLocalX(BulletSpeed * (float)delta * _direction);		
-		Velocity = _velocity;
-		MoveAndSlide();
 	}
 
 	private void FlipSprite()
@@ -69,4 +66,13 @@ public partial class PlayerBullet : CharacterBody2D
 		}
 		
 	} 
+	
+	// Connect signals methods
+	private void OnBodyEntered(Node body)
+	{
+		if (body is TileMapLayer || body.Name.ToString().ToLower().Contains("enemy"))
+		{
+			_hitStatus = true;
+		}
+	}
 }

@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://0e8r4l08v0gy"]
 
-[ext_resource type="PackedScene" uid="uid://jrk5sgo60jhm" path="res://Weapons/Pickups/Scenes/weapon_pickups.tscn" id="1_qlv8u"]
+[ext_resource type="PackedScene" uid="uid://jrk5sgo60jhm" path="res://Player/Weapons/Pickups/Scenes/weapon_pickups.tscn" id="1_qlv8u"]
 [ext_resource type="Texture2D" uid="uid://cywupqthyqppa" path="res://Assets/Sprites/PlayerSprites/cat_revolver-1.png" id="2_pg1yx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hbdj0"]

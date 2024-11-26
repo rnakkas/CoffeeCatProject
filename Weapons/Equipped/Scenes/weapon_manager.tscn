@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dmbsjapq5hdtm"]
-
-[ext_resource type="Script" path="res://Weapons/Equipped/Scripts/WeaponManager.cs" id="1_du7m5"]
-
-[node name="weapon_manager" type="Node"]
-script = ExtResource("1_du7m5")

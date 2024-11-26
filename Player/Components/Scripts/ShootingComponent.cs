@@ -1,6 +1,6 @@
 using Godot;
 
-namespace CoffeeCatProject.Weapons.Equipped.Scripts;
+namespace CoffeeCatProject.Player.Components.Scripts;
 
 // This component only handles the shooting logic for weapons
 //TODO: make shooting logic similar to re4, if button held keep shooting with cooldown between shots
