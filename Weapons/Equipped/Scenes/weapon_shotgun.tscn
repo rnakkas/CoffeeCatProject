@@ -1,10 +1,9 @@
-[gd_scene load_steps=31 format=3 uid="uid://b8iwbkorww4jg"]
+[gd_scene load_steps=30 format=3 uid="uid://b8iwbkorww4jg"]
 
 [ext_resource type="Script" path="res://Weapons/Equipped/Scripts/WeaponShotgun.cs" id="1_q7b6k"]
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="1_y6ykm"]
 [ext_resource type="PackedScene" uid="uid://ciag6jxw7f4v8" path="res://Weapons/Equipped/Scenes/shooting_component.tscn" id="3_p3802"]
 [ext_resource type="PackedScene" uid="uid://lhes8rvtwg6i" path="res://Weapons/Equipped/Scenes/animation_component.tscn" id="5_1tkw6"]
-[ext_resource type="PackedScene" uid="uid://b8lo3du126a5h" path="res://Weapons/Equipped/Scenes/bullet_shotgun.tscn" id="5_ov7xc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oneta"]
 atlas = ExtResource("1_y6ykm")
@@ -197,11 +196,10 @@ animations = [{
 "speed": 11.0
 }]
 
-[node name="weapon_shotgun" type="Node2D" node_paths=PackedStringArray("ShootingComponent", "CooldownTimer", "BulletShotgun", "Muzzle")]
+[node name="weapon_shotgun" type="Node2D" node_paths=PackedStringArray("ShootingComponent", "CooldownTimer", "Muzzle")]
 script = ExtResource("1_q7b6k")
 ShootingComponent = NodePath("shooting_component")
 CooldownTimer = NodePath("shotCoolDownTimer")
-BulletShotgun = NodePath("bullet_shotgun")
 Muzzle = NodePath("marker")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
@@ -221,5 +219,3 @@ ShotCooldownTimer = NodePath("../shotCoolDownTimer")
 [node name="animation_component" parent="." node_paths=PackedStringArray("Animation", "ShootingComponent") instance=ExtResource("5_1tkw6")]
 Animation = NodePath("../sprite")
 ShootingComponent = NodePath("../shooting_component")
-
-[node name="bullet_shotgun" parent="." instance=ExtResource("5_ov7xc")]

@@ -17,9 +17,6 @@ public partial class WeaponShotgun : Node2D
 	private Timer CooldownTimer { get; set; }
 	
 	[Export]
-	private BulletShotgun BulletShotgun { get; set; }
-	
-	[Export]
 	private Marker2D Muzzle { get; set; }
 	
 	// Nodes
@@ -38,8 +35,6 @@ public partial class WeaponShotgun : Node2D
 	{
 		// Get the child nodes
 		_weaponManager = GetNode<WeaponManager>("../weapon_manager");
-		
-		BulletShotgun.SetVisible(false);
 		
 		// Set muzzle position
 		_muzzlePosition = Muzzle.Position;
@@ -65,6 +60,7 @@ public partial class WeaponShotgun : Node2D
 	{
 		// Instantiate the bullet scene, cast PackedScene as type PlayerBullet node
 		var bulletInstance1 = (BulletShotgun)_bulletShotgun.Instantiate();
+		var bulletInstance4 = _bulletShotgun.Instantiate<AnimatedSprite2D>();
 		var bulletInstance2 = (BulletShotgun)_bulletShotgun.Instantiate();
 		var bulletInstance3= (BulletShotgun)_bulletShotgun.Instantiate();
 
@@ -96,6 +92,7 @@ public partial class WeaponShotgun : Node2D
 		GetTree().Root.AddChild(bulletInstance1);
 		GetTree().Root.AddChild(bulletInstance2);
 		GetTree().Root.AddChild(bulletInstance3);
+		GetTree().Root.AddChild(bulletInstance4);
 	}
 	
 	// Signal connection methods

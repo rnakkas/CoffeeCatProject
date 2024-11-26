@@ -9,12 +9,23 @@ public partial class WeaponManager : Node
 	private string _currentWeapon;
 	public float SpriteDirection { get; set; }
 	public bool WallSlide { get; set; }
-
+	private Node Weapon;
+	
 	// Packed scene: shotgun
 	private readonly PackedScene _weaponShotgun = 
 		ResourceLoader.Load<PackedScene>("res://Weapons/Equipped/Scenes/weapon_shotgun.tscn");
 	
 	// Packed scene: revolver
+	/// <summary>
+	/// TODO
+	/// </summary>
+	///
+	/// // Packed scene: machinegun
+	/// <summary>
+	/// TODO
+	/// </summary>
+	///
+	/// /// // Packed scene: plasmarifle
 	/// <summary>
 	/// TODO
 	/// </summary>
@@ -34,9 +45,8 @@ public partial class WeaponManager : Node
 			case not null when weaponName.Contains(WeaponTypes.Shotgun.ToString().ToLower()):
 				
 				// Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
-				var weaponInstance = (WeaponShotgun)_weaponShotgun.Instantiate();
-				// weaponInstance.Direction = SpriteDirection;
-				GetParent().AddChild(weaponInstance);
+				Weapon = ResourceLoader.Load<PackedScene>("res://Weapons/Equipped/Scenes/weapon_shotgun.tscn").Instantiate();
+				GetParent().AddChild(Weapon);
 				break;
             
 			case not null when weaponName.Contains(WeaponTypes.MachineGun.ToString().ToLower()):
