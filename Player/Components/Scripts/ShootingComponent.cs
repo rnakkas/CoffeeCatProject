@@ -4,13 +4,15 @@ namespace CoffeeCatProject.Player.Components.Scripts;
 
 // This component only handles the shooting logic for weapons
 //TODO: make shooting logic similar to re4, if button held keep shooting with cooldown between shots
+[GlobalClass]
 public partial class ShootingComponent : Node
 {
-	// Variables
+	// Variables, data to get from player and weapons
 	public bool OnCooldown { get; set; }
-	
-	[Export]
-	public Timer ShotCooldownTimer { get; set; }
+	public float SpriteDirection { get; set; }
+	public float BulletAngle { get; set; }
+	public int BulletCount { get; set; }
+	public Vector2 MuzzlePosition { get; set; }
 	
 	[Signal]
 	public delegate void ShootingStartEventHandler();
@@ -20,16 +22,13 @@ public partial class ShootingComponent : Node
 	
 	public override void _Ready()
 	{
-		// Connecting signals
-		ShotCooldownTimer.Timeout += OnTimerTimeout;
+		
 	}
 
 	private void Shooting()
 	{
+		GD.Print("shooting component emits shoot start signal");
 		EmitSignal(SignalName.ShootingStart);
-		GD.Print("shooting comp start");
-		ShotCooldownTimer.Start();
-		OnCooldown = true;
 	}
 
 	private void StopShooting()
@@ -40,7 +39,7 @@ public partial class ShootingComponent : Node
 	
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionJustPressed("shoot") && !OnCooldown)
+		if (Input.IsActionJustPressed("shoot"))
 		{
 			Shooting();
 		}
@@ -49,11 +48,5 @@ public partial class ShootingComponent : Node
 		{
 			StopShooting();
 		}
-	}
-	
-	// Connecting signals
-	private void OnTimerTimeout()
-	{
-		OnCooldown = false;
 	}
 }

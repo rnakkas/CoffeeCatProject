@@ -1,3 +1,4 @@
+using CoffeeCatProject.Player.Components.Scripts;
 using Godot;
 using CoffeeCatProject.Player.WeaponManager.Scripts;
 
@@ -38,6 +39,9 @@ public partial class Player : CharacterBody2D
     private float _spriteDirection;
     private bool _onCooldown;
     private string _currentWeapon;
+    
+    // Exports
+    [Export] private ShootingComponent ShootingComponent { get; set; }
 
     public override void _Ready()
     {
@@ -46,7 +50,7 @@ public partial class Player : CharacterBody2D
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _playerArea = GetNode<Area2D>("player_area");
-        _weaponManager = GetNode<WeaponManager.Scripts.WeaponManagerScript>("weapon_manager");
+        _weaponManager = GetNode<WeaponManagerScript>("weapon_manager");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -69,6 +73,7 @@ public partial class Player : CharacterBody2D
         
         // Signals/Actions
         _playerArea.AreaEntered += OnAreaEntered;
+        ShootingComponent.ShootingStart += OnShootingStart;
 
         // // Hide mouse cursor when playing game
         // Input.SetMouseMode(Input.MouseModeEnum.Hidden);
@@ -302,7 +307,9 @@ public partial class Player : CharacterBody2D
         UpdateState((float)delta);
     }
     
-    // Signal methods
+    //// Signal methods
+    
+    // Picking up weapons
     private void OnAreaEntered(Node2D area)
     {
         if (area.Name.ToString().ToLower() == "weapon_pickups")
@@ -311,6 +318,12 @@ public partial class Player : CharacterBody2D
             _currentWeapon = area.GetParent().Name.ToString();
             _weaponManager.EquipWeapon(_currentWeapon);
         }
+    }
+
+    // Signal connection to ShootingComponent
+    private void OnShootingStart()
+    {
+        ShootingComponent.SpriteDirection = _spriteDirection;
     }
 
 }

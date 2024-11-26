@@ -194,10 +194,11 @@ animations = [{
 "speed": 11.0
 }]
 
-[node name="weapon_shotgun" type="Node2D" node_paths=PackedStringArray("CooldownTimer", "Muzzle")]
+[node name="weapon_shotgun" type="Node2D" node_paths=PackedStringArray("CooldownTimer", "Muzzle", "Sprite")]
 script = ExtResource("1_5b48r")
 CooldownTimer = NodePath("shotCoolDownTimer")
 Muzzle = NodePath("marker")
+Sprite = NodePath("sprite")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_qj4x5")

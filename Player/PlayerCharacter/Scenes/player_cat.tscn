@@ -1,8 +1,9 @@
-[gd_scene load_steps=40 format=3 uid="uid://dlyfs7e3himjx"]
+[gd_scene load_steps=41 format=3 uid="uid://dlyfs7e3himjx"]
 
 [ext_resource type="Script" path="res://Player/PlayerCharacter/Scripts/Player.cs" id="1_dgt52"]
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="2_2ql0j"]
 [ext_resource type="PackedScene" uid="uid://dmbsjapq5hdtm" path="res://Player/WeaponManager/Scenes/weapon_manager.tscn" id="3_s4x3g"]
+[ext_resource type="Script" path="res://Player/Components/Scripts/ShootingComponent.cs" id="4_vxvdf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_divmg"]
 size = Vector2(18, 24)
@@ -274,10 +275,11 @@ animations = [{
 "speed": 11.0
 }]
 
-[node name="player_cat" type="CharacterBody2D"]
+[node name="player_cat" type="CharacterBody2D" node_paths=PackedStringArray("ShootingComponent")]
 collision_layer = 2
 collision_mask = 21
 script = ExtResource("1_dgt52")
+ShootingComponent = NodePath("ShootingComponent")
 
 [node name="player_area" type="Area2D" parent="."]
 collision_layer = 2
@@ -308,3 +310,6 @@ sprite_frames = SubResource("SpriteFrames_k3p2u")
 animation = &"idle"
 
 [node name="weapon_manager" parent="." instance=ExtResource("3_s4x3g")]
+
+[node name="ShootingComponent" type="Node" parent="."]
+script = ExtResource("4_vxvdf")
