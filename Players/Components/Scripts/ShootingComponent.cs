@@ -67,11 +67,9 @@ public partial class ShootingComponent : Node
 			
 			// Set bullets rotations
 			bulletInstance.RotationDegrees = rng.RandfRange(-BulletAngle, BulletAngle);
-			GD.Print(bulletInstance.RotationDegrees);
 			
 			// Set bullets spawn location
-			bulletInstance.Position = MuzzlePosition;
-			GD.Print(bulletInstance.Position);
+			bulletInstance.GlobalPosition = MuzzlePosition;
 			
 			// Add bullets to root
 			GetTree().Root.AddChild(bulletInstance);
