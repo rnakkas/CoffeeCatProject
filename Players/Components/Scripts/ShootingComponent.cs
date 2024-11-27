@@ -8,7 +8,6 @@ namespace CoffeeCatProject.Players.Components.Scripts;
 public partial class ShootingComponent : Node
 {
 	// Variables, data to get from player and weapons
-	public float CooldownTime { get; set; }
 	public float SpriteDirection { get; set; }
 	public float BulletAngle { get; set; }
 	public int BulletCount { get; set; }
