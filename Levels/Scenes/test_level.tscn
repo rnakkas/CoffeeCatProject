@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bnpdedb212get" path="res://Levels/Scenes/level_end.tscn" id="1_2e8qi"]
 [ext_resource type="Texture2D" uid="uid://cu23mts0uo7fc" path="res://Assets/Tilemaps/garden_tilemap_v3.png" id="1_ohl1y"]
 [ext_resource type="PackedScene" uid="uid://dv1ycuaoyk5yv" path="res://Items/NodeScenes/items.tscn" id="3_4skx5"]
-[ext_resource type="PackedScene" uid="uid://dlyfs7e3himjx" path="res://Players/PlayerCharacter/Scenes/player_cat.tscn" id="3_tgiyf"]
+[ext_resource type="PackedScene" uid="uid://dlyfs7e3himjx" path="res://Players/PlayerCharacters/Scenes/player_cat.tscn" id="3_tgiyf"]
 [ext_resource type="PackedScene" uid="uid://77tyaj4jl48x" path="res://Items/NodeScenes/items_coffee.tscn" id="4_5r06v"]
 [ext_resource type="PackedScene" uid="uid://dpk3inegf0yit" path="res://Items/Scenes/coffee.tscn" id="5_igh1l"]
 [ext_resource type="PackedScene" uid="uid://wf6m2blo1d8u" path="res://Items/NodeScenes/items_coffee_pot.tscn" id="6_w2ons"]
@@ -134,9 +134,11 @@ debug_color = Color(0.859677, 0.315083, 0.471886, 0.42)
 position = Vector2(438, 68)
 
 [node name="player_cat" parent="." instance=ExtResource("3_tgiyf")]
-position = Vector2(-12, 60)
+position = Vector2(-5, 82)
 
 [node name="Camera2D" type="Camera2D" parent="player_cat"]
+visible = false
+position = Vector2(-7, -22)
 zoom = Vector2(4.145, 4.145)
 limit_left = 0
 position_smoothing_enabled = true

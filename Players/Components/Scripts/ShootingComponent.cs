@@ -13,6 +13,7 @@ public partial class ShootingComponent : Node
 	public float BulletAngle { get; set; }
 	public int BulletCount { get; set; }
 	public Vector2 MuzzlePosition { get; set; }
+	public PackedScene BulletScene { get; set; }
 
 	private bool _onCooldown;
 	
@@ -45,12 +46,37 @@ public partial class ShootingComponent : Node
 		EmitSignal(SignalName.IsShooting);
 		_onCooldown = true;
 		CooldownTimer.Start();
+		
+		SpawnBullets();
 	}
 
 	private void StopShooting()
 	{
 		GD.Print("Shooting comp end");
 		EmitSignal(SignalName.NotShooting);
+	}
+
+	private void SpawnBullets()
+	{
+		RandomNumberGenerator rng = new RandomNumberGenerator();
+		
+		// Instantiate the bullet scenes
+		for (int i = 0; i < BulletCount; i++)
+		{
+			var bulletInstance = BulletScene.Instantiate<Area2D>();
+			
+			// Set bullets rotations
+			bulletInstance.RotationDegrees = rng.RandfRange(-BulletAngle, BulletAngle);
+			GD.Print(bulletInstance.RotationDegrees);
+			
+			// Set bullets spawn location
+			bulletInstance.Position = MuzzlePosition;
+			GD.Print(bulletInstance.Position);
+			
+			// Add bullets to root
+			GetTree().Root.AddChild(bulletInstance);
+		}
+		
 	}
 	
 	public override void _Process(double delta)

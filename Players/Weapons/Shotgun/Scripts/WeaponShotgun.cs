@@ -22,7 +22,7 @@ public partial class WeaponShotgun : Node2D
 	private ShootingComponent _shootingComponent;
 	
 	// Packed scene: bullets
-	private readonly PackedScene _bulletShotgun = 
+	private readonly PackedScene _shotgunShells = 
 		ResourceLoader.Load<PackedScene>("res://Players/Weapons/Shotgun/Scenes/bullet_shotgun.tscn");
 	
 	// Variables
@@ -49,15 +49,17 @@ public partial class WeaponShotgun : Node2D
 	
 	public override async void _Process(double delta)
 	{
-		// Flip weapon sprite based on player's direction5
+		// Flip weapon sprite and muzzle position based on player's direction 
 		if (_weaponManagerScriptNode.SpriteDirection < 0)
 		{
 			Sprite.FlipH = false;
+			Muzzle.Position = new Vector2(_muzzlePosition.X, _muzzlePosition.Y);
 		}
 
 		if (_weaponManagerScriptNode.SpriteDirection > 0)
 		{
 			Sprite.FlipH = true;
+			Muzzle.Position = new Vector2(-_muzzlePosition.X, _muzzlePosition.Y);
 		}
 
 		if (_shooting && !_weaponManagerScriptNode.WallSlide)
@@ -83,10 +85,10 @@ public partial class WeaponShotgun : Node2D
 	private void ShootBullets()
 	{
 		// Instantiate the bullet scene, cast PackedScene as type PlayerBullet node
-		var bulletInstance1 = (BulletShotgun)_bulletShotgun.Instantiate();
-		var bulletInstance4 = _bulletShotgun.Instantiate<AnimatedSprite2D>();
-		var bulletInstance2 = (BulletShotgun)_bulletShotgun.Instantiate();
-		var bulletInstance3= (BulletShotgun)_bulletShotgun.Instantiate();
+		var bulletInstance1 = (BulletShotgun)_shotgunShells.Instantiate();
+		var bulletInstance4 = _shotgunShells.Instantiate<AnimatedSprite2D>();
+		var bulletInstance2 = (BulletShotgun)_shotgunShells.Instantiate();
+		var bulletInstance3= (BulletShotgun)_shotgunShells.Instantiate();
 
 		// Set bullet's direction based on player's direction
 		bulletInstance1.Direction = _weaponManagerScriptNode.SpriteDirection;
@@ -129,7 +131,8 @@ public partial class WeaponShotgun : Node2D
 		_shootingComponent.CooldownTimer.SetWaitTime(CoolDownTime);
 		_shootingComponent.BulletAngle = BulletAngle;
 		_shootingComponent.BulletCount = BulletCount;
-		_shootingComponent.MuzzlePosition = _muzzlePosition;
+		_shootingComponent.MuzzlePosition = Muzzle.GlobalPosition;
+		_shootingComponent.BulletScene = _shotgunShells;
 	}
 
 	private void NotShooting()
