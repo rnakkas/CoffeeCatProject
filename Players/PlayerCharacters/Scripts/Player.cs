@@ -45,6 +45,9 @@ public partial class Player : CharacterBody2D
 
     public override void _Ready()
     {
+        // Set node's metadata
+        SetMeta("role", "Player");
+        
         // Get the child nodes
         _animation = GetNode<AnimatedSprite2D>("sprite");
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
@@ -72,7 +75,7 @@ public partial class Player : CharacterBody2D
         
         // Signals/Actions
         _playerArea.AreaEntered += OnAreaEntered;
-        ShootingComponent.IsShooting += IsShooting;
+        // ShootingComponent.IsShooting += IsShooting;
 
         // // Hide mouse cursor when playing game
         // Input.SetMouseMode(Input.MouseModeEnum.Hidden);
@@ -319,10 +322,10 @@ public partial class Player : CharacterBody2D
         }
     }
 
-    // Signal connection to ShootingComponent
-    private void IsShooting()
-    {
-        ShootingComponent.SpriteDirection = _spriteDirection;
-    }
+    // // Signal connection to ShootingComponent
+    // private void IsShooting()
+    // {
+    //     ShootingComponent.SpriteDirection = _spriteDirection;
+    // }
 
 }

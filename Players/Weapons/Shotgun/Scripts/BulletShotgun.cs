@@ -1,34 +1,31 @@
+using CoffeeCatProject.Players.WeaponManager.Scripts;
 using Godot;
 
 namespace CoffeeCatProject.Players.Weapons.Shotgun.Scripts;
 public partial class BulletShotgun : Area2D
 {
 	// Constants
-	private const float BulletSpeed = 100f;
+	private const float BulletSpeed = 800f;
 	
 	// Nodes
-	private AnimatedSprite2D _animation;
+	[Export] private AnimatedSprite2D Sprite {get; set;}
+	private WeaponManagerScript _weaponManagerNodeScript;
+	private string _weaponManagerNodeName = "weapon_manager";
 
 	// Variables
 	private float _direction;
-	public float Direction
-	{
-		get => _direction;
-		set => _direction = value;
-	}
-	
 	private Vector2 _directionVector = Vector2.Zero;
 	private bool _hitStatus;
 	
 	public override void _Ready()
 	{
-		// Get nodes
-		_animation = GetNode<AnimatedSprite2D>("sprite");
+		// Set the bullet's direction
+		SetBulletDirection();
 		
 		// Flip sprite based on direction
 		FlipSprite();
 		
-		_animation.Play("fly");
+		Sprite.Play("fly");
 
 		// Connect signals
 		BodyEntered += OnBodyEntered;
@@ -46,26 +43,46 @@ public partial class BulletShotgun : Area2D
 		else
 		{
 			MoveLocalX(0);
-			_animation.Play("hit");
-			await ToSignal(_animation, "animation_finished");
+			Sprite.Play("hit");
+			await ToSignal(Sprite, "animation_finished");
 			QueueFree();
 		}
 	}
 
+	//TODO: create a bullet animation or movement component and move this code there
 	private void FlipSprite()
 	{
 		// Flip sprite based on direction
 		if (_direction < 0)
 		{
-			_animation.FlipH = false;
+			Sprite.FlipH = false;
 		}
 
 		if (_direction > 0)
 		{
-			_animation.FlipH = true;
+			Sprite.FlipH = true;
 		}
 		
-	} 
+	}
+
+	//TODO: create a bullet animation or movement component and move this code there
+	private void SetBulletDirection()
+	{
+		GD.Print("parent " + GetParent().GetChild(0));
+		foreach (Node child in GetParent().GetChild(0).GetChildren())
+		{
+			if (child == this ||
+			    !child.HasMeta("role") ||
+			    child.GetMeta("role").ToString() != "Player") 
+				continue;
+			if (!child.HasNode(_weaponManagerNodeName)) 
+				continue;
+			_weaponManagerNodeScript = child.GetNode<WeaponManagerScript>(_weaponManagerNodeName);
+			GD.Print("node: " + _weaponManagerNodeScript);
+		}
+		
+		_direction = _weaponManagerNodeScript.SpriteDirection;
+	}
 	
 	// Connect signals methods
 	private void OnBodyEntered(Node body)

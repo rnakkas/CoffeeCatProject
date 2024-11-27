@@ -2,15 +2,14 @@ using CoffeeCatProject.Players.Components.Scripts;
 using CoffeeCatProject.Players.WeaponManager.Scripts;
 using Godot;
 
-//TODO: Fix issue with shooting continuously and multiple times when shoot button is pressed or held
 namespace CoffeeCatProject.Players.Weapons.Shotgun.Scripts;
 
 public partial class WeaponShotgun : Node2D
 {
 	// Constants
-	private const float BulletAngle = 3.5f;
+	private const float BulletAngle = 6.5f;
 	private const float CoolDownTime = 0.9f;
-	private const int BulletCount = 3;
+	private const int BulletCount = 6;
 	
 	// Exports
 	[Export] private Timer CooldownTimer { get; set; }
@@ -43,7 +42,6 @@ public partial class WeaponShotgun : Node2D
 		// CooldownTimer.SetOneShot(true);
 		// CooldownTimer.SetWaitTime(CoolDownTime);
 		
-		
 		// Connect signals
 		_shootingComponent.IsShooting += IsShooting;
 		_shootingComponent.NotShooting += NotShooting;
@@ -51,6 +49,7 @@ public partial class WeaponShotgun : Node2D
 	
 	public override async void _Process(double delta)
 	{
+		//TODO: Create a weapon animation component and move this code there
 		// Flip weapon sprite and muzzle position based on player's direction 
 		if (_weaponManagerScriptNode.SpriteDirection < 0)
 		{

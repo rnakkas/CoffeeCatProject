@@ -72,10 +72,11 @@ size = Vector2(14.1944, 10.1731)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mymv6"]
 size = Vector2(3.77778, 10.7692)
 
-[node name="bullet_shotgun" type="Area2D"]
+[node name="bullet_shotgun" type="Area2D" node_paths=PackedStringArray("Sprite")]
 collision_layer = 128
 collision_mask = 81
 script = ExtResource("1_xs1l8")
+Sprite = NodePath("sprite")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.35, 0.35)
