@@ -1,7 +1,8 @@
-using System;
 using Godot;
+using ShootingComponent = CoffeeCatProject.Players.Components.Scripts.ShootingComponent;
+using WeaponManagerScript = CoffeeCatProject.Players.WeaponManager.Scripts.WeaponManagerScript;
 
-namespace CoffeeCatProject.Player.Scripts;
+namespace CoffeeCatProject.Players.PlayerCharacters.Scripts;
 
 public partial class Player : CharacterBody2D
 {
@@ -12,17 +13,11 @@ public partial class Player : CharacterBody2D
     private const float WallSlideGravity = 500.0f;
     private const float WallJumpVelocity = -200.0f;
     private const float FloorSnapLengthValue = 2.5f;
-    private const float BulletAngle = 3.5f;
 
     // Nodes
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
-    private Marker2D _muzzle;
-    private Timer _shotCooldown;
-    
-    // Load packed scene of bullet
-    private readonly PackedScene _playerBullet = 
-        ResourceLoader.Load<PackedScene>("res://Player/Scenes/player_bullet.tscn");
+    private Area2D _playerArea;
 
     // State enum
     private enum State
@@ -32,8 +27,7 @@ public partial class Player : CharacterBody2D
         Jump, 
         WallSlide, 
         Fall, 
-        WallJump,
-        Shoot
+        WallJump
     };
 
     // Variables
@@ -43,15 +37,21 @@ public partial class Player : CharacterBody2D
     private Vector2 _muzzlePosition;
     private float _spriteDirection;
     private bool _onCooldown;
+    private string _currentWeapon;
+    
+    // Exports
+    [Export] private WeaponManagerScript WeaponManager { get; set; }
 
     public override void _Ready()
     {
+        // Set node's metadata
+        SetMeta("role", "Player");
+        
         // Get the child nodes
         _animation = GetNode<AnimatedSprite2D>("sprite");
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
-        _muzzle = GetNode<Marker2D>("marker");
-        _shotCooldown = GetNode<Timer>("shotCoolDownTimer");
+        _playerArea = GetNode<Area2D>("player_area");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -65,25 +65,19 @@ public partial class Player : CharacterBody2D
         // Set velocity
         _velocity = Velocity;
         
-        // Set muzzle position
-        _muzzlePosition = _muzzle.Position;
-        
         // Set default direction
         _spriteDirection = 1.0f;
-        
-        // Set timer values
-        _shotCooldown.SetOneShot(true);
-        _shotCooldown.SetWaitTime(0.9);
         
         // Animation to play on ready
         _animation.FlipH = true;
         _animation.Play("idle");
         
         // Signals/Actions
-        _shotCooldown.Timeout += OnTimerTimeout;
-        
-        // Hide mouse cursor when playing game
-        Input.SetMouseMode(Input.MouseModeEnum.Hidden);
+        _playerArea.AreaEntered += OnAreaEntered;
+        // ShootingComponent.IsShooting += IsShooting;
+
+        // // Hide mouse cursor when playing game
+        // Input.SetMouseMode(Input.MouseModeEnum.Hidden);
     }
 
     // State Machine
@@ -97,78 +91,40 @@ public partial class Player : CharacterBody2D
         EnterState();
     }
 
-    private async void EnterState()
+    private void EnterState()
     {
         switch (_currentState)
         {
             case State.Idle:
                 _velocity.Y = 0;
-                
-                // If shooting is the current animation, wait for it to finish before doing next animation 
-                if (_animation.Animation == "idle_shoot" || 
-                    _animation.Animation == "run_shoot")
-                {
-                     await ToSignal(_animation, "animation_finished");
-                }
-                
                 _animation.Play("idle");
                 break;
             
             case State.Run:
-                // If shooting is the current animation, wait for it to finish before doing next animation
-                if (_animation.Animation == "idle_shoot" || 
-                    _animation.Animation == "run_shoot")
-                {
-                    await ToSignal(_animation, "animation_finished");
-                }
-
                 _animation.Play("run");
                 break;
             
             case State.Jump:
                 _velocity.Y = JumpVelocity;
-                
-                // If shooting is the current animation, wait for it to finish before doing next animation
-                if (_animation.Animation == "idle_shoot" ||
-                    _animation.Animation == "run_shoot")
-                {
-                    await ToSignal(_animation, "animation_finished");
-                }
-                
                 _animation.Play("jump");
                 break;
             
             case State.WallSlide:
+                if (WeaponManager != null)
+                {
+                    WeaponManager.WallSlide = true;
+                }
+                
                 _animation.Play("wall_slide");
                 break;
             
             case State.Fall:
-                // If shooting is the current animation, wait for it to finish before doing next animation
-                if (_animation.Animation == "idle_shoot" || 
-                    _animation.Animation == "run_shoot")
-                {
-                    await ToSignal(_animation, "animation_finished");
-                }
-                
                 _animation.Play("fall");
                 break;
             
             case State.WallJump:
                 _velocity.Y = WallJumpVelocity;
-                
-                // If shooting is the current animation, wait for it to finish before doing next animation
-                if (_animation.Animation == "idle_shoot")
-                {
-                    await ToSignal(_animation, "animation_finished");
-                }
-                
                 _animation.Play("jump");
-                break;
-            
-            case State.Shoot:
-                _onCooldown = true;
-                _shotCooldown.Start();
-                _animation.Play("run_shoot");
                 break;
         }
     }
@@ -184,12 +140,14 @@ public partial class Player : CharacterBody2D
             case State.Jump:
                 break;
             case State.WallSlide:
+                if (WeaponManager != null)
+                {
+                    WeaponManager.WallSlide = false;
+                }
                 break;
             case State.Fall:
                 break;
             case State.WallJump:
-                break;
-            case State.Shoot:
                 break;
         }
     }
@@ -213,10 +171,6 @@ public partial class Player : CharacterBody2D
                 {
                     SetState(State.Fall);
                 }
-                else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-                {
-                    SetState(State.Shoot);
-                }
 
                 break;
 
@@ -235,10 +189,6 @@ public partial class Player : CharacterBody2D
                 else if (!IsOnFloor())
                 {
                     SetState(State.Fall);
-                }
-                else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-                {
-                    SetState(State.Shoot);
                 }
 
                 Velocity = _velocity;
@@ -260,10 +210,6 @@ public partial class Player : CharacterBody2D
                     else if (_leftWallDetect.IsColliding() || _rightWallDetect.IsColliding())
                     {
                         SetState(State.WallSlide);
-                    }
-                    else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-                    {
-                        SetState(State.Shoot);
                     }
                 }
 
@@ -287,11 +233,6 @@ public partial class Player : CharacterBody2D
                 else
                 {
                     _velocity.Y += Gravity * delta;
-
-                    if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-                    {
-                        SetState(State.Shoot);
-                    }
                 }
 
                 Velocity = _velocity;
@@ -335,78 +276,10 @@ public partial class Player : CharacterBody2D
                     {
                         SetState(State.Fall);
                     }
-                    else if (Input.IsActionJustPressed("shoot") && !_onCooldown)
-                    {
-                        SetState(State.Shoot);
-                    }
                 }
 
                 Velocity = _velocity;
                 MoveAndSlide();
-                break;
-
-            case State.Shoot:
-                FlipSprite(direction.X);
-                
-                // Instantiate the bullet scene, cast PackedScene as type Node
-                var bulletInstance1 = (PlayerBullet)_playerBullet.Instantiate();
-                var bulletInstance2 = (PlayerBullet)_playerBullet.Instantiate();
-                var bulletInstance3= (PlayerBullet)_playerBullet.Instantiate();
-
-                // Set bullet's direction based on player's direction
-                bulletInstance1.Direction = _spriteDirection;
-                bulletInstance2.Direction = _spriteDirection;
-                bulletInstance3.Direction = _spriteDirection;
-                
-                // Set bullets rotations
-                bulletInstance2.RotationDegrees = BulletAngle;
-                bulletInstance3.RotationDegrees = -BulletAngle;
-                
-                // Set bullet's location to muzzle location, flip muzzle position when sprite is flipped
-                if (_spriteDirection < 0)
-                {
-                    _muzzle.Position = _muzzlePosition;
-                }
-                
-                if (_spriteDirection > 0)
-                {
-                    _muzzle.Position = -_muzzlePosition;
-                }
-                
-                bulletInstance1.GlobalPosition = _muzzle.GlobalPosition;
-                bulletInstance2.GlobalPosition = _muzzle.GlobalPosition;
-                bulletInstance3.GlobalPosition = _muzzle.GlobalPosition;
-                
-                // Add bullet scene to scene tree
-                GetTree().Root.AddChild(bulletInstance1);
-                GetTree().Root.AddChild(bulletInstance2);
-                GetTree().Root.AddChild(bulletInstance3);
-                
-                if (!IsOnFloor())
-                {
-                    _velocity.Y += Gravity * delta;
-                }
-                
-                if (direction.X != 0)
-                {
-                    SetState(State.Run);
-                }
-                else if (direction.X == 0 && Input.IsActionJustPressed("shoot") && !_onCooldown)
-                {
-                    SetState(State.Shoot);
-                }
-                else if (Input.IsActionJustPressed("jump") && IsOnFloor())
-                {
-                    SetState(State.Jump);
-                }
-                else
-                {
-                    SetState(State.Idle);
-                }
-                
-                Velocity = _velocity;
-                MoveAndSlide();
-                
                 break;
         }
     }
@@ -423,16 +296,28 @@ public partial class Player : CharacterBody2D
             _animation.FlipH = true;
             _spriteDirection = 1;
         }
+
+        if (_currentWeapon != null)
+        {
+            WeaponManager.SpriteDirection = _spriteDirection;
+        }
+        
     }
     public override void _PhysicsProcess(double delta)
     {
         UpdateState((float)delta);
     }
     
-    // Signals/Actions methods
+    //// Signal methods
     
-    private void OnTimerTimeout()
+    // Picking up weapons
+    private void OnAreaEntered(Node2D area)
     {
-        _onCooldown = false;
+        if (area.Name.ToString().ToLower() == "weapon_pickups")
+        {
+            // If the area entered is weapon_pickups, get weapon's parent node name and equip the weapon
+            _currentWeapon = area.GetParent().Name.ToString();
+            WeaponManager.EquipWeapon(_currentWeapon);
+        }
     }
 }

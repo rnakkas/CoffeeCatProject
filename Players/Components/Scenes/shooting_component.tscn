@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://ciag6jxw7f4v8"]
+
+[ext_resource type="Script" path="res://Players/Components/Scripts/ShootingComponent.cs" id="1_60ab8"]
+
+[node name="shooting_component" type="Node" node_paths=PackedStringArray("CooldownTimer")]
+script = ExtResource("1_60ab8")
+CooldownTimer = NodePath("")

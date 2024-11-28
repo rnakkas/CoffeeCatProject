@@ -31,7 +31,7 @@ public partial class Items : Area2D
     // Godot signal when body enters area2D
     private void OnBodyEntered(Node2D body)
     {
-        if (body.Name == "player_shotgun")
+        if (body.Name.ToString().ToLower().Contains("player"))
         {
             PlayerCollectsItem();
         }

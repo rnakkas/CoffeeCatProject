@@ -1,6 +1,6 @@
 [gd_scene load_steps=36 format=3 uid="uid://rnwicnm300tm"]
 
-[ext_resource type="Script" path="res://Player/Scripts/Player.cs" id="1_stb7n"]
+[ext_resource type="Script" path="res://Players/PlayerCharacter/Scripts/Player.cs" id="1_stb7n"]
 [ext_resource type="Texture2D" uid="uid://x018yodyixjt" path="res://Assets/player_cat_spritesheet_v2.png" id="3_nxdfy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f70d7"]
