@@ -48,8 +48,7 @@ public partial class BulletShotgun : Area2D
 			QueueFree();
 		}
 	}
-
-	//TODO: create a bullet animation or movement component and move this code there
+	
 	private void FlipSprite()
 	{
 		// Flip sprite based on direction
@@ -65,22 +64,18 @@ public partial class BulletShotgun : Area2D
 		
 	}
 
-	//TODO: create a bullet animation or movement component and move this code there
 	private void SetBulletDirection()
 	{
-		GD.Print("parent " + GetParent().GetChild(0));
-		foreach (Node child in GetParent().GetChild(0).GetChildren())
+		foreach (var child in GetParent().GetChild(0).GetChildren())
 		{
 			if (child == this ||
 			    !child.HasMeta("role") ||
-			    child.GetMeta("role").ToString() != "Player") 
+			    child.GetMeta("role").ToString() != "Player" ||
+			    !child.HasNode(_weaponManagerNodeName)) 
 				continue;
-			if (!child.HasNode(_weaponManagerNodeName)) 
-				continue;
+			
 			_weaponManagerNodeScript = child.GetNode<WeaponManagerScript>(_weaponManagerNodeName);
-			GD.Print("node: " + _weaponManagerNodeScript);
 		}
-		
 		_direction = _weaponManagerNodeScript.SpriteDirection;
 	}
 	
