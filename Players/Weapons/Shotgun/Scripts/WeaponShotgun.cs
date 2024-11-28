@@ -8,17 +8,18 @@ public partial class WeaponShotgun : Node2D
 {
 	// Constants
 	private const float BulletAngle = 6.5f;
-	private const float CoolDownTime = 0.9f;
+	private const float CoolDownTime = 1.2f;
 	private const int BulletCount = 6;
 	
 	// Exports
 	[Export] private Timer CooldownTimer { get; set; }
 	[Export] private Marker2D Muzzle { get; set; }
 	[Export] private AnimatedSprite2D Sprite { get; set; }
+	[Export] private ShootingComponent ShootingComponent  { get; set; }
+	[Export] private WeaponAnimationComponent WeaponAnimationComponent  { get; set; }
 	
 	// Nodes
 	private WeaponManagerScript _weaponManagerScriptNode;
-	private ShootingComponent _shootingComponent;
 	
 	// Packed scene: bullets
 	private readonly PackedScene _shotgunShells = 
@@ -26,121 +27,69 @@ public partial class WeaponShotgun : Node2D
 	
 	// Variables
 	private Vector2 _muzzlePosition;
-	private bool _shooting;
+	private bool _shootingStatus;
 	
 	public override void _Ready()
 	{
 		// Get the nodes
 		_weaponManagerScriptNode = GetParent().GetNode<WeaponManagerScript>("weapon_manager");
-		_shootingComponent = GetParent().GetNode<ShootingComponent>("shooting_component");
 		
 		// Set muzzle position
 		_muzzlePosition = Muzzle.Position;
-		
-		//TODO: Remove
-		// // Set timer values
-		// CooldownTimer.SetOneShot(true);
-		// CooldownTimer.SetWaitTime(CoolDownTime);
-		
-		// Connect signals
-		_shootingComponent.IsShooting += IsShooting;
-		_shootingComponent.NotShooting += NotShooting;
+
+		_shootingStatus = false;
 	}
 	
-	public override async void _Process(double delta)
+	public override void _Process(double delta)
 	{
-		//TODO: Create a weapon animation component and move this code there
 		// Flip weapon sprite and muzzle position based on player's direction 
 		if (_weaponManagerScriptNode.SpriteDirection < 0)
 		{
 			Sprite.FlipH = false;
 			Muzzle.Position = new Vector2(_muzzlePosition.X, _muzzlePosition.Y);
 		}
-
+		
 		if (_weaponManagerScriptNode.SpriteDirection > 0)
 		{
 			Sprite.FlipH = true;
 			Muzzle.Position = new Vector2(-_muzzlePosition.X, _muzzlePosition.Y);
 		}
 
-		if (_shooting && !_weaponManagerScriptNode.WallSlide)
+		// Shooting
+		if ((Input.IsActionJustPressed("shoot") || Input.IsActionPressed("shoot")) && 
+		    !_weaponManagerScriptNode.WallSlide)
 		{
-			Sprite.Play("shoot");
+			_shootingStatus = true;
+			ProvideShootingDataToComponents();
 			
 		}
 		else if (_weaponManagerScriptNode.WallSlide)
 		{
-			Sprite.Play("wall_slide");
+			_shootingStatus = false;
+			ProvideShootingDataToComponents();
 		}
 		else
 		{
-			if (Sprite.Animation == "shoot")
-			{
-				await ToSignal(Sprite, "animation_finished");
-			}
-			Sprite.Play("idle");
+			_shootingStatus = false;
+			ProvideShootingDataToComponents();
 		}
-		
-	}
-	
-	//TODO: Remove
-	//
-	// private void ShootBullets()
-	// {
-	// 	// Instantiate the bullet scene, cast PackedScene as type PlayerBullet node
-	// 	var bulletInstance1 = (BulletShotgun)_shotgunShells.Instantiate();
-	// 	var bulletInstance4 = _shotgunShells.Instantiate<AnimatedSprite2D>();
-	// 	var bulletInstance2 = (BulletShotgun)_shotgunShells.Instantiate();
-	// 	var bulletInstance3= (BulletShotgun)_shotgunShells.Instantiate();
-	//
-	// 	// Set bullet's direction based on player's direction
-	// 	bulletInstance1.Direction = _weaponManagerScriptNode.SpriteDirection;
-	// 	bulletInstance2.Direction = _weaponManagerScriptNode.SpriteDirection;
-	// 	bulletInstance3.Direction = _weaponManagerScriptNode.SpriteDirection;
- //                
-	// 	// Set bullets rotations
-	// 	bulletInstance2.RotationDegrees = BulletAngle;
-	// 	bulletInstance3.RotationDegrees = -BulletAngle;
- //                
-	// 	// Set bullet's location to muzzle location, flip muzzle position when sprite is flipped
-	// 	if (_weaponManagerScriptNode.SpriteDirection < 0)
-	// 	{
-	// 		Muzzle.Position = new Vector2(_muzzlePosition.X, _muzzlePosition.Y);
-	// 	}
- //                
-	// 	if (_weaponManagerScriptNode.SpriteDirection > 0)
-	// 	{
-	// 		Muzzle.Position = new Vector2(-_muzzlePosition.X, _muzzlePosition.Y);
-	// 	}
- //                
-	// 	bulletInstance1.GlobalPosition = Muzzle.GlobalPosition;
-	// 	bulletInstance2.GlobalPosition = Muzzle.GlobalPosition;
-	// 	bulletInstance3.GlobalPosition = Muzzle.GlobalPosition;
- //                
-	// 	// Add bullet scene to scene tree
-	// 	GetTree().Root.AddChild(bulletInstance1);
-	// 	GetTree().Root.AddChild(bulletInstance2);
-	// 	GetTree().Root.AddChild(bulletInstance3);
-	// 	GetTree().Root.AddChild(bulletInstance4);
-	// }
-	
-	
-	//// Signal connection methods
-	
-	// Signal connection to ShootingComponent
-	private void IsShooting()
-	{
-		_shooting = true;
-		_shootingComponent.CooldownTimer.SetWaitTime(CoolDownTime);
-		_shootingComponent.BulletAngle = BulletAngle;
-		_shootingComponent.BulletCount = BulletCount;
-		_shootingComponent.MuzzlePosition = Muzzle.GlobalPosition;
-		_shootingComponent.BulletScene = _shotgunShells;
 	}
 
-	private void NotShooting()
+	private void ProvideShootingDataToComponents()
 	{
-		_shooting = false;
+		// To shooting component
+		ShootingComponent.Shooting = _shootingStatus;
+		ShootingComponent.WallSlide = _weaponManagerScriptNode.WallSlide;
+		ShootingComponent.CooldownTimer.SetWaitTime(CoolDownTime);
+		ShootingComponent.BulletAngle = BulletAngle;
+		ShootingComponent.BulletCount = BulletCount;
+		ShootingComponent.MuzzlePosition = Muzzle.GlobalPosition;
+		ShootingComponent.BulletScene = _shotgunShells;
+
+		// To weapon animation component
+		WeaponAnimationComponent.Shooting = _shootingStatus;
+		WeaponAnimationComponent.WallSlide = _weaponManagerScriptNode.WallSlide;
+		WeaponAnimationComponent.CooldownTimer.SetWaitTime(CoolDownTime);
 	}
 
 }

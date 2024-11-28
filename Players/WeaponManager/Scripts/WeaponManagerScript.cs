@@ -11,7 +11,6 @@ public partial class WeaponManagerScript : Node
 	public float SpriteDirection { get; set; }
 	public bool WallSlide { get; set; }
 
-	private ShootingComponent _shootingComponent;
 	private Node _weapon;
 	private Area2D _bullets;
 	private enum WeaponTypes
@@ -44,10 +43,6 @@ public partial class WeaponManagerScript : Node
 	public override void _Ready()
 	{
 		GD.Print("weapon manager ready");
-		_shootingComponent = GetParent().GetNode<ShootingComponent>("shooting_component");
-		
-		// Connect signal to shooting component
-		_shootingComponent.IsShooting += IsShooting;
 	}
 
 	public void EquipWeapon(string weaponName)
@@ -91,15 +86,5 @@ public partial class WeaponManagerScript : Node
 			GD.Print("swap");
 		}
 		
-	}
-	
-	public override void _Process(double delta)
-	{
-	}
-	
-	// Signal connection to ShootingComponent
-	private void IsShooting()
-	{
-		_shootingComponent.SpriteDirection = SpriteDirection;
 	}
 }

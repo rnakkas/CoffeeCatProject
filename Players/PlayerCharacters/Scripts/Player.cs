@@ -40,7 +40,6 @@ public partial class Player : CharacterBody2D
     private string _currentWeapon;
     
     // Exports
-    [Export] private ShootingComponent ShootingComponent { get; set; }
     [Export] private WeaponManagerScript WeaponManager { get; set; }
 
     public override void _Ready()
@@ -321,11 +320,4 @@ public partial class Player : CharacterBody2D
             WeaponManager.EquipWeapon(_currentWeapon);
         }
     }
-
-    // // Signal connection to ShootingComponent
-    // private void IsShooting()
-    // {
-    //     ShootingComponent.SpriteDirection = _spriteDirection;
-    // }
-
 }

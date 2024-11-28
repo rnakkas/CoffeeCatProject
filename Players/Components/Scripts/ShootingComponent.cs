@@ -1,5 +1,4 @@
 using Godot;
-using CoffeeCatProject.Players.WeaponManager.Scripts;
 
 namespace CoffeeCatProject.Players.Components.Scripts;
 
@@ -7,30 +6,20 @@ namespace CoffeeCatProject.Players.Components.Scripts;
 public partial class ShootingComponent : Node
 {
 	// Variables, data to get from player and weapons
-	public float SpriteDirection { get; set; }
+	// public float SpriteDirection { get; set; }
 	public float BulletAngle { get; set; }
 	public int BulletCount { get; set; }
 	public Vector2 MuzzlePosition { get; set; }
 	public PackedScene BulletScene { get; set; }
+	public bool WallSlide { get; set; }
+	public bool Shooting { get; set; }
 
 	private bool _onCooldown;
 	
 	[Export] public Timer CooldownTimer { get; set; }
 	
-	[Signal]
-	public delegate void IsShootingEventHandler();
-
-	[Signal]
-	public delegate void NotShootingEventHandler();
-	
-	// Nodes
-	private WeaponManagerScript _weaponManagerScriptNode;
-	
 	public override void _Ready()
 	{
-		// Get the nodes
-		_weaponManagerScriptNode = GetParent().GetNode<WeaponManagerScript>("weapon_manager");
-		
 		// Set timer values
 		CooldownTimer.SetOneShot(true);
 		
@@ -41,17 +30,10 @@ public partial class ShootingComponent : Node
 	private void ShootBullets()
 	{
 		// Emit signal to get all the relevant data, spawn bullets and start cooldown timer
-		EmitSignal(SignalName.IsShooting);
 		SpawnBullets();
 		CooldownTimer.Start();
 		
-		GD.Print("shooting component emits shooting signal and starts cooldown timer");
-	}
-
-	private void StopShooting()
-	{
-		GD.Print("Shooting comp end");
-		EmitSignal(SignalName.NotShooting);
+		GD.Print("shooting component shoots bullets");
 	}
 
 	private void SpawnBullets()
@@ -77,19 +59,10 @@ public partial class ShootingComponent : Node
 	
 	public override void _Process(double delta)
 	{
-		if (
-			(Input.IsActionJustPressed("shoot") || Input.IsActionPressed("shoot")) && 
-			(!_weaponManagerScriptNode.WallSlide) &&
-			!_onCooldown
-			)
+		if (Shooting && !_onCooldown)
 		{
 			_onCooldown = true;
 			ShootBullets();
-		}
-
-		if (Input.IsActionJustReleased("shoot"))
-		{
-			EmitSignal(SignalName.NotShooting);
 		}
 	}
 
