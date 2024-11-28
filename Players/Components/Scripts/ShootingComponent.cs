@@ -29,11 +29,9 @@ public partial class ShootingComponent : Node
 
 	private void ShootBullets()
 	{
-		// Emit signal to get all the relevant data, spawn bullets and start cooldown timer
+		// Spawn bullets and start cooldown timer
 		SpawnBullets();
 		CooldownTimer.Start();
-		
-		GD.Print("shooting component shoots bullets");
 	}
 
 	private void SpawnBullets()
@@ -68,7 +66,6 @@ public partial class ShootingComponent : Node
 
 	private void CooldownTimeout()
 	{
-		GD.Print("cooldown timeout reached");
 		_onCooldown = false;
 	}
 }

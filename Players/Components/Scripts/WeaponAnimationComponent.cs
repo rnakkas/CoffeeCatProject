@@ -31,7 +31,6 @@ public partial class WeaponAnimationComponent : Node
 	
 	private void CooldownTimeout()
 	{
-		GD.Print("cooldown timeout reached");
 		_onCooldown = false;
 	}
 	
