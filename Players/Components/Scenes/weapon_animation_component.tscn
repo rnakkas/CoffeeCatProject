@@ -4,6 +4,4 @@
 
 [node name="weapon_animation_component" type="Node" node_paths=PackedStringArray("CooldownTimer")]
 script = ExtResource("1_03jh6")
-CooldownTimer = NodePath("cooldownTimer")
-
-[node name="cooldownTimer" type="Timer" parent="."]
+CooldownTimer = NodePath("")

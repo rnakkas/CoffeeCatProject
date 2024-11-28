@@ -12,7 +12,6 @@ public partial class WeaponShotgun : Node2D
 	private const int BulletCount = 6;
 	
 	// Exports
-	[Export] private Timer CooldownTimer { get; set; }
 	[Export] private Marker2D Muzzle { get; set; }
 	[Export] private AnimatedSprite2D Sprite { get; set; }
 	[Export] private ShootingComponent ShootingComponent  { get; set; }
