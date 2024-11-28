@@ -196,11 +196,8 @@ animations = [{
 "speed": 11.0
 }]
 
-[node name="weapon_shotgun" type="Node2D" node_paths=PackedStringArray("CooldownTimer", "Muzzle", "Sprite", "ShootingComponent", "WeaponAnimationComponent")]
+[node name="weapon_shotgun" type="Node2D" node_paths=PackedStringArray("ShootingComponent", "WeaponAnimationComponent")]
 script = ExtResource("1_5b48r")
-CooldownTimer = NodePath("shotCoolDownTimer")
-Muzzle = NodePath("marker")
-Sprite = NodePath("sprite")
 ShootingComponent = NodePath("shooting_component")
 WeaponAnimationComponent = NodePath("weapon_animation_component")
 
@@ -215,8 +212,11 @@ frame_progress = 1.0
 [node name="marker" type="Marker2D" parent="."]
 position = Vector2(-17, -2)
 
-[node name="shooting_component" parent="." node_paths=PackedStringArray("CooldownTimer") instance=ExtResource("3_fplys")]
+[node name="shooting_component" parent="." node_paths=PackedStringArray("CooldownTimer", "Muzzle") instance=ExtResource("3_fplys")]
 CooldownTimer = NodePath("../shotCoolDownTimer")
+Muzzle = NodePath("../marker")
 
-[node name="weapon_animation_component" parent="." node_paths=PackedStringArray("CooldownTimer") instance=ExtResource("4_7vlyj")]
+[node name="weapon_animation_component" parent="." node_paths=PackedStringArray("CooldownTimer", "Sprite", "ShootingComponent") instance=ExtResource("4_7vlyj")]
 CooldownTimer = NodePath("../shotCoolDownTimer")
+Sprite = NodePath("../sprite")
+ShootingComponent = NodePath("../shooting_component")
