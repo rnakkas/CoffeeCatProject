@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://75xqviw4yqgm"]
 
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="1_hwa2b"]
-[ext_resource type="Script" path="res://ItemPickups/WeaponPickups/Scripts/WeaponPickups.cs" id="1_sj0kt"]
+[ext_resource type="Script" path="res://ItemPickups/WeaponPickups/Scripts/ShotgunPickup.cs" id="1_kqk2o"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ashr0"]
 radius = 11.0
@@ -45,7 +45,7 @@ animations = [{
 [node name="pickups_shotgun" type="Area2D"]
 collision_layer = 4
 collision_mask = 2
-script = ExtResource("1_sj0kt")
+script = ExtResource("1_kqk2o")
 
 [node name="collider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ashr0")

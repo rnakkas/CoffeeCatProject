@@ -1,5 +1,5 @@
 using System;
-using CoffeeCatProject.Players.Components.Scripts;
+using CoffeeCatProject.Singletons;
 using Godot;
 
 namespace CoffeeCatProject.Players.WeaponManager.Scripts;
@@ -47,12 +47,12 @@ public partial class WeaponManagerScript : Node
 
 	public void EquipWeapon(string weaponName)
 	{
-		weaponName = weaponName.ToLower();
-		_currentWeapon = weaponName;
+		// weaponName = weaponName.ToLower();
+		// _currentWeapon = weaponName;
 		
 		switch (weaponName)
 		{
-			case not null when weaponName.Contains(WeaponTypes.Shotgun.ToString().ToLower()):
+			case not null when weaponName.Equals("shotgun"):
 				
 				// Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
 				_weapon = _weaponShotgun.Instantiate();

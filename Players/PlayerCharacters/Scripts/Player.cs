@@ -1,5 +1,6 @@
+using System;
+using CoffeeCatProject.Singletons;
 using Godot;
-using ShootingComponent = CoffeeCatProject.Players.Components.Scripts.ShootingComponent;
 using WeaponManagerScript = CoffeeCatProject.Players.WeaponManager.Scripts.WeaponManagerScript;
 
 namespace CoffeeCatProject.Players.PlayerCharacters.Scripts;
@@ -74,10 +75,6 @@ public partial class Player : CharacterBody2D
         
         // Signals/Actions
         _playerArea.AreaEntered += OnAreaEntered;
-        // ShootingComponent.IsShooting += IsShooting;
-
-        // // Hide mouse cursor when playing game
-        // Input.SetMouseMode(Input.MouseModeEnum.Hidden);
     }
 
     // State Machine
@@ -310,14 +307,31 @@ public partial class Player : CharacterBody2D
     
     //// Signal methods
     
+    
     // Picking up weapons
     private void OnAreaEntered(Node2D area)
     {
-        if (area.Name.ToString().ToLower() == "weapon_pickups")
+        if (!area.HasMeta("role")) 
+            return;
+       
+        var pickupName = area.GetMeta("role").ToString();
+
+        if (!Enum.IsDefined(typeof(WeaponTypes.PlayerWeaponTypes), pickupName))
+            return;
+        
+        
+        // _currentWeapon = area.GetParent().Name.ToString();
+        EquipWeapon(pickupName);
+    }
+
+    private void EquipWeapon(string pickupName)
+    {
+        switch (pickupName)
         {
-            // If the area entered is weapon_pickups, get weapon's parent node name and equip the weapon
-            _currentWeapon = area.GetParent().Name.ToString();
-            WeaponManager.EquipWeapon(_currentWeapon);
+            case "Shotgun": 
+                var weaponShotgun = ResourceLoader.Load<PackedScene>(WeaponTypes.ShotgunScene);
+                AddChild(weaponShotgun.Instantiate());
+                break;
         }
     }
 }
