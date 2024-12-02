@@ -49,7 +49,7 @@ public partial class WeaponShotgun : Node2D
 		_muzzlePosition = _muzzle.Position;
 	}
 
-	private void ShootBullets()
+	private void SpawnBullets()
 	{
 		// Spawn bullets and start cooldown timer
 		var rng = new RandomNumberGenerator();
@@ -74,6 +74,30 @@ public partial class WeaponShotgun : Node2D
 		_cooldownTimer.Start();
 	}
 
+	private async void WeaponBehaviour()
+	{
+		if ((Input.IsActionJustPressed("shoot") || Input.IsActionPressed("shoot")) &&
+		    !_player.WallSlide &&
+		    !_onCooldown)
+		{
+			_onCooldown = true;
+			SpawnBullets();
+			_sprite.Play("shoot");
+		}
+		else if (_player.WallSlide)
+		{
+			_sprite.Play("wall_slide");
+		}
+		else
+		{
+			if (_sprite.Animation == "shoot")
+			{
+				await ToSignal(_sprite, "animation_finished");
+			}
+			_sprite.Play("idle");
+		}
+	}
+
 	private void CooldownTimeout()
 	{
 		_onCooldown = false;
@@ -96,33 +120,14 @@ public partial class WeaponShotgun : Node2D
 		}
 	}
 
-	public override async void _Process(double delta)
+	public override void _Process(double delta)
 	{
 		FlipSprite();
 		
 		if (_player == null) 
 			return;
 		
-		if ((Input.IsActionJustPressed("shoot") || Input.IsActionPressed("shoot")) &&
-		    !_player.WallSlide &&
-		    !_onCooldown)
-		{
-			_onCooldown = true;
-			ShootBullets();
-			_sprite.Play("shoot");
-		}
-		else if (_player.WallSlide)
-		{
-			_sprite.Play("wall_slide");
-		}
-		else
-		{
-			if (_sprite.Animation == "shoot")
-			{
-				await ToSignal(_sprite, "animation_finished");
-			}
-			_sprite.Play("idle");
-		}
+		WeaponBehaviour();
 
 	}
 }
