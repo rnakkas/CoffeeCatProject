@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=4 uid="uid://bl58j0wkqq0wh"]
+[gd_scene load_steps=10 format=4 uid="uid://bl58j0wkqq0wh"]
 
 [ext_resource type="Texture2D" uid="uid://bktmt6xe6jq14" path="res://Assets/Tilemaps/tilemap-floors-walls-1.png" id="1_8igll"]
 [ext_resource type="PackedScene" uid="uid://dlyfs7e3himjx" path="res://Players/PlayerCharacters/Scenes/player_cat.tscn" id="2_xme8i"]
 [ext_resource type="PackedScene" uid="uid://da3jiitknrkpe" path="res://Enemies/Scenes/enemy_bean_bear.tscn" id="3_lx8tw"]
+[ext_resource type="PackedScene" uid="uid://bi0mxnmsq4ir" path="res://Enemies/Scenes/enemies_overlord.tscn" id="3_xm8wy"]
 [ext_resource type="PackedScene" uid="uid://c2sydjrfojhxe" path="res://Enemies/Scenes/enemy_lab_guy.tscn" id="4_grdbd"]
 [ext_resource type="PackedScene" uid="uid://br3kx6h2du01c" path="res://Enemies/Scenes/enemy_fatty.tscn" id="5_nek4u"]
 [ext_resource type="PackedScene" uid="uid://75xqviw4yqgm" path="res://ItemPickups/WeaponPickups/Scenes/pickups_shotgun.tscn" id="6_68er7"]
@@ -61,7 +62,7 @@ tile_map_data = PackedByteArray("AAAAAP//AAAFAAEAAAAAAAMAAAAFAAMAAAABAAMAAAACAAE
 tile_set = SubResource("TileSet_a32n0")
 
 [node name="player_cat" parent="." instance=ExtResource("2_xme8i")]
-position = Vector2(58, 66)
+position = Vector2(499, 261)
 
 [node name="Camera2D" type="Camera2D" parent="player_cat"]
 visible = false
@@ -72,18 +73,18 @@ limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
-[node name="enemies" type="Node" parent="."]
+[node name="enemies_overlord" parent="." instance=ExtResource("3_xm8wy")]
 
-[node name="enemy_bean_bear" parent="enemies" instance=ExtResource("3_lx8tw")]
-position = Vector2(666, 266)
+[node name="enemy_bean_bear" parent="." instance=ExtResource("3_lx8tw")]
+position = Vector2(590, 258)
 
-[node name="enemy_lab_guy" parent="enemies" instance=ExtResource("4_grdbd")]
+[node name="enemy_lab_guy" parent="." instance=ExtResource("4_grdbd")]
 position = Vector2(803, 268)
 
-[node name="enemy_fatty" parent="enemies" instance=ExtResource("5_nek4u")]
+[node name="enemy_fatty" parent="." instance=ExtResource("5_nek4u")]
 position = Vector2(969, 200)
 
 [node name="item_pickups" type="Node" parent="."]
 
 [node name="pickups_shotgun" parent="item_pickups" instance=ExtResource("6_68er7")]
-position = Vector2(169, 64)
+position = Vector2(708, 272)

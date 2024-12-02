@@ -71,7 +71,7 @@ public partial class BulletShotgun : Area2D
 
 	private void OnAreaEntered(Node area)
 	{
-		if (area.Name == "hitbox_component")
+		if (area.Name == "enemy_hitbox")
 		{
 			_hitStatus = true;
 		}

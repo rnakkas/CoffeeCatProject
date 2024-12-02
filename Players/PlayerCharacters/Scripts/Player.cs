@@ -1,4 +1,5 @@
 using System;
+using CoffeeCatProject.GlobalScripts;
 using CoffeeCatProject.Players.Weapons;
 using Godot;
 
@@ -47,10 +48,13 @@ public partial class Player : CharacterBody2D
     
     public override void _Ready()
     {
+        // Set player variables data
+        PlayerVariables.Instance.UpdatePlayerPosition(GlobalPosition);
+        
         // Set node's metadata
         SetMeta("role", "Player");
         
-        // Get the child nodes
+        // Get nodes
         _animation = GetNode<AnimatedSprite2D>("sprite");
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
@@ -300,6 +304,7 @@ public partial class Player : CharacterBody2D
     public override void _PhysicsProcess(double delta)
     {
         UpdateState((float)delta);
+        PlayerVariables.Instance.UpdatePlayerPosition(GlobalPosition);
     }
     
     //// Signal methods
