@@ -24,6 +24,7 @@ public partial class BulletShotgun : Area2D
 
 		// Connect signals
 		BodyEntered += OnBodyEntered;
+		AreaEntered += OnAreaEntered;
 	}
 
 	public override async void _PhysicsProcess(double delta)
@@ -62,7 +63,15 @@ public partial class BulletShotgun : Area2D
 	// Connect signals methods
 	private void OnBodyEntered(Node body)
 	{
-		if (body is TileMapLayer || body.Name.ToString().ToLower().Contains("enemy"))
+		if (body is TileMapLayer)
+		{
+			_hitStatus = true;
+		}
+	}
+
+	private void OnAreaEntered(Node area)
+	{
+		if (area.Name == "hitbox_component")
 		{
 			_hitStatus = true;
 		}

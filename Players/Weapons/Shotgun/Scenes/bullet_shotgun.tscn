@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b8lo3du126a5h"]
+[gd_scene load_steps=13 format=3 uid="uid://b8lo3du126a5h"]
 
 [ext_resource type="Script" path="res://Players/Weapons/Shotgun/Scripts/BulletShotgun.cs" id="1_xs1l8"]
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="2_nijsl"]
@@ -67,16 +67,14 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fb027"]
-size = Vector2(14.1944, 10.1731)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mymv6"]
-size = Vector2(3.77778, 10.7692)
+size = Vector2(3.5486, 5.08655)
 
 [node name="bullet_shotgun" type="Area2D" node_paths=PackedStringArray("Sprite")]
 collision_layer = 128
 collision_mask = 81
 script = ExtResource("1_xs1l8")
 Sprite = NodePath("sprite")
+metadata/role = "bullet"
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.35, 0.35)
@@ -84,15 +82,6 @@ sprite_frames = SubResource("SpriteFrames_vb4a3")
 animation = &"fly"
 
 [node name="collider" type="CollisionShape2D" parent="."]
+position = Vector2(-4.20157, 0)
 scale = Vector2(0.45, 0.45)
 shape = SubResource("RectangleShape2D_fb027")
-
-[node name="hitbox" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 81
-
-[node name="hitbox_collider" type="CollisionShape2D" parent="hitbox"]
-position = Vector2(-3.85, 0)
-scale = Vector2(0.45, 0.45)
-shape = SubResource("RectangleShape2D_mymv6")
-debug_color = Color(0.956307, 0.130976, 0.417223, 0.42)
