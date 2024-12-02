@@ -1,7 +1,6 @@
 using System;
-using CoffeeCatProject.Players.Weapons.Shotgun.Scripts;
+using CoffeeCatProject.Players.Weapons;
 using Godot;
-using WeaponManagerScript = CoffeeCatProject.Players.WeaponManager.Scripts.WeaponManagerScript;
 
 namespace CoffeeCatProject.Players.PlayerCharacters.Scripts;
 
@@ -20,6 +19,7 @@ public partial class Player : CharacterBody2D
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Area2D _playerArea;
+    private WeaponManager _weaponManager;
 
     // State enum
     private enum State
@@ -41,10 +41,8 @@ public partial class Player : CharacterBody2D
     private bool _onCooldown;
     private string _currentWeapon;
     private string _weaponPickupType;
+    private PackedScene _weaponScene;
     
-    // Exports
-    [Export] private WeaponManagerScript WeaponManager { get; set; }
-
     public override void _Ready()
     {
         // Set node's metadata
@@ -55,6 +53,7 @@ public partial class Player : CharacterBody2D
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _playerArea = GetNode<Area2D>("player_area");
+        _weaponManager = GetNode<WeaponManager>("WeaponManager");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -109,9 +108,9 @@ public partial class Player : CharacterBody2D
                 break;
             
             case State.WallSlide:
-                if (WeaponManager != null)
+                if (_weaponManager != null)
                 {
-                    WeaponManager.WallSlide = true;
+                    _weaponManager.WallSlide = true;
                 }
                 
                 _animation.Play("wall_slide");
@@ -139,9 +138,9 @@ public partial class Player : CharacterBody2D
             case State.Jump:
                 break;
             case State.WallSlide:
-                if (WeaponManager != null)
+                if (_weaponManager != null)
                 {
-                    WeaponManager.WallSlide = false;
+                    _weaponManager.WallSlide = false;
                 }
                 break;
             case State.Fall:
@@ -298,7 +297,8 @@ public partial class Player : CharacterBody2D
 
         if (_currentWeapon != null)
         {
-            WeaponManager.SpriteDirection = _spriteDirection;
+            _weaponManager.SpriteDirection = _spriteDirection;
+            
         }
         
     }
@@ -317,20 +317,9 @@ public partial class Player : CharacterBody2D
         {
             throw new Exception("Missing metadata " + WeaponPickupAreaMetadata + " in area");
         }
-       
-        _weaponPickupType = area.GetMeta(WeaponPickupAreaMetadata).ToString().ToLower();
-        EquipWeapon(_weaponPickupType);
-    }
-
-    private void EquipWeapon(string pickupName)
-    {
-        switch (pickupName)
-        {
-            case "shotgun": 
-                var packedScene = ResourceLoader.Load<PackedScene>("res://Players/Weapons/Shotgun/Scenes/weapon_shotgun.tscn");
-                var weapon = packedScene.Instantiate();
-                AddChild(weapon);
-                break;
-        }
+        
+        _weaponManager.EquipWeapon(
+            area.GetMeta(WeaponPickupAreaMetadata).ToString().ToLower()
+            );
     }
 }

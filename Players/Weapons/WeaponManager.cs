@@ -1,9 +1,10 @@
 using System;
 using Godot;
 
-namespace CoffeeCatProject.Players.WeaponManager.Scripts;
+namespace CoffeeCatProject.Players.Weapons;
 
-public partial class WeaponManagerScript : Node
+[GlobalClass]
+public partial class WeaponManager : Node
 {
 	// Variables
 	private string _currentWeapon;
@@ -21,7 +22,7 @@ public partial class WeaponManagerScript : Node
 	}
 	
 	// Packed scene: shotgun
-	private readonly PackedScene _weaponShotgun = 
+	private readonly PackedScene _weaponShotgunScene = 
 		ResourceLoader.Load<PackedScene>("res://Players/Weapons/Shotgun/Scenes/weapon_shotgun.tscn");
 	
 	// Packed scene: revolver
@@ -46,15 +47,12 @@ public partial class WeaponManagerScript : Node
 
 	public void EquipWeapon(string weaponName)
 	{
-		// weaponName = weaponName.ToLower();
-		// _currentWeapon = weaponName;
-		
 		switch (weaponName)
 		{
-			case not null when weaponName.Equals("shotgun"):
+			case not null when weaponName.Equals(WeaponTypes.Shotgun.ToString().ToLower()):
 				
 				// Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
-				_weapon = _weaponShotgun.Instantiate();
+				_weapon = _weaponShotgunScene.Instantiate();
 				GetParent().AddChild(_weapon);
 				break;
             

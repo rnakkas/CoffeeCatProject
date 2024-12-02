@@ -1,4 +1,3 @@
-using CoffeeCatProject.Players.WeaponManager.Scripts;
 using Godot;
 
 namespace CoffeeCatProject.Players.Weapons.Shotgun.Scripts;
@@ -9,7 +8,7 @@ public partial class BulletShotgun : Area2D
 	
 	// Nodes
 	[Export] private AnimatedSprite2D Sprite {get; set;}
-	private WeaponManagerScript _weaponManagerNodeScript;
+	private WeaponManager _weaponManagerNode;
 	private string _weaponManagerNodeName = "weapon_manager";
 
 	// Variables
@@ -75,9 +74,9 @@ public partial class BulletShotgun : Area2D
 			    !child.HasNode(_weaponManagerNodeName)) 
 				continue;
 			
-			_weaponManagerNodeScript = child.GetNode<WeaponManagerScript>(_weaponManagerNodeName);
+			_weaponManagerNode = child.GetNode<WeaponManager>(_weaponManagerNodeName);
 		}
-		Direction = _weaponManagerNodeScript.SpriteDirection;
+		Direction = _weaponManagerNode.SpriteDirection;
 	}
 	
 	// Connect signals methods

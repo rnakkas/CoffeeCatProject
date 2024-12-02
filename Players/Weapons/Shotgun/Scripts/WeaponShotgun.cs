@@ -1,7 +1,5 @@
-using CoffeeCatProject.Players.Components.Scripts;
-using CoffeeCatProject.Players.PlayerCharacters.Scripts;
-using CoffeeCatProject.Players.WeaponManager.Scripts;
 using Godot;
+using CoffeeCatProject.Players.Weapons;
 
 namespace CoffeeCatProject.Players.Weapons.Shotgun.Scripts;
 
@@ -33,7 +31,7 @@ public partial class WeaponShotgun : Node2D
 		_sprite = GetNode<AnimatedSprite2D>("sprite");
 		_cooldownTimer = GetNode<Timer>("shotCoolDownTimer");
 		_muzzle = GetNode<Marker2D>("muzzle");
-
+		
 		// Play idle animation
 		_sprite.Play("idle");
 
@@ -80,6 +78,21 @@ public partial class WeaponShotgun : Node2D
 
 public override void _Process(double delta)
 	{
+		Vector2 direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+
+		if (direction.X < 0)
+		{
+			_spriteDirection = -1;
+			_sprite.FlipH = false;
+		}
+
+		if (direction.X > 0)
+		{
+			_spriteDirection = 1;
+			_sprite.FlipH = true;
+		}
+		
+		
 		
 	}
 }
