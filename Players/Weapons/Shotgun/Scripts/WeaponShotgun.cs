@@ -5,7 +5,7 @@ using Godot;
 
 namespace CoffeeCatProject.Players.Weapons.Shotgun.Scripts;
 
-public partial class WeaponShotgun : Player
+public partial class WeaponShotgun : Node2D
 {
 	// Constants
 	private const float BulletAngle = 6.5f;
@@ -80,16 +80,6 @@ public partial class WeaponShotgun : Player
 
 public override void _Process(double delta)
 	{
-		if (Velocity.X < 0)
-		{
-			_spriteDirection = -1.0f;
-			_sprite.FlipH = false;
-		}
-
-		if (Velocity.X > 0)
-		{
-			_spriteDirection = 1.0f;
-			_sprite.FlipH = true;
-		}
+		
 	}
 }
