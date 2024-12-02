@@ -1,5 +1,5 @@
 using System;
-using CoffeeCatProject.Singletons;
+using CoffeeCatProject.Players.Weapons.Shotgun.Scripts;
 using Godot;
 using WeaponManagerScript = CoffeeCatProject.Players.WeaponManager.Scripts.WeaponManagerScript;
 
@@ -14,6 +14,7 @@ public partial class Player : CharacterBody2D
     private const float WallSlideGravity = 500.0f;
     private const float WallJumpVelocity = -200.0f;
     private const float FloorSnapLengthValue = 2.5f;
+    private const string WeaponPickupAreaMetadata = "WeaponPickupType";
 
     // Nodes
     private AnimatedSprite2D _animation;
@@ -39,6 +40,7 @@ public partial class Player : CharacterBody2D
     private float _spriteDirection;
     private bool _onCooldown;
     private string _currentWeapon;
+    private string _weaponPickupType;
     
     // Exports
     [Export] private WeaponManagerScript WeaponManager { get; set; }
@@ -311,26 +313,23 @@ public partial class Player : CharacterBody2D
     // Picking up weapons
     private void OnAreaEntered(Node2D area)
     {
-        if (!area.HasMeta("role")) 
-            return;
+        if (!area.HasMeta(WeaponPickupAreaMetadata))
+        {
+            throw new Exception("Missing metadata " + WeaponPickupAreaMetadata + " in area");
+        }
        
-        var pickupName = area.GetMeta("role").ToString();
-
-        if (!Enum.IsDefined(typeof(WeaponTypes.PlayerWeaponTypes), pickupName))
-            return;
-        
-        
-        // _currentWeapon = area.GetParent().Name.ToString();
-        EquipWeapon(pickupName);
+        _weaponPickupType = area.GetMeta(WeaponPickupAreaMetadata).ToString().ToLower();
+        EquipWeapon(_weaponPickupType);
     }
 
     private void EquipWeapon(string pickupName)
     {
         switch (pickupName)
         {
-            case "Shotgun": 
-                var weaponShotgun = ResourceLoader.Load<PackedScene>(WeaponTypes.ShotgunScene);
-                AddChild(weaponShotgun.Instantiate());
+            case "shotgun": 
+                var packedScene = ResourceLoader.Load<PackedScene>("res://Players/Weapons/Shotgun/Scenes/weapon_shotgun.tscn");
+                var weapon = packedScene.Instantiate();
+                AddChild(weapon);
                 break;
         }
     }

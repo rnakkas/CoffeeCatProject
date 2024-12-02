@@ -1,5 +1,4 @@
 using System;
-using CoffeeCatProject.Singletons;
 using Godot;
 
 namespace CoffeeCatProject.Players.WeaponManager.Scripts;

@@ -13,7 +13,8 @@ public partial class BulletShotgun : Area2D
 	private string _weaponManagerNodeName = "weapon_manager";
 
 	// Variables
-	private float _direction;
+	public float Direction {get; set;}
+	
 	private Vector2 _directionVector = Vector2.Zero;
 	private bool _hitStatus;
 	
@@ -38,7 +39,7 @@ public partial class BulletShotgun : Area2D
 
 		if (!_hitStatus)
 		{
-			MoveLocalX(BulletSpeed * (float)delta * _direction);
+			MoveLocalX(BulletSpeed * (float)delta * Direction);
 		}
 		else
 		{
@@ -52,12 +53,12 @@ public partial class BulletShotgun : Area2D
 	private void FlipSprite()
 	{
 		// Flip sprite based on direction
-		if (_direction < 0)
+		if (Direction < 0)
 		{
 			Sprite.FlipH = false;
 		}
 
-		if (_direction > 0)
+		if (Direction > 0)
 		{
 			Sprite.FlipH = true;
 		}
@@ -76,7 +77,7 @@ public partial class BulletShotgun : Area2D
 			
 			_weaponManagerNodeScript = child.GetNode<WeaponManagerScript>(_weaponManagerNodeName);
 		}
-		_direction = _weaponManagerNodeScript.SpriteDirection;
+		Direction = _weaponManagerNodeScript.SpriteDirection;
 	}
 	
 	// Connect signals methods

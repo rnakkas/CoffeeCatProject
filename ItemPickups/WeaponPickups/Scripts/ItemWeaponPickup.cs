@@ -1,9 +1,8 @@
-using CoffeeCatProject.Singletons;
 using Godot;
 
 namespace CoffeeCatProject.ItemPickups.WeaponPickups.Scripts;
 
-public partial class ShotgunPickup : WeaponPickups
+public partial class ItemWeaponPickup : Area2D
 {
     //Nodes
     private AnimatedSprite2D _animation;
@@ -18,12 +17,9 @@ public partial class ShotgunPickup : WeaponPickups
 
         // Connect to signal when a body enters area
         BodyEntered += OnBodyEntered;
-        
-        // Set metadata of node
-        SetMeta("role", WeaponTypes.PlayerWeaponTypes.Shotgun.ToString());
     }
 
-    protected override void WeaponPickup()
+    private void WeaponPickup()
     {
         Tween tween1 = GetTree().CreateTween();
         Tween tween2 = GetTree().CreateTween();

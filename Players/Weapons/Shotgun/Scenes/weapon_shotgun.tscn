@@ -209,12 +209,12 @@ frame_progress = 1.0
 
 [node name="shotCoolDownTimer" type="Timer" parent="."]
 
-[node name="marker" type="Marker2D" parent="."]
+[node name="muzzle" type="Marker2D" parent="."]
 position = Vector2(-17, -2)
 
 [node name="shooting_component" parent="." node_paths=PackedStringArray("CooldownTimer", "Muzzle") instance=ExtResource("3_fplys")]
 CooldownTimer = NodePath("../shotCoolDownTimer")
-Muzzle = NodePath("../marker")
+Muzzle = NodePath("../muzzle")
 
 [node name="weapon_animation_component" parent="." node_paths=PackedStringArray("CooldownTimer", "Sprite", "ShootingComponent") instance=ExtResource("4_7vlyj")]
 CooldownTimer = NodePath("../shotCoolDownTimer")
