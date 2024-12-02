@@ -4,12 +4,10 @@ namespace CoffeeCatProject.Players.Weapons.Shotgun.Scripts;
 public partial class BulletShotgun : Area2D
 {
 	// Constants
-	private const float BulletSpeed = 800f;
+	private const float BulletSpeed = 900f;
 	
 	// Nodes
 	[Export] private AnimatedSprite2D Sprite {get; set;}
-	private WeaponManager _weaponManagerNode;
-	private string _weaponManagerNodeName = "weapon_manager";
 
 	// Variables
 	public float Direction {get; set;}
@@ -19,9 +17,6 @@ public partial class BulletShotgun : Area2D
 	
 	public override void _Ready()
 	{
-		// Set the bullet's direction
-		SetBulletDirection();
-		
 		// Flip sprite based on direction
 		FlipSprite();
 		
@@ -62,21 +57,6 @@ public partial class BulletShotgun : Area2D
 			Sprite.FlipH = true;
 		}
 		
-	}
-
-	private void SetBulletDirection()
-	{
-		foreach (var child in GetParent().GetChild(0).GetChildren())
-		{
-			if (child == this ||
-			    !child.HasMeta("role") ||
-			    child.GetMeta("role").ToString() != "Player" ||
-			    !child.HasNode(_weaponManagerNodeName)) 
-				continue;
-			
-			_weaponManagerNode = child.GetNode<WeaponManager>(_weaponManagerNodeName);
-		}
-		Direction = _weaponManagerNode.SpriteDirection;
 	}
 	
 	// Connect signals methods

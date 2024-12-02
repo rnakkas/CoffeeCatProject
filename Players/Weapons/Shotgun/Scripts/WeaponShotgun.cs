@@ -1,5 +1,5 @@
+using CoffeeCatProject.Players.PlayerCharacters.Scripts;
 using Godot;
-using CoffeeCatProject.Players.Weapons;
 
 namespace CoffeeCatProject.Players.Weapons.Shotgun.Scripts;
 
@@ -14,6 +14,7 @@ public partial class WeaponShotgun : Node2D
 	private AnimatedSprite2D _sprite;
 	private Timer _cooldownTimer;
 	private Marker2D _muzzle;
+	private Player _player;
 
 	// Packed scene: bullets
 	private readonly PackedScene _shotgunShells =
@@ -31,10 +32,12 @@ public partial class WeaponShotgun : Node2D
 		_sprite = GetNode<AnimatedSprite2D>("sprite");
 		_cooldownTimer = GetNode<Timer>("shotCoolDownTimer");
 		_muzzle = GetNode<Marker2D>("muzzle");
+		_player = GetParentOrNull<Player>();
 		
 		// Play idle animation
+		FlipSprite();
 		_sprite.Play("idle");
-
+		
 		// Set timer values
 		_cooldownTimer.SetOneShot(true);
 		_cooldownTimer.WaitTime = CoolDownTime;
@@ -54,9 +57,9 @@ public partial class WeaponShotgun : Node2D
 		for (int i = 0; i < BulletCount; i++)
 		{
 			var bulletInstance = (BulletShotgun)_shotgunShells.Instantiate();
-			
+
 			// Set bullet's direction
-			bulletInstance.Direction = _spriteDirection;
+			bulletInstance.Direction = _player.SpriteDirection;
 
 			// Set bullets rotations
 			bulletInstance.RotationDegrees = rng.RandfRange(-BulletAngle, BulletAngle);
@@ -76,23 +79,50 @@ public partial class WeaponShotgun : Node2D
 		_onCooldown = false;
 	}
 
-public override void _Process(double delta)
+	private void FlipSprite()
 	{
-		Vector2 direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-
-		if (direction.X < 0)
+		if (_player != null)
 		{
-			_spriteDirection = -1;
-			_sprite.FlipH = false;
+			if (_player.SpriteDirection < 0)
+			{
+				_sprite.FlipH = false;
+				_muzzle.Position = new Vector2(_muzzlePosition.X, _muzzlePosition.Y);
+			}
+			else if (_player.SpriteDirection > 0)
+			{
+				_sprite.FlipH = true;
+				_muzzle.Position = new Vector2(-_muzzlePosition.X, _muzzlePosition.Y);
+			}
+		}
+	}
+
+	public override async void _Process(double delta)
+	{
+		FlipSprite();
+		
+		if (_player == null) 
+			return;
+		
+		if ((Input.IsActionJustPressed("shoot") || Input.IsActionPressed("shoot")) &&
+		    !_player.WallSlide &&
+		    !_onCooldown)
+		{
+			_onCooldown = true;
+			ShootBullets();
+			_sprite.Play("shoot");
+		}
+		else if (_player.WallSlide)
+		{
+			_sprite.Play("wall_slide");
+		}
+		else
+		{
+			if (_sprite.Animation == "shoot")
+			{
+				await ToSignal(_sprite, "animation_finished");
+			}
+			_sprite.Play("idle");
 		}
 
-		if (direction.X > 0)
-		{
-			_spriteDirection = 1;
-			_sprite.FlipH = true;
-		}
-		
-		
-		
 	}
 }

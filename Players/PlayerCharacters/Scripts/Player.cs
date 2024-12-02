@@ -37,11 +37,13 @@ public partial class Player : CharacterBody2D
     private float _wallJumpDirection;
     private Vector2 _velocity;
     private Vector2 _muzzlePosition;
-    private float _spriteDirection;
     private bool _onCooldown;
     private string _currentWeapon;
     private string _weaponPickupType;
     private PackedScene _weaponScene;
+    
+    public float SpriteDirection { get; set; }
+    public bool WallSlide { get; set; }
     
     public override void _Ready()
     {
@@ -68,7 +70,7 @@ public partial class Player : CharacterBody2D
         _velocity = Velocity;
         
         // Set default direction
-        _spriteDirection = 1.0f;
+        SpriteDirection = 1.0f;
         
         // Animation to play on ready
         _animation.FlipH = true;
@@ -108,11 +110,7 @@ public partial class Player : CharacterBody2D
                 break;
             
             case State.WallSlide:
-                if (_weaponManager != null)
-                {
-                    _weaponManager.WallSlide = true;
-                }
-                
+                WallSlide = true;
                 _animation.Play("wall_slide");
                 break;
             
@@ -138,10 +136,7 @@ public partial class Player : CharacterBody2D
             case State.Jump:
                 break;
             case State.WallSlide:
-                if (_weaponManager != null)
-                {
-                    _weaponManager.WallSlide = false;
-                }
+                WallSlide = false;
                 break;
             case State.Fall:
                 break;
@@ -287,17 +282,17 @@ public partial class Player : CharacterBody2D
         if (directionX < 0)
         {
             _animation.FlipH = false;
-            _spriteDirection = -1;
+            SpriteDirection = -1;
         }
         else if (directionX > 0)
         {
             _animation.FlipH = true;
-            _spriteDirection = 1;
+            SpriteDirection = 1;
         }
 
         if (_currentWeapon != null)
         {
-            _weaponManager.SpriteDirection = _spriteDirection;
+            _weaponManager.SpriteDirection = SpriteDirection;
             
         }
         
