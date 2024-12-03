@@ -46,3 +46,5 @@ debug_color = Color(0.896565, 0.284615, 0.36789, 0.42)
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_tbxw0")
 animation = &"idle"
+
+[node name="chase_timer" type="Timer" parent="."]

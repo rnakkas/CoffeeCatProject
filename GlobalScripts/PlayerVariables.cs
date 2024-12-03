@@ -4,14 +4,14 @@ namespace CoffeeCatProject.GlobalScripts;
 public partial class PlayerVariables: Node
 {
     public static PlayerVariables Instance { get; private set; }
-    public Vector2 PlayerPosition {get; private set;}
+    public Vector2 PlayerGlobalPosition {get; private set;}
     
-    [Signal] public delegate void PlayerPositionUpdatedEventHandler();
+    [Signal] public delegate void PlayerGlobalPositionUpdatedEventHandler();
     
-    public void UpdatePlayerPosition(Vector2 position)
+    public void UpdatePlayerGlobalPosition(Vector2 globalPosition)
     {
-        PlayerPosition =  position;
-        EmitSignal(SignalName.PlayerPositionUpdated);
+        PlayerGlobalPosition =  globalPosition;
+        EmitSignal(SignalName.PlayerGlobalPositionUpdated);
     }
     
     public override void _Ready()
