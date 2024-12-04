@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-PlayerVariables="*res://GlobalScripts/PlayerVariables.cs"
+Overlord="*res://GlobalScripts/Overlord.cs"
 
 [display]
 

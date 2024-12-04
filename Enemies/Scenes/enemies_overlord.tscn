@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bi0mxnmsq4ir"]
-
-[ext_resource type="Script" path="res://Enemies/Scripts/EnemiesOverlord.cs" id="1_i1hlk"]
-
-[node name="enemies_overlord" type="Node"]
-script = ExtResource("1_i1hlk")

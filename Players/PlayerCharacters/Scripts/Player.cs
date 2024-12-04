@@ -49,7 +49,7 @@ public partial class Player : CharacterBody2D
     public override void _Ready()
     {
         // Set player variables data
-        PlayerVariables.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
+        Overlord.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
         
         // Set node's metadata
         SetMeta("role", "Player");
@@ -304,7 +304,7 @@ public partial class Player : CharacterBody2D
     public override void _PhysicsProcess(double delta)
     {
         UpdateState((float)delta);
-        PlayerVariables.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
+        Overlord.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
     }
     
     //// Signal methods

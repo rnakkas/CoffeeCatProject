@@ -48,3 +48,11 @@ sprite_frames = SubResource("SpriteFrames_tbxw0")
 animation = &"idle"
 
 [node name="chase_timer" type="Timer" parent="."]
+
+[node name="left_wall_detect" type="RayCast2D" parent="."]
+target_position = Vector2(-25, 0)
+collision_mask = 17
+
+[node name="right_wall_detect" type="RayCast2D" parent="."]
+target_position = Vector2(25, 0)
+collision_mask = 17
