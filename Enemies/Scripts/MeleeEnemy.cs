@@ -19,14 +19,14 @@ public partial class MeleeEnemy : CharacterBody2D
 	private Vector2 _velocity;
 	private Vector2 _playerGlobalPosition;
 	private float _direction;
-	private bool _chasing;
-	private Vector2 _position;
+	private bool _attacking;
 	
 	
 	// Nodes
 	private Area2D _hitbox; 
 	private AnimatedSprite2D _sprite;
 	private RayCast2D _leftWallDetect, _rightWallDetect;
+	private Area2D _attackArea;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -36,18 +36,22 @@ public partial class MeleeEnemy : CharacterBody2D
 		_sprite = GetNode<AnimatedSprite2D>("sprite");
 		_leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
 		_rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
+		_attackArea = GetNode<Area2D>("attack_area");
 		
+		// Animation
 		_sprite.Play("idle");
 
+		// Signal connects
 		_hitbox.AreaEntered += HitByBullets;
-		
-		_velocity = Velocity;
+		_attackArea.BodyEntered += PlayerEnteredAttackArea;
+		_attackArea.BodyExited += PlayerExitedAttackArea;
 		
 		// Get player's position on ready
 		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
+		
+		// Velocity
+		_velocity = Velocity;
 
-		// Self position
-		_position = Position;
 	}
 	
 	private void HitByBullets(Area2D area)
@@ -56,6 +60,24 @@ public partial class MeleeEnemy : CharacterBody2D
 		{
 			_health -= 5;
 		}
+	}
+
+	private void PlayerEnteredAttackArea(Node2D body)
+	{
+		if (body.GetMeta("role").ToString().ToLower() != "player") 
+			return;
+		
+		_attacking = true;
+		GD.Print("attacking the player: " +_attacking);
+	}
+
+	private void PlayerExitedAttackArea(Node2D body)
+	{
+		if (body.GetMeta("role").ToString().ToLower() != "player") 
+			return;
+		
+		_attacking = false;
+		GD.Print("attacking the player: " +_attacking);
 	}
 
 	private void MoveTowardsPlayer(Vector2 target, float delta)
@@ -75,6 +97,11 @@ public partial class MeleeEnemy : CharacterBody2D
 			ReboundFromWall();
 			_velocity = _velocity.MoveToward(Vector2.Zero, delta * SlowdownRate);
 			Velocity = _velocity;
+		}
+		else if (target == GlobalPosition)
+		{
+			GD.Print("target reached");
+			Velocity = Vector2.Zero;
 		}
 	}
 

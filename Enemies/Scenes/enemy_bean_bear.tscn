@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://da3jiitknrkpe"]
+[gd_scene load_steps=8 format=3 uid="uid://da3jiitknrkpe"]
 
 [ext_resource type="Script" path="res://Enemies/Scripts/MeleeEnemy.cs" id="1_8n3aw"]
 [ext_resource type="Texture2D" uid="uid://bc44u073vlos8" path="res://Assets/Sprites/Placeholders/bean_bear-1.png" id="1_orph1"]
@@ -8,6 +8,9 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yg3kt"]
 radius = 19.0
 height = 38.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4p2av"]
+size = Vector2(45, 30)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vlkjx"]
 atlas = ExtResource("1_orph1")
@@ -42,6 +45,15 @@ collision_mask = 128
 position = Vector2(-2, -1)
 shape = SubResource("CapsuleShape2D_yg3kt")
 debug_color = Color(0.896565, 0.284615, 0.36789, 0.42)
+
+[node name="attack_area" type="Area2D" parent="."]
+collision_layer = 256
+collision_mask = 2
+
+[node name="attack_collider" type="CollisionShape2D" parent="attack_area"]
+position = Vector2(-1.5, 1)
+shape = SubResource("RectangleShape2D_4p2av")
+debug_color = Color(0.265666, 0.633389, 0, 0.42)
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_tbxw0")

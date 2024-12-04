@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://dlyfs7e3himjx"]
+[gd_scene load_steps=41 format=3 uid="uid://dlyfs7e3himjx"]
 
 [ext_resource type="Script" path="res://Players/PlayerCharacters/Scripts/Player.cs" id="1_vmxij"]
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="2_2ql0j"]
@@ -9,6 +9,10 @@ size = Vector2(18, 24)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v1o4q"]
 size = Vector2(11.5, 16)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_05o1h"]
+radius = 7.0
+height = 22.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kh1su"]
 atlas = ExtResource("2_2ql0j")
@@ -290,6 +294,15 @@ debug_color = Color(0.641889, 0.521654, 0.132785, 0.42)
 
 [node name="collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_v1o4q")
+
+[node name="player_hitbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 256
+
+[node name="player_hitbox_collider" type="CollisionShape2D" parent="player_hitbox"]
+position = Vector2(0, -1)
+shape = SubResource("CapsuleShape2D_05o1h")
+debug_color = Color(0.969075, 0, 0.463732, 0.42)
 
 [node name="left_wall_detect" type="RayCast2D" parent="."]
 modulate = Color(0.08, 1, 0.172, 1)

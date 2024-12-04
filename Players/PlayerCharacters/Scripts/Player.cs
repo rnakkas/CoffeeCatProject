@@ -21,6 +21,7 @@ public partial class Player : CharacterBody2D
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Area2D _playerArea;
     private WeaponManager _weaponManager;
+    private Area2D _playerHitbox;
 
     // State enum
     private enum State
@@ -30,7 +31,9 @@ public partial class Player : CharacterBody2D
         Jump, 
         WallSlide, 
         Fall, 
-        WallJump
+        WallJump,
+        Hurt,
+        Death,
     };
 
     // Variables
@@ -60,6 +63,7 @@ public partial class Player : CharacterBody2D
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _playerArea = GetNode<Area2D>("player_area");
         _weaponManager = GetNode<WeaponManager>("WeaponManager");
+        _playerHitbox = GetNode<Area2D>("player_hitbox");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -80,8 +84,9 @@ public partial class Player : CharacterBody2D
         _animation.FlipH = true;
         _animation.Play("idle");
         
-        // Signals/Actions
-        _playerArea.AreaEntered += OnAreaEntered;
+        // Signal connections
+        _playerArea.AreaEntered += WeaponPickupAreaEntered;
+        _playerHitbox.AreaEntered += EnemyAttackAreaEntered;
     }
 
     // State Machine
@@ -125,6 +130,10 @@ public partial class Player : CharacterBody2D
             case State.WallJump:
                 _velocity.Y = WallJumpVelocity;
                 _animation.Play("jump");
+                break;
+            case State.Death:
+                GD.Print("Entered Death State");
+                // TODO: play death animation
                 break;
         }
     }
@@ -311,7 +320,7 @@ public partial class Player : CharacterBody2D
     
     
     // Picking up weapons
-    private void OnAreaEntered(Node2D area)
+    private void WeaponPickupAreaEntered(Node2D area)
     {
         if (!area.HasMeta(WeaponPickupAreaMetadata))
         {
@@ -321,5 +330,16 @@ public partial class Player : CharacterBody2D
         _weaponManager.EquipWeapon(
             area.GetMeta(WeaponPickupAreaMetadata).ToString().ToLower()
             );
+    }
+
+    private void EnemyAttackAreaEntered(Node2D area)
+    {
+        switch (area.Name)
+        {
+            case "attack_area":
+                GD.Print("player has been attacked: SetState(State.Death)");
+                // SetState(State.Death); Commented out for now, reenable once death state has been figured out.
+                break;
+        }
     }
 }
