@@ -10,7 +10,7 @@ radius = 19.0
 height = 38.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4p2av"]
-size = Vector2(45, 30)
+size = Vector2(54, 30)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vlkjx"]
 atlas = ExtResource("1_orph1")
@@ -51,7 +51,7 @@ collision_layer = 256
 collision_mask = 2
 
 [node name="attack_collider" type="CollisionShape2D" parent="attack_area"]
-position = Vector2(-1.5, 1)
+position = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_4p2av")
 debug_color = Color(0.265666, 0.633389, 0, 0.42)
 

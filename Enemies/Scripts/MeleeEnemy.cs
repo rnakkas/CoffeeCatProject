@@ -13,6 +13,7 @@ public partial class MeleeEnemy : CharacterBody2D
 	private const float MinSpeed = 50.0f;
 	private const float Gravity = 750.0f;
 	private const float SlowdownRate = 80.0f;
+	private const float DistanceFromPlayerForAttack = 25.0f;
 	
 	// Vars
 	private int _health = 100;
@@ -87,7 +88,6 @@ public partial class MeleeEnemy : CharacterBody2D
 		// Chase player if player is on floor or below self
 		if (target.Y >= GlobalPosition.Y)
 		{
-			// GlobalPosition += GlobalPosition.DirectionTo(target) * Speed * delta;
 			_velocity.X = _direction * Speed;
 			Velocity = _velocity;
 		}
@@ -98,10 +98,12 @@ public partial class MeleeEnemy : CharacterBody2D
 			_velocity = _velocity.MoveToward(Vector2.Zero, delta * SlowdownRate);
 			Velocity = _velocity;
 		}
-		else if (target == GlobalPosition)
+		
+		// Stop a certain distance from player for attacking
+		if (GlobalPosition.DistanceTo(target) < DistanceFromPlayerForAttack)
 		{
-			GD.Print("target reached");
-			Velocity = Vector2.Zero;
+			_velocity.X = 0.0f;
+			Velocity = _velocity;
 		}
 	}
 
