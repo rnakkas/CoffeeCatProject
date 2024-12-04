@@ -6,6 +6,7 @@ using Vector2 = Godot.Vector2;
 namespace CoffeeCatProject.Enemies.Scripts;
 
 // Enemy continuously chases player, but only if they're on the ground
+//TODO: create the animations for spawning, attacking, getting hurt and dying
 public partial class MeleeEnemy : CharacterBody2D
 {
 	// Const
@@ -21,6 +22,7 @@ public partial class MeleeEnemy : CharacterBody2D
 	private Vector2 _playerGlobalPosition;
 	private float _direction;
 	private bool _attacking;
+	private bool _hurt;
 	
 	
 	// Nodes
@@ -44,6 +46,7 @@ public partial class MeleeEnemy : CharacterBody2D
 
 		// Signal connects
 		_hitbox.AreaEntered += HitByBullets;
+		_hitbox.AreaExited += BulletsDestroyed;
 		_attackArea.BodyEntered += PlayerEnteredAttackArea;
 		_attackArea.BodyExited += PlayerExitedAttackArea;
 		
@@ -60,6 +63,15 @@ public partial class MeleeEnemy : CharacterBody2D
 		if (area.GetMeta("role").ToString().ToLower() == "bullet")
 		{
 			_health -= 5;
+			_hurt = true;
+		}
+	}
+
+	private void BulletsDestroyed(Area2D area)
+	{
+		if (area.GetMeta("role").ToString().ToLower() == "bullet")
+		{
+			_hurt = false;
 		}
 	}
 
@@ -69,7 +81,6 @@ public partial class MeleeEnemy : CharacterBody2D
 			return;
 		
 		_attacking = true;
-		GD.Print("attacking the player: " +_attacking);
 	}
 
 	private void PlayerExitedAttackArea(Node2D body)
@@ -78,7 +89,6 @@ public partial class MeleeEnemy : CharacterBody2D
 			return;
 		
 		_attacking = false;
-		GD.Print("attacking the player: " +_attacking);
 	}
 
 	private void MoveTowardsPlayer(Vector2 target, float delta)
@@ -147,6 +157,21 @@ public partial class MeleeEnemy : CharacterBody2D
 			GD.Print("enemy died");
 			QueueFree();
 		}
+		
+		//TODO: Add attack animation, hurt animation and death animation based on player interaction 
+		if (_attacking)
+		{
+			GD.Print("enemy attacking the player");
+		}
+		else if (!_attacking)
+		{
+			GD.Print("enemy stopped attacking the player");
+		}
+		else if (_hurt)
+		{
+			GD.Print("enemy got hit by player's bullets");
+		}
+		
 		
 		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
 		MoveTowardsPlayer(_playerGlobalPosition, (float)delta);
