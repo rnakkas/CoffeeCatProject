@@ -1,7 +1,6 @@
-using System.Numerics;
+using System;
 using CoffeeCatProject.GlobalScripts;
 using Godot;
-using Vector2 = Godot.Vector2;
 
 namespace CoffeeCatProject.Enemies.Scripts;
 
@@ -10,26 +9,32 @@ namespace CoffeeCatProject.Enemies.Scripts;
 public partial class MeleeEnemy : CharacterBody2D
 {
 	// Const
-	private const float Speed = 120.0f;
-	private const float MinSpeed = 50.0f;
+	private const float ChaseSpeed = 150.0f;
+	private const float PatrolSpeed = 60.0f;
 	private const float Gravity = 750.0f;
 	private const float SlowdownRate = 80.0f;
 	private const float DistanceFromPlayerForAttack = 25.0f;
+	private const float PlayerDetectionRange = 300.0f;
+	private const float ChaseTime = 2.0f;
 	
 	// Vars
 	private int _health = 100;
 	private Vector2 _velocity;
 	private Vector2 _playerGlobalPosition;
 	private float _direction;
+	private Vector2 _playerDetectorTargetPosition;
+	
+	// Statuses
 	private bool _attacking;
 	private bool _hurt;
-	
+	private bool _chasing;
 	
 	// Nodes
 	private Area2D _hitbox; 
 	private AnimatedSprite2D _sprite;
-	private RayCast2D _leftWallDetect, _rightWallDetect;
+	private RayCast2D _leftWallDetect, _rightWallDetect, _playerDetector;
 	private Area2D _attackArea;
+	private Timer _chaseTimer;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -40,8 +45,11 @@ public partial class MeleeEnemy : CharacterBody2D
 		_leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
 		_rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
 		_attackArea = GetNode<Area2D>("attack_area");
+		_playerDetector = GetNode<RayCast2D>("player_detector");
+		_chaseTimer = GetNode<Timer>("chase_timer");
 		
 		// Animation
+		//TODO: on ready, play spawn animation instead
 		_sprite.Play("idle");
 
 		// Signal connects
@@ -50,11 +58,19 @@ public partial class MeleeEnemy : CharacterBody2D
 		_attackArea.BodyEntered += PlayerEnteredAttackArea;
 		_attackArea.BodyExited += PlayerExitedAttackArea;
 		
-		// Get player's position on ready
+		// Get player's position on ready and set direction
 		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
+		SetDirectionToTarget(_playerGlobalPosition);
 		
 		// Velocity
 		_velocity = Velocity;
+		
+		//Player detector target position
+		_playerDetectorTargetPosition = _playerDetector.TargetPosition;
+		
+		// Set timer values
+		_chaseTimer.OneShot = true;
+		_chaseTimer.WaitTime = ChaseTime;
 
 	}
 	
@@ -90,34 +106,53 @@ public partial class MeleeEnemy : CharacterBody2D
 		
 		_attacking = false;
 	}
+	
+	
+	// private void MoveAround(Vector2 target, float delta)
+	// {
+	// 	SetDirectionToTarget(target);
+	// 	
+	// 	// Move towards player if player is on floor or below self
+	// 	if (target.Y >= GlobalPosition.Y)
+	// 	{
+	// 		_velocity.X = _direction * PatrolSpeed;
+	// 		Velocity = _velocity;
+	// 	}
+	// 	
+	// 	// Slow down to zero if player is above self and rebound if hitting wall
+	// 	else if (target.Y < GlobalPosition.Y)
+	// 	{
+	// 		ReboundFromWall();
+	// 		_velocity = _velocity.MoveToward(Vector2.Zero, delta * SlowdownRate);
+	// 		Velocity = _velocity;
+	// 	}
+	// 	
+	// 	// Stop a certain distance from player for attacking
+	// 	if (GlobalPosition.DistanceTo(target) < DistanceFromPlayerForAttack)
+	// 	{
+	// 		_velocity.X = 0.0f;
+	// 		Velocity = _velocity;
+	// 	}
+	// }
 
-	private void MoveTowardsPlayer(Vector2 target, float delta)
+	private void Patrolling()
 	{
-		SetSelfDirection(target);
-		
-		// Chase player if player is on floor or below self
-		if (target.Y >= GlobalPosition.Y)
+		ReboundFromWall();
+		_velocity.X = _direction * PatrolSpeed;
+	}
+
+	private void Chasing()
+	{
+		ReboundFromWall();
+
+		if (_playerDetector.IsColliding())
 		{
-			_velocity.X = _direction * Speed;
-			Velocity = _velocity;
-		}
-		// Slow down to zero if player is above self and rebound if hitting wall
-		else if (target.Y < GlobalPosition.Y)
-		{
-			ReboundFromWall();
-			_velocity = _velocity.MoveToward(Vector2.Zero, delta * SlowdownRate);
-			Velocity = _velocity;
-		}
-		
-		// Stop a certain distance from player for attacking
-		if (GlobalPosition.DistanceTo(target) < DistanceFromPlayerForAttack)
-		{
-			_velocity.X = 0.0f;
-			Velocity = _velocity;
+			_velocity.X = _direction * ChaseSpeed;
 		}
 	}
 
-	private void SetSelfDirection(Vector2 target)
+	// Set a direction float based on where the target/player is
+	private void SetDirectionToTarget(Vector2 target)
 	{
 		// Get x location and translate that to self direction float
 		if (GlobalPosition.DirectionTo(target).X < 0)
@@ -134,12 +169,27 @@ public partial class MeleeEnemy : CharacterBody2D
 	{
 		if (_leftWallDetect.IsColliding())
 		{
-			_velocity.X = _direction * MinSpeed;
+			_direction = 1.0f;
 		}
 		if (_rightWallDetect.IsColliding())
 		{
-			_velocity.X = -_direction * MinSpeed;
+			_direction = -1.0f;
 		}
+	}
+
+	// Flip the player detection raycast based on movement direction
+	private void FlipPlayerDetector()
+	{
+		if (_direction < 0)
+		{
+			_playerDetectorTargetPosition = new Vector2(-PlayerDetectionRange, 0);
+		}
+		else if (_direction > 0)
+		{
+			_playerDetectorTargetPosition = new Vector2(PlayerDetectionRange, 0);
+		}
+		
+		_playerDetector.TargetPosition = _playerDetectorTargetPosition;
 	}
 	
 	public override void _Process(double delta)
@@ -171,10 +221,18 @@ public partial class MeleeEnemy : CharacterBody2D
 		{
 			GD.Print("enemy got hit by player's bullets");
 		}
+
+		FlipPlayerDetector();
+
+		if (!_chasing)
+		{
+			Patrolling();
+		}
+		else if (_chasing)
+		{
+			Chasing();
+		}
 		
-		
-		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
-		MoveTowardsPlayer(_playerGlobalPosition, (float)delta);
 		
 		Velocity = _velocity;
 		MoveAndSlide();
