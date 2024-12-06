@@ -16,6 +16,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private const float PlayerDetectionRange = 300.0f;
 	private const float ChaseTime = 3.0f;
 	private const float AttackDelayTime = 0.8f;
+	private const float AttackCooldownTime = 1.2f;
 	
 	// Vars
 	private int _health = 100;
@@ -23,8 +24,6 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private Vector2 _playerGlobalPosition;
 	private float _direction;
 	private Vector2 _playerDetectorTargetPosition;
-	private Vector2 _attackAreaColliderPosition;
-	private Vector2 _attackHitboxColliderPosition;
 	
 	// Statuses
 	private bool _attacking;
@@ -32,12 +31,11 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private bool _chasing;
 	
 	// Nodes
-	private Area2D _enemyHurtbox; 
+	private Area2D _enemyHurtbox, _attackArea, _attackHitbox; 
 	private AnimatedSprite2D _sprite;
 	private RayCast2D _leftWallDetect, _rightWallDetect, _playerDetector;
-	private Area2D _attackArea, _attackHitbox;
-	private Timer _chaseTimer;
-	private Timer _attackDelayTimer;
+	private Timer _chaseTimer, _attackDelayTimer, _attackCooldownTimer;
+	private CollisionShape2D _attackAreaCollider, _attackHitboxCollider;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -49,9 +47,12 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		_rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
 		_attackArea = GetNode<Area2D>("attack_area");
 		_attackHitbox = GetNode<Area2D>("attack_hitbox");
+		_attackAreaCollider = GetNode<CollisionShape2D>("attack_area/attack_collider");
+		_attackHitboxCollider = GetNode<CollisionShape2D>("attack_hitbox/attack_hitbox_collider");
 		_playerDetector = GetNode<RayCast2D>("player_detector");
 		_chaseTimer = GetNode<Timer>("chase_timer");
 		_attackDelayTimer = GetNode<Timer>("attack_delay_timer");
+		_attackCooldownTimer = GetNode<Timer>("attack_cooldown_timer");
 		
 		// Animation
 		//TODO: on ready, play spawn animation instead
@@ -60,8 +61,8 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		// Signal connects
 		_enemyHurtbox.AreaEntered += HitByBullets;
 		_enemyHurtbox.AreaExited += BulletsDestroyed;
-		_attackArea.BodyEntered += PlayerEnteredAttackArea;
-		_attackArea.BodyExited += PlayerExitedAttackArea;
+		_attackArea.AreaEntered += PlayerEnteredAttackArea;
+		_attackArea.AreaExited += PlayerExitedAttackArea;
 		
 		// Get player's position on ready and set direction
 		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
@@ -77,9 +78,14 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		_chaseTimer.OneShot = true;
 		_chaseTimer.WaitTime = ChaseTime;
 		_chaseTimer.Timeout += ChaseTimerTimedOut;
+		
 		_attackDelayTimer.OneShot = true;
 		_attackDelayTimer.WaitTime = AttackDelayTime;
 		_attackDelayTimer.Timeout += AttackDelayTimerTimedOut;
+		
+		_attackCooldownTimer.OneShot = true;
+		_attackCooldownTimer.WaitTime = AttackCooldownTime;
+		_attackCooldownTimer.Timeout += AttackCooldownTimerTimeout;
 
 	}
 
@@ -92,6 +98,11 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private void AttackDelayTimerTimedOut()
 	{
 		_attacking = true;
+	}
+
+	private void AttackCooldownTimerTimeout()
+	{
+		_attacking = false;
 	}
 	
 	// Setting the directions
@@ -119,19 +130,6 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 			_direction = -1.0f;
 		}
 	}
-
-	// private void FlipSprite()
-	// {
-	// 	if (_direction < 0)
-	// 	{
-	// 		_sprite.FlipH = false;
-	// 	}
-	//
-	// 	if (_direction > 0)
-	// 	{
-	// 		_sprite.FlipH = true;
-	// 	}
-	// }
 	
 	// Getting hit by player's bullets
 	private void HitByBullets(Area2D area)
@@ -186,20 +184,25 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	}
 	
 	// Detecting when the player enters the attacking range
-	private void PlayerEnteredAttackArea(Node2D body)
+	private void PlayerEnteredAttackArea(Node2D area)
 	{
-		if (body.GetMeta("role").ToString().ToLower() != "player") 
+		if (area.Name != "player_area") 
 			return;
-		
+
+		_attackAreaCollider.Disabled = true;
 		_attackDelayTimer.Start();
 	}
 	
-	private void PlayerExitedAttackArea(Node2D body)
+	private void PlayerExitedAttackArea(Node2D area)
 	{
-		if (body.GetMeta("role").ToString().ToLower() != "player") 
+		if (area.Name != "player_area") 
 			return;
 		
+		// If player quickly jumps out of attack area before attack delay timer runs out, the timer will be stopped
+		// So that enemy doesn't get stuck in attack mode if the player is not in its attack area
+		_attackDelayTimer.Stop();
 		_attacking = false;
+		_attackAreaCollider.Disabled = false;
 	}
 	
 	// Logic for chasing the player
@@ -259,11 +262,11 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		//TODO: Add attack animation, hurt animation and death animation based on player interaction 
 		if (_attacking)
 		{
-			GD.Print("enemy attacking the player");
+			_attackHitboxCollider.Disabled = false;
 		}
 		else if (!_attacking)
 		{
-			// GD.Print("enemy stopped attacking the player");
+			_attackHitboxCollider.Disabled = true;
 		}
 		else if (_hurt)
 		{

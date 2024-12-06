@@ -10,7 +10,7 @@ radius = 17.0
 height = 34.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4p2av"]
-size = Vector2(17, 30)
+size = Vector2(21, 30)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h43nc"]
 size = Vector2(24, 21)
@@ -54,7 +54,7 @@ collision_layer = 256
 collision_mask = 2
 
 [node name="attack_collider" type="CollisionShape2D" parent="attack_area"]
-position = Vector2(-19.5, 1)
+position = Vector2(-21.5, 1)
 shape = SubResource("RectangleShape2D_4p2av")
 debug_color = Color(0.265666, 0.633389, 0, 0.42)
 
@@ -74,6 +74,8 @@ animation = &"idle"
 [node name="chase_timer" type="Timer" parent="."]
 
 [node name="attack_delay_timer" type="Timer" parent="."]
+
+[node name="attack_cooldown_timer" type="Timer" parent="."]
 
 [node name="left_wall_detect" type="RayCast2D" parent="."]
 target_position = Vector2(-25, 0)

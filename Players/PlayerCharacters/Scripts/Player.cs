@@ -86,7 +86,7 @@ public partial class Player : CharacterBody2D
         
         // Signal connections
         _playerArea.AreaEntered += WeaponPickupAreaEntered;
-        _playerHitbox.AreaEntered += EnemyAttackAreaEntered;
+        _playerHitbox.AreaEntered += EnemyAttackHitboxEntered;
     }
 
     // State Machine
@@ -332,11 +332,11 @@ public partial class Player : CharacterBody2D
             );
     }
 
-    private void EnemyAttackAreaEntered(Node2D area)
+    private void EnemyAttackHitboxEntered(Node2D area)
     {
         switch (area.Name)
         {
-            case "attack_area":
+            case "attack_hitbox":
                 GD.Print("player has been attacked: SetState(State.Death)");
                 // SetState(State.Death); Commented out for now, reenable once death state has been figured out.
                 break;
