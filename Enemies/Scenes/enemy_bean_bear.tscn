@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://da3jiitknrkpe"]
+[gd_scene load_steps=9 format=3 uid="uid://da3jiitknrkpe"]
 
 [ext_resource type="Script" path="res://Enemies/Scripts/GroundMeleeEnemy.cs" id="1_oh65b"]
 [ext_resource type="Texture2D" uid="uid://bc44u073vlos8" path="res://Assets/Sprites/Placeholders/bean_bear-1.png" id="1_orph1"]
@@ -10,7 +10,10 @@ radius = 17.0
 height = 34.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4p2av"]
-size = Vector2(54, 30)
+size = Vector2(17, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h43nc"]
+size = Vector2(24, 21)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vlkjx"]
 atlas = ExtResource("1_orph1")
@@ -51,9 +54,18 @@ collision_layer = 256
 collision_mask = 2
 
 [node name="attack_collider" type="CollisionShape2D" parent="attack_area"]
-position = Vector2(-1, 1)
+position = Vector2(-19.5, 1)
 shape = SubResource("RectangleShape2D_4p2av")
 debug_color = Color(0.265666, 0.633389, 0, 0.42)
+
+[node name="attack_hitbox" type="Area2D" parent="."]
+collision_layer = 256
+collision_mask = 2
+
+[node name="attack_hitbox_collider" type="CollisionShape2D" parent="attack_hitbox"]
+position = Vector2(-24, 4)
+shape = SubResource("RectangleShape2D_h43nc")
+debug_color = Color(0.458906, 0.197794, 0.859965, 0.42)
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_tbxw0")

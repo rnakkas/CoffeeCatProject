@@ -23,6 +23,8 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private Vector2 _playerGlobalPosition;
 	private float _direction;
 	private Vector2 _playerDetectorTargetPosition;
+	private Vector2 _attackAreaColliderPosition;
+	private Vector2 _attackHitboxColliderPosition;
 	
 	// Statuses
 	private bool _attacking;
@@ -33,7 +35,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private Area2D _enemyHurtbox; 
 	private AnimatedSprite2D _sprite;
 	private RayCast2D _leftWallDetect, _rightWallDetect, _playerDetector;
-	private Area2D _attackArea;
+	private Area2D _attackArea, _attackHitbox;
 	private Timer _chaseTimer;
 	private Timer _attackDelayTimer;
 	
@@ -46,6 +48,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		_leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
 		_rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
 		_attackArea = GetNode<Area2D>("attack_area");
+		_attackHitbox = GetNode<Area2D>("attack_hitbox");
 		_playerDetector = GetNode<RayCast2D>("player_detector");
 		_chaseTimer = GetNode<Timer>("chase_timer");
 		_attackDelayTimer = GetNode<Timer>("attack_delay_timer");
@@ -117,18 +120,18 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		}
 	}
 
-	private void FlipSprite()
-	{
-		if (_direction < 0)
-		{
-			_sprite.FlipH = false;
-		}
-
-		if (_direction > 0)
-		{
-			_sprite.FlipH = true;
-		}
-	}
+	// private void FlipSprite()
+	// {
+	// 	if (_direction < 0)
+	// 	{
+	// 		_sprite.FlipH = false;
+	// 	}
+	//
+	// 	if (_direction > 0)
+	// 	{
+	// 		_sprite.FlipH = true;
+	// 	}
+	// }
 	
 	// Getting hit by player's bullets
 	private void HitByBullets(Area2D area)
@@ -153,15 +156,21 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	}
 	
 	// Detecting the player for chasing
-	private void FlipPlayerDetector() // Flip the player detector raycast based on movement direction
+	private void FlipSpriteAndDetectors() // Flip the player detector raycast based on movement direction
 	{
 		if (_direction < 0)
 		{
+			_sprite.FlipH = false;
 			_playerDetectorTargetPosition = new Vector2(-PlayerDetectionRange, 0);
+			_attackArea.Scale = new Vector2(1.0f, 1.0f);
+			_attackHitbox.Scale = new Vector2(1.0f, 1.0f);
 		}
 		else if (_direction > 0)
 		{
+			_sprite.FlipH = true;
 			_playerDetectorTargetPosition = new Vector2(PlayerDetectionRange, 0);
+			_attackArea.Scale = new Vector2(-1.0f, 1.0f);
+			_attackHitbox.Scale = new Vector2(-1.0f, 1.0f);
 		}
 		
 		_playerDetector.TargetPosition = _playerDetectorTargetPosition;
@@ -215,9 +224,8 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	
 	public override void _Process(double delta)
 	{
-		FlipSprite();
 		ReboundFromWall();
-		FlipPlayerDetector();
+		FlipSpriteAndDetectors();
 		PlayerEnteredDetectionRange();
 
 		// Patrolling and chasing player
