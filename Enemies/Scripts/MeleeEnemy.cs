@@ -86,6 +86,10 @@ public partial class MeleeEnemy : CharacterBody2D
 		{
 			_health -= 5;
 			_hurt = true;
+			
+			// If hurt, look in the player's direction
+			_playerDetectorTargetPosition = Overlord.Instance.PlayerGlobalPosition;
+			SetDirectionToTarget(_playerDetectorTargetPosition);
 		}
 	}
 
@@ -117,39 +121,10 @@ public partial class MeleeEnemy : CharacterBody2D
 	{
 		if (_playerDetector.IsColliding())
 		{
-			GD.Print("player detected");
 			_chasing = true;
 			_chaseTimer.Start();
 		}
 	}
-	
-	
-	// private void MoveAround(Vector2 target, float delta)
-	// {
-	// 	SetDirectionToTarget(target);
-	// 	
-	// 	// Move towards player if player is on floor or below self
-	// 	if (target.Y >= GlobalPosition.Y)
-	// 	{
-	// 		_velocity.X = _direction * PatrolSpeed;
-	// 		Velocity = _velocity;
-	// 	}
-	// 	
-	// 	// Slow down to zero if player is above self and rebound if hitting wall
-	// 	else if (target.Y < GlobalPosition.Y)
-	// 	{
-	// 		ReboundFromWall();
-	// 		_velocity = _velocity.MoveToward(Vector2.Zero, delta * SlowdownRate);
-	// 		Velocity = _velocity;
-	// 	}
-	// 	
-	// 	// Stop a certain distance from player for attacking
-	// 	if (GlobalPosition.DistanceTo(target) < DistanceFromPlayerForAttack)
-	// 	{
-	// 		_velocity.X = 0.0f;
-	// 		Velocity = _velocity;
-	// 	}
-	// }
 
 	private void Patrolling()
 	{
@@ -207,6 +182,19 @@ public partial class MeleeEnemy : CharacterBody2D
 	
 	public override void _Process(double delta)
 	{
+		FlipPlayerDetector();
+		PlayerEnteredDetectionRange();
+		
+		if (!_chasing)
+		{
+			Patrolling();
+		}
+		else if (_chasing)
+		{
+			_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
+			Chasing();
+		}
+		
 		// Fall if in the air
 		if (!IsOnFloor())
 		{
@@ -221,6 +209,7 @@ public partial class MeleeEnemy : CharacterBody2D
 			QueueFree();
 		}
 		
+		
 		//TODO: Add attack animation, hurt animation and death animation based on player interaction 
 		if (_attacking)
 		{
@@ -234,18 +223,7 @@ public partial class MeleeEnemy : CharacterBody2D
 		{
 			// GD.Print("enemy got hit by player's bullets");
 		}
-
-		FlipPlayerDetector();
-		PlayerEnteredDetectionRange();
-
-		if (!_chasing)
-		{
-			Patrolling();
-		}
-		else if (_chasing)
-		{
-			Chasing();
-		}
+		
 		
 		
 		Velocity = _velocity;
