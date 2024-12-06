@@ -85,9 +85,49 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	{
 		_chasing = false;
 	}
+	
 	private void AttackDelayTimerTimedOut()
 	{
 		_attacking = true;
+	}
+	
+	// Setting the directions
+	private void SetDirectionToTarget(Vector2 target) // Setting the direction based on player's position 
+	{
+		// Get x location and translate that to self direction float
+		if (GlobalPosition.DirectionTo(target).X < 0)
+		{
+			_direction = -1.0f;
+		}
+		else if (GlobalPosition.DirectionTo(target).X > 0)
+		{
+			_direction = 1.0f;
+		}
+	}
+	
+	private void ReboundFromWall() // Flipping the direction if colliding with a wall 
+	{
+		if (_leftWallDetect.IsColliding())
+		{
+			_direction = 1.0f;
+		}
+		if (_rightWallDetect.IsColliding())
+		{
+			_direction = -1.0f;
+		}
+	}
+
+	private void FlipSprite()
+	{
+		if (_direction < 0)
+		{
+			_sprite.FlipH = false;
+		}
+
+		if (_direction > 0)
+		{
+			_sprite.FlipH = true;
+		}
 	}
 	
 	// Getting hit by player's bullets
@@ -103,6 +143,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 			SetDirectionToTarget(_playerDetectorTargetPosition);
 		}
 	}
+	
 	private void BulletsDestroyed(Area2D area)
 	{
 		if (area.GetMeta("role").ToString().ToLower() == "bullet")
@@ -110,7 +151,6 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 			_hurt = false;
 		}
 	}
-
 	
 	// Detecting the player for chasing
 	private void FlipPlayerDetector() // Flip the player detector raycast based on movement direction
@@ -126,6 +166,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		
 		_playerDetector.TargetPosition = _playerDetectorTargetPosition;
 	}
+	
 	private void PlayerEnteredDetectionRange()
 	{
 		if (_playerDetector.IsColliding())
@@ -143,37 +184,13 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		
 		_attackDelayTimer.Start();
 	}
+	
 	private void PlayerExitedAttackArea(Node2D body)
 	{
 		if (body.GetMeta("role").ToString().ToLower() != "player") 
 			return;
 		
 		_attacking = false;
-	}
-	
-	// Setting the directions
-	private void SetDirectionToTarget(Vector2 target) // Setting the direction based on player's position 
-	{
-		// Get x location and translate that to self direction float
-		if (GlobalPosition.DirectionTo(target).X < 0)
-		{
-			_direction = -1.0f;
-		}
-		else if (GlobalPosition.DirectionTo(target).X > 0)
-		{
-			_direction = 1.0f;
-		}
-	}
-	private void ReboundFromWall() // Flipping the direction if colliding with a wall 
-	{
-		if (_leftWallDetect.IsColliding())
-		{
-			_direction = 1.0f;
-		}
-		if (_rightWallDetect.IsColliding())
-		{
-			_direction = -1.0f;
-		}
 	}
 	
 	// Logic for chasing the player
@@ -198,6 +215,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	
 	public override void _Process(double delta)
 	{
+		FlipSprite();
 		ReboundFromWall();
 		FlipPlayerDetector();
 		PlayerEnteredDetectionRange();
