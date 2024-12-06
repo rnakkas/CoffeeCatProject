@@ -15,7 +15,7 @@ public partial class MeleeEnemy : CharacterBody2D
 	private const float SlowdownRate = 80.0f;
 	private const float DistanceFromPlayerForAttack = 25.0f;
 	private const float PlayerDetectionRange = 300.0f;
-	private const float ChaseTime = 2.0f;
+	private const float ChaseTime = 3.0f;
 	
 	// Vars
 	private int _health = 100;
@@ -71,7 +71,13 @@ public partial class MeleeEnemy : CharacterBody2D
 		// Set timer values
 		_chaseTimer.OneShot = true;
 		_chaseTimer.WaitTime = ChaseTime;
+		_chaseTimer.Timeout += ChaseTimerTimedOut;
 
+	}
+
+	private void ChaseTimerTimedOut()
+	{
+		_chasing = false;
 	}
 	
 	private void HitByBullets(Area2D area)
@@ -105,6 +111,16 @@ public partial class MeleeEnemy : CharacterBody2D
 			return;
 		
 		_attacking = false;
+	}
+
+	private void PlayerEnteredDetectionRange()
+	{
+		if (_playerDetector.IsColliding())
+		{
+			GD.Print("player detected");
+			_chasing = true;
+			_chaseTimer.Start();
+		}
 	}
 	
 	
@@ -144,11 +160,8 @@ public partial class MeleeEnemy : CharacterBody2D
 	private void Chasing()
 	{
 		ReboundFromWall();
-
-		if (_playerDetector.IsColliding())
-		{
-			_velocity.X = _direction * ChaseSpeed;
-		}
+		_velocity.X = _direction * ChaseSpeed;
+		
 	}
 
 	// Set a direction float based on where the target/player is
@@ -211,18 +224,19 @@ public partial class MeleeEnemy : CharacterBody2D
 		//TODO: Add attack animation, hurt animation and death animation based on player interaction 
 		if (_attacking)
 		{
-			GD.Print("enemy attacking the player");
+			// GD.Print("enemy attacking the player");
 		}
 		else if (!_attacking)
 		{
-			GD.Print("enemy stopped attacking the player");
+			// GD.Print("enemy stopped attacking the player");
 		}
 		else if (_hurt)
 		{
-			GD.Print("enemy got hit by player's bullets");
+			// GD.Print("enemy got hit by player's bullets");
 		}
 
 		FlipPlayerDetector();
+		PlayerEnteredDetectionRange();
 
 		if (!_chasing)
 		{
