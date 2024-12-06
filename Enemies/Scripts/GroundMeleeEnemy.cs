@@ -15,7 +15,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private const float DistanceFromPlayerForAttack = 30.0f;
 	private const float PlayerDetectionRange = 300.0f;
 	private const float ChaseTime = 3.0f;
-	private const float AttackDelayTime = 0.8f;
+	private const float AttackDelayTime = 0.6f;
 	private const float AttackCooldownTime = 1.2f;
 	
 	// Vars
@@ -35,7 +35,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private AnimatedSprite2D _sprite;
 	private RayCast2D _leftWallDetect, _rightWallDetect, _playerDetector;
 	private Timer _chaseTimer, _attackDelayTimer, _attackCooldownTimer;
-	private CollisionShape2D _attackAreaCollider, _attackHitboxCollider;
+	private CollisionShape2D _attackHitboxCollider;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -47,7 +47,6 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		_rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
 		_attackArea = GetNode<Area2D>("attack_area");
 		_attackHitbox = GetNode<Area2D>("attack_hitbox");
-		_attackAreaCollider = GetNode<CollisionShape2D>("attack_area/attack_collider");
 		_attackHitboxCollider = GetNode<CollisionShape2D>("attack_hitbox/attack_hitbox_collider");
 		_playerDetector = GetNode<RayCast2D>("player_detector");
 		_chaseTimer = GetNode<Timer>("chase_timer");
@@ -189,7 +188,6 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		if (area.Name != "player_area") 
 			return;
 
-		_attackAreaCollider.Disabled = true;
 		_attackDelayTimer.Start();
 	}
 	
@@ -202,7 +200,6 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		// So that enemy doesn't get stuck in attack mode if the player is not in its attack area
 		_attackDelayTimer.Stop();
 		_attacking = false;
-		_attackAreaCollider.Disabled = false;
 	}
 	
 	// Logic for chasing the player
