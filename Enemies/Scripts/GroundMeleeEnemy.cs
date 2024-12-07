@@ -15,8 +15,8 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private const float DistanceFromPlayerForAttack = 30.0f;
 	private const float PlayerDetectionRange = 300.0f;
 	private const float ChaseTime = 3.0f;
-	private const float AttackDelayTime = 0.6f;
-	private const float AttackCooldownTime = 1.2f;
+	private const float AttackDelayTime = 0.3f;
+	private const float AttackCooldownTime = 0.2f;
 	
 	// Vars
 	private int _health = 100;
@@ -96,12 +96,20 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	
 	private void AttackDelayTimerTimedOut()
 	{
+		GD.Print("enemy attacking");
 		_attacking = true;
+		
+		// When attacking, start the attack cooldown
+		_attackCooldownTimer.Start();
 	}
 
 	private void AttackCooldownTimerTimeout()
 	{
+		GD.Print("attack cooldown");
 		_attacking = false;
+		
+		// When attack finished, wait for attack delay to start attacking again
+		_attackDelayTimer.Start();
 	}
 	
 	// Setting the directions
@@ -199,6 +207,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		// If player quickly jumps out of attack area before attack delay timer runs out, the timer will be stopped
 		// So that enemy doesn't get stuck in attack mode if the player is not in its attack area
 		_attackDelayTimer.Stop();
+		_attackCooldownTimer.Stop();
 		_attacking = false;
 	}
 	
