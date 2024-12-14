@@ -1,4 +1,3 @@
-using System;
 using CoffeeCatProject.GlobalScripts;
 using Godot;
 
