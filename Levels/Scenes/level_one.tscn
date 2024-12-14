@@ -73,7 +73,7 @@ position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
 [node name="enemy_bean_bear" parent="." instance=ExtResource("3_lx8tw")]
-position = Vector2(803, 150)
+position = Vector2(598, 199)
 
 [node name="enemy_lab_guy" parent="." instance=ExtResource("4_grdbd")]
 position = Vector2(803, 268)

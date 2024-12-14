@@ -17,6 +17,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private const float ChaseTime = 3.0f;
 	private const float AttackDelayTime = 0.3f;
 	private const float AttackCooldownTime = 0.2f;
+	private const float SlowDownRate = 2.7f;
 	
 	// Vars
 	private int _health = 100;
@@ -57,7 +58,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		//TODO: on ready, play spawn animation instead
 		_sprite.Play("idle");
 
-		// Signal connects
+		// Area2D signal connections
 		_enemyHurtbox.AreaEntered += HitByBullets;
 		_enemyHurtbox.AreaExited += BulletsDestroyed;
 		_attackArea.AreaEntered += PlayerEnteredAttackArea;
@@ -86,6 +87,58 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		_attackCooldownTimer.WaitTime = AttackCooldownTime;
 		_attackCooldownTimer.Timeout += AttackCooldownTimerTimeout;
 
+	}
+
+	public override void _PhysicsProcess(double delta)
+	{
+		ReboundFromWall();
+		FlipSpriteAndDetectors();
+		PlayerEnteredDetectionRange();
+
+		// Patrolling and chasing player
+		switch (_chasing)
+		{
+			case true:
+			{
+				ChaseThePlayer();
+				break;
+			}
+			
+			case false: 
+				_velocity.X = _direction * PatrolSpeed;
+				break;
+		}
+		
+		// Fall if in the air
+		if (!IsOnFloor())
+		{
+			_velocity.Y += Gravity * (float)delta;
+		}
+		
+		// Die when health reaches 0
+		if (_health <= 0)
+		{
+			//TODO: Play death animation
+			GD.Print("enemy died, \r\n await animation finished before QueueFree");
+			QueueFree();
+		}
+		
+		//TODO: Add attack animation, hurt animation and death animation based on player interaction 
+		if (_attacking)
+		{
+			_attackHitboxCollider.Disabled = false;
+		}
+		else if (!_attacking)
+		{
+			_attackHitboxCollider.Disabled = true;
+		}
+		else if (_hurt)
+		{
+			// GD.Print("enemy got hit by player's bullets");
+		}
+		
+		Velocity = _velocity;
+		MoveAndSlide();
 	}
 
 	// Timers
@@ -215,73 +268,23 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private void ChaseThePlayer()
 	{
 		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
-
-		if (_playerGlobalPosition.Y >= GlobalPosition.Y)
+		SetDirectionToTarget(_playerGlobalPosition);
+		
+		// If player jumps or standing on a platform above enemy during chase, slowdown to zero until chase timer runs out
+		// If player jumps over the enemy during chase, the enemy will "skid" and turn around to continue chasing
+		if (_playerGlobalPosition.Y < GlobalPosition.Y)
 		{
-			SetDirectionToTarget(_playerGlobalPosition);
+			_velocity = _velocity.MoveToward(Vector2.Zero, SlowDownRate);
 		}
-			
-		_velocity.X = _direction * ChaseSpeed;
-			
-		// If player position reached while chasing, stop a certain distance from the player for attacks
-		if (GlobalPosition.DistanceTo(_playerGlobalPosition) <= DistanceFromPlayerForAttack)
+		else
 		{
-			// _velocity = _velocity.MoveToward(Vector2.Zero, SlowdownRate);
-			_velocity.X = 0;
-		}
-	}
-	
-	public override void _Process(double delta)
-	{
-		ReboundFromWall();
-		FlipSpriteAndDetectors();
-		PlayerEnteredDetectionRange();
-
-		// Patrolling and chasing player
-		switch (_chasing)
-		{
-			case true:
+			_velocity.X = _direction * ChaseSpeed;
+			
+			// Stop at a certain distance from player to attack
+			if (GlobalPosition.DistanceTo(_playerGlobalPosition) <= DistanceFromPlayerForAttack)
 			{
-				ChaseThePlayer();
-				break;
+				_velocity.X = 0;
 			}
-			
-			case false: 
-				_velocity.X = _direction * PatrolSpeed;
-				break;
 		}
-		
-		// Fall if in the air
-		if (!IsOnFloor())
-		{
-			_velocity.Y += Gravity * (float)delta;
-		}
-		
-		// Die when health reaches 0
-		if (_health <= 0)
-		{
-			//TODO: Play death animation
-			GD.Print("enemy died, \r\n await animation finished before QueueFree");
-			QueueFree();
-		}
-		
-		//TODO: Add attack animation, hurt animation and death animation based on player interaction 
-		if (_attacking)
-		{
-			_attackHitboxCollider.Disabled = false;
-		}
-		else if (!_attacking)
-		{
-			_attackHitboxCollider.Disabled = true;
-		}
-		else if (_hurt)
-		{
-			// GD.Print("enemy got hit by player's bullets");
-		}
-		
-		Velocity = _velocity;
-		MoveAndSlide();
 	}
-
-	
 }
