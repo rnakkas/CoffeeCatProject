@@ -5,11 +5,13 @@ namespace CoffeeCatProject.Enemies.Scripts;
 
 // Enemy is stationary, shoots projectiles in a straight line towards player's position
 //TODO:
-// -- tracking player logic
+// -- only tracking player and shoot at player when within a certain range, use an area2d to detect when player
+//		enters this range.
+// -- Then use the GlobalPosition.DistanceTo and AngleTo methods to determine direction and angle for shooting
+// -- Use the GlobalPosition.AngleTo(player) to get the angle to player to rotate the mouth to shoot.
 // -- shooting projectile at player location, projectiles can move through platforms but not through walls
 // -- dying when health reaches 0
-// -- only shoot at player when within a certain range
-// -- attack player if it gets too close, for example if trying to wall jump and this enemy is on the wall
+// -- hurt player if it gets too close, for example if trying to wall jump and this enemy is on the wall
 public partial class RangedEnemy : CharacterBody2D
 {
 	// Consts
@@ -67,6 +69,13 @@ public partial class RangedEnemy : CharacterBody2D
 
 	public override void _Process(double delta)
 	{
+		// Die when health reaches 0
+		if (_health <= 0)
+		{
+			//TODO: Play death animation
+			GD.Print("enemy died, \r\n -> await animation finished before QueueFree");
+			QueueFree();
+		}
 	}
 	
 	// Timers

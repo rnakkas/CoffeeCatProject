@@ -79,8 +79,12 @@ position = Vector2(600, 204)
 [node name="enemy_lab_guy" parent="." instance=ExtResource("4_grdbd")]
 position = Vector2(803, 268)
 
+[node name="enemy_fatty2" parent="." instance=ExtResource("5_nek4u")]
+position = Vector2(1157, 141)
+
 [node name="enemy_fatty" parent="." instance=ExtResource("5_nek4u")]
-position = Vector2(1148, 141)
+position = Vector2(480, 217)
+scale = Vector2(-1, 1)
 
 [node name="item_pickups" type="Node" parent="."]
 
