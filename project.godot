@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="CoffeeCatProject"
-run/main_scene="res://Levels/Scenes/test_level.tscn"
+run/main_scene="res://Levels/Scenes/level_one.tscn"
 config/features=PackedStringArray("4.3", "C#", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Overlord="*res://GlobalScripts/Overlord.cs"
 
 [display]
 
@@ -76,6 +80,7 @@ shoot={
 2d_physics/layer_6="enemies_collider"
 2d_physics/layer_7="enemis_hitbox"
 2d_physics/layer_8="player_bullets"
+2d_physics/layer_9="enemy_attack_area"
 
 [physics]
 

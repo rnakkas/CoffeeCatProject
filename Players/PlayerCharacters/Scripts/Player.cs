@@ -1,6 +1,7 @@
+using System;
+using CoffeeCatProject.GlobalScripts;
+using CoffeeCatProject.Players.Weapons;
 using Godot;
-using ShootingComponent = CoffeeCatProject.Players.Components.Scripts.ShootingComponent;
-using WeaponManagerScript = CoffeeCatProject.Players.WeaponManager.Scripts.WeaponManagerScript;
 
 namespace CoffeeCatProject.Players.PlayerCharacters.Scripts;
 
@@ -13,11 +14,14 @@ public partial class Player : CharacterBody2D
     private const float WallSlideGravity = 500.0f;
     private const float WallJumpVelocity = -200.0f;
     private const float FloorSnapLengthValue = 2.5f;
+    private const string WeaponPickupAreaMetadata = "WeaponPickupType";
 
     // Nodes
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Area2D _playerArea;
+    private WeaponManager _weaponManager;
+    private Area2D _playerHitbox;
 
     // State enum
     private enum State
@@ -27,7 +31,9 @@ public partial class Player : CharacterBody2D
         Jump, 
         WallSlide, 
         Fall, 
-        WallJump
+        WallJump,
+        Hurt,
+        Death,
     };
 
     // Variables
@@ -35,23 +41,29 @@ public partial class Player : CharacterBody2D
     private float _wallJumpDirection;
     private Vector2 _velocity;
     private Vector2 _muzzlePosition;
-    private float _spriteDirection;
     private bool _onCooldown;
     private string _currentWeapon;
+    private string _weaponPickupType;
+    private PackedScene _weaponScene;
     
-    // Exports
-    [Export] private WeaponManagerScript WeaponManager { get; set; }
-
+    public float SpriteDirection { get; set; }
+    public bool WallSlide { get; set; }
+    
     public override void _Ready()
     {
+        // Set player variables data
+        Overlord.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
+        
         // Set node's metadata
         SetMeta("role", "Player");
         
-        // Get the child nodes
+        // Get nodes
         _animation = GetNode<AnimatedSprite2D>("sprite");
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _playerArea = GetNode<Area2D>("player_area");
+        _weaponManager = GetNode<WeaponManager>("WeaponManager");
+        _playerHitbox = GetNode<Area2D>("player_hitbox");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -66,18 +78,15 @@ public partial class Player : CharacterBody2D
         _velocity = Velocity;
         
         // Set default direction
-        _spriteDirection = 1.0f;
+        SpriteDirection = 1.0f;
         
         // Animation to play on ready
         _animation.FlipH = true;
         _animation.Play("idle");
         
-        // Signals/Actions
-        _playerArea.AreaEntered += OnAreaEntered;
-        // ShootingComponent.IsShooting += IsShooting;
-
-        // // Hide mouse cursor when playing game
-        // Input.SetMouseMode(Input.MouseModeEnum.Hidden);
+        // Signal connections
+        _playerArea.AreaEntered += WeaponPickupAreaEntered;
+        _playerHitbox.AreaEntered += EnemyAttackHitboxEntered;
     }
 
     // State Machine
@@ -110,11 +119,7 @@ public partial class Player : CharacterBody2D
                 break;
             
             case State.WallSlide:
-                if (WeaponManager != null)
-                {
-                    WeaponManager.WallSlide = true;
-                }
-                
+                WallSlide = true;
                 _animation.Play("wall_slide");
                 break;
             
@@ -125,6 +130,10 @@ public partial class Player : CharacterBody2D
             case State.WallJump:
                 _velocity.Y = WallJumpVelocity;
                 _animation.Play("jump");
+                break;
+            case State.Death:
+                GD.Print("Entered Death State");
+                // TODO: play death animation
                 break;
         }
     }
@@ -140,10 +149,7 @@ public partial class Player : CharacterBody2D
             case State.Jump:
                 break;
             case State.WallSlide:
-                if (WeaponManager != null)
-                {
-                    WeaponManager.WallSlide = false;
-                }
+                WallSlide = false;
                 break;
             case State.Fall:
                 break;
@@ -289,35 +295,51 @@ public partial class Player : CharacterBody2D
         if (directionX < 0)
         {
             _animation.FlipH = false;
-            _spriteDirection = -1;
+            SpriteDirection = -1;
         }
         else if (directionX > 0)
         {
             _animation.FlipH = true;
-            _spriteDirection = 1;
+            SpriteDirection = 1;
         }
 
         if (_currentWeapon != null)
         {
-            WeaponManager.SpriteDirection = _spriteDirection;
+            _weaponManager.SpriteDirection = SpriteDirection;
+            
         }
         
     }
     public override void _PhysicsProcess(double delta)
     {
         UpdateState((float)delta);
+        Overlord.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
     }
     
     //// Signal methods
     
+    
     // Picking up weapons
-    private void OnAreaEntered(Node2D area)
+    private void WeaponPickupAreaEntered(Node2D area)
     {
-        if (area.Name.ToString().ToLower() == "weapon_pickups")
+        if (!area.HasMeta(WeaponPickupAreaMetadata))
         {
-            // If the area entered is weapon_pickups, get weapon's parent node name and equip the weapon
-            _currentWeapon = area.GetParent().Name.ToString();
-            WeaponManager.EquipWeapon(_currentWeapon);
+            throw new Exception("Missing metadata " + WeaponPickupAreaMetadata + " in area");
+        }
+        
+        _weaponManager.EquipWeapon(
+            area.GetMeta(WeaponPickupAreaMetadata).ToString().ToLower()
+            );
+    }
+
+    private void EnemyAttackHitboxEntered(Node2D area)
+    {
+        switch (area.Name)
+        {
+            case "attack_hitbox":
+                GD.Print("player has been attacked: SetState(State.Death)");
+                // SetState(State.Death); Commented out for now, reenable once death state has been figured out.
+                break;
         }
     }
 }
