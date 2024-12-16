@@ -42,7 +42,7 @@ public partial class FattySpit : Area2D
 		{
 			MoveLocalX(0);
 			_sprite.Play("hit");
-			await ToSignal(_sprite, "animation_finished");
+			// await ToSignal(_sprite, "animation_finished");
 			QueueFree();
 		}
 	}

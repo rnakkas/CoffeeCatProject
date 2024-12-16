@@ -86,15 +86,22 @@ public partial class RangedEnemy : CharacterBody2D
 		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
 		SetDirectionToTarget(_playerGlobalPosition);
 
-		if (!_attacking)
-			return;
-		SpawnProjectile();
+		if (_attacking)
+		{
+			_attacking = false;
+			SpawnProjectile();
+		}
+		else if (_hurt)
+		{
+			GD.Print("fatty got hit by player's bullets");
+		}
+		
 	}
 	
 	// Timers
 	private void AttackDelayTimerTimedOut()
 	{
-		GD.Print("enemy attacking");
+		GD.Print("ranged enemy attacking");
 		_attacking = true;
 		
 		// When attacking, start the attack cooldown
@@ -103,7 +110,7 @@ public partial class RangedEnemy : CharacterBody2D
 	
 	private void AttackCooldownTimerTimeout()
 	{
-		GD.Print("attack cooldown");
+		GD.Print("ranged attack cooldown");
 		_attacking = false;
 		
 		// When attack finished, wait for attack delay to start attacking again
