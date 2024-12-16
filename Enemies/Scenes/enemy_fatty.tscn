@@ -54,9 +54,9 @@ animation = &"idle"
 [node name="mouth" type="Marker2D" parent="."]
 position = Vector2(-7, 10)
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="player_detection_area" type="Area2D" parent="."]
 collision_layer = 256
 collision_mask = 2
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
-polygon = PackedVector2Array(0, 2, 0, -192, -64, -184, -128, -168, -192, -128, -224, -96, -240, -64, -256, -32, -256, -8, -256, 8, -256, 32, -240, 64, -224, 96, -192, 128, -128, 168, -64, 184, 0, 192)
+[node name="collider" type="CollisionPolygon2D" parent="player_detection_area"]
+polygon = PackedVector2Array(0, 0, -192, -128, -192, -128, -224, -96, -248, -64, -256, -48, -264, -16, -264, 8, -256, 48, -248, 64, -224, 96, -192, 128, -192, 128)

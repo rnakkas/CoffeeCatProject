@@ -8,15 +8,14 @@ namespace CoffeeCatProject.Enemies.Scripts;
 // -- only tracking player and shoot at player when within a certain range, use an area2d to detect when player
 //		enters this range.
 // -- Then use the GlobalPosition.DistanceTo and AngleTo methods to determine direction and angle for shooting
-// -- Use the GlobalPosition.AngleTo(player) to get the angle to player to rotate the mouth to shoot.
 // -- shooting projectile at player location, projectiles can move through platforms but not through walls
 // -- dying when health reaches 0
 // -- hurt player if it gets too close, for example if trying to wall jump and this enemy is on the wall
 public partial class RangedEnemy : CharacterBody2D
 {
 	// Consts
-	private const float AttackDelayTime = 0.3f;
-	private const float AttackCooldownTime = 0.2f;
+	private const float AttackDelayTime = 0.8f;
+	private const float AttackCooldownTime = 1.0f;
 	
 	// Vars
 	private int _health = 50;
@@ -24,12 +23,13 @@ public partial class RangedEnemy : CharacterBody2D
 	private float _direction;
 	
 	// Statuses
+	private bool _playerInRange;
 	private bool _attacking;
 	private bool _hurt;
 	
 	// Nodes
 	private AnimatedSprite2D _sprite;
-	private Area2D _enemyHurtbox;
+	private Area2D _enemyHurtbox, _playerDetectionArea;
 	private Timer _attackDelayTimer, _attackCooldownTimer;
 	private Marker2D _mouth;
 	
@@ -41,6 +41,7 @@ public partial class RangedEnemy : CharacterBody2D
 		_attackDelayTimer = GetNode<Timer>("attack_delay_timer");
 		_attackCooldownTimer = GetNode<Timer>("attack_cooldown_timer");
 		_mouth = GetNode<Marker2D>("mouth");
+		_playerDetectionArea = GetNode<Area2D>("player_detection_area");
 		
 		// Animation (using idle for now)
 		_sprite.Play("idle");
@@ -48,14 +49,11 @@ public partial class RangedEnemy : CharacterBody2D
 		// Set mouth position
 		_mouthPosition = _mouth.Position;
 		
-		// Get player's position on ready and set direction
-		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
-		SetDirectionToTarget(_playerGlobalPosition);
-		GD.Print("ranged enemy sees player location: " + _playerGlobalPosition);
-		
 		// Area2D signal connections
 		_enemyHurtbox.AreaEntered += HitByBullets;
 		_enemyHurtbox.AreaExited += BulletsDestroyed;
+		_playerDetectionArea.AreaEntered += PlayerEnteredDetectionArea;
+		_playerDetectionArea.AreaExited += PlayerExitedDetectionArea;
 		
 		// Set timer values
 		_attackDelayTimer.OneShot = true;
@@ -76,6 +74,12 @@ public partial class RangedEnemy : CharacterBody2D
 			GD.Print("enemy died, \r\n -> await animation finished before QueueFree");
 			QueueFree();
 		}
+		
+		// Detecting and attacking the player
+		if (!_playerInRange) 
+			return;
+		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
+		SetDirectionToTarget(_playerGlobalPosition);
 	}
 	
 	// Timers
@@ -127,5 +131,34 @@ public partial class RangedEnemy : CharacterBody2D
 		{
 			_hurt = false;
 		}
+	}
+
+	
+	// Detecting the player when they enter the detection range
+	private void PlayerEnteredDetectionArea(Node2D area)
+	{
+		if (area.Name != "player_area") 
+			return;
+
+		_playerInRange = true;
+		
+		_attackDelayTimer.Start();
+	}
+
+	private void PlayerExitedDetectionArea(Node2D area)
+	{
+		if (area.Name != "player_area") 
+			return;
+
+		_playerInRange = false;
+		
+		_attackDelayTimer.Stop();
+		_attackCooldownTimer.Stop();
+	}
+	
+	// Spawning the projectiles to shoot at player
+	private void SpawnProjectile()
+	{
+		
 	}
 }
