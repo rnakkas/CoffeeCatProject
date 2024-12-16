@@ -5,6 +5,7 @@ namespace CoffeeCatProject.Enemies.Scripts;
 
 // Enemy is stationary, shoots projectiles in a straight line towards player's position
 //TODO:
+// -- enemy projectile logic to only shoot one projectile at a time, see the shotgun behaviour
 // -- only tracking player and shoot at player when within a certain range, use an area2d to detect when player
 //		enters this range.
 // -- Then use the GlobalPosition.DistanceTo and AngleTo methods to determine direction and angle for shooting
@@ -32,6 +33,10 @@ public partial class RangedEnemy : CharacterBody2D
 	private Area2D _enemyHurtbox, _playerDetectionArea;
 	private Timer _attackDelayTimer, _attackCooldownTimer;
 	private Marker2D _mouth;
+	
+	// Packed scene: projectiles
+	private readonly PackedScene _fattySpit =
+		ResourceLoader.Load<PackedScene>("res://Enemies/Scenes/fatty_spit.tscn");
 	
 	public override void _Ready()
 	{
@@ -80,6 +85,10 @@ public partial class RangedEnemy : CharacterBody2D
 			return;
 		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
 		SetDirectionToTarget(_playerGlobalPosition);
+
+		if (!_attacking)
+			return;
+		SpawnProjectile();
 	}
 	
 	// Timers
@@ -159,6 +168,9 @@ public partial class RangedEnemy : CharacterBody2D
 	// Spawning the projectiles to shoot at player
 	private void SpawnProjectile()
 	{
-		
+		var projectileInstance = (FattySpit)_fattySpit.Instantiate();
+		projectileInstance.Direction = _direction;
+		projectileInstance.GlobalPosition = _mouth.GlobalPosition;
+		GetTree().Root.AddChild(projectileInstance);
 	}
 }

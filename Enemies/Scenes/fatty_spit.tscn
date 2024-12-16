@@ -15,9 +15,16 @@ animations = [{
 "loop": true,
 "name": &"fly",
 "speed": 5.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"hit",
+"speed": 5.0
 }]
 
 [node name="fatty_spit" type="Area2D"]
+collision_layer = 512
+collision_mask = 19
 script = ExtResource("1_nqxw0")
 
 [node name="collider" type="CollisionShape2D" parent="."]
