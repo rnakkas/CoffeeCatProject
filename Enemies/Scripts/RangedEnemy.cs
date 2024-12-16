@@ -20,7 +20,7 @@ public partial class RangedEnemy : CharacterBody2D
 	
 	// Vars
 	private int _health = 50;
-	private Vector2 _playerGlobalPosition, _mouthPosition;
+	private Vector2 _playerHeadTargetGlobalPosition, _mouthPosition;
 	private float _direction;
 	
 	// Statuses
@@ -83,8 +83,8 @@ public partial class RangedEnemy : CharacterBody2D
 		// Detecting and attacking the player
 		if (!_playerInRange) 
 			return;
-		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
-		SetDirectionToTarget(_playerGlobalPosition);
+		_playerHeadTargetGlobalPosition = Overlord.Instance.PlayerHeadTargetGlobalPosition;
+		SetDirectionToTarget(_playerHeadTargetGlobalPosition);
 
 		if (_attacking)
 		{
@@ -176,7 +176,7 @@ public partial class RangedEnemy : CharacterBody2D
 	private void SpawnProjectile()
 	{
 		var projectileInstance = (FattySpit)_fattySpit.Instantiate();
-		projectileInstance.Direction = _direction;
+		projectileInstance.Target = GlobalPosition.DirectionTo(_playerHeadTargetGlobalPosition);
 		projectileInstance.GlobalPosition = _mouth.GlobalPosition;
 		GetTree().Root.AddChild(projectileInstance);
 	}

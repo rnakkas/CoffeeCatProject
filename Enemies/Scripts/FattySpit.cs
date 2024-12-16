@@ -5,13 +5,13 @@ namespace CoffeeCatProject.Enemies.Scripts;
 public partial class FattySpit : Area2D
 {
 	// Constants
-	private const float Speed = 200f;
+	private const float Speed = 250f;
 	
 	// Nodes
 	private AnimatedSprite2D _sprite;
 	
 	// Variables
-	public float Direction {get; set;}
+	public Vector2 Target {get; set;}
 	private bool _hitStatus;
 	
 	public override void _Ready()
@@ -27,6 +27,8 @@ public partial class FattySpit : Area2D
 		// Area2D signals
 		BodyEntered += OnBodyEntered;
 		AreaEntered += OnAreaEntered;
+		
+		
 	}
 
 	public override async void _PhysicsProcess(double delta)
@@ -36,11 +38,13 @@ public partial class FattySpit : Area2D
 
 		if (!_hitStatus)
 		{
-			MoveLocalX(Speed * (float)delta * Direction);
+			MoveLocalX(Speed * (float)delta * Target.X);
+			MoveLocalY(Speed * (float)delta * Target.Y);
 		}
 		else
 		{
 			MoveLocalX(0);
+			MoveLocalY(0);
 			_sprite.Play("hit");
 			// await ToSignal(_sprite, "animation_finished");
 			QueueFree();
@@ -50,12 +54,12 @@ public partial class FattySpit : Area2D
 	private void FlipSprite()
 	{
 		// Flip sprite based on direction
-		if (Direction < 0)
+		if (GlobalPosition.DirectionTo(Target).X < 0)
 		{
 			_sprite.FlipH = false;
 		}
 
-		if (Direction > 0)
+		if (GlobalPosition.DirectionTo(Target).X > 0)
 		{
 			_sprite.FlipH = true;
 		}

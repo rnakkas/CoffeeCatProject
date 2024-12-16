@@ -19,9 +19,8 @@ public partial class Player : CharacterBody2D
     // Nodes
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
-    private Area2D _playerArea;
+    private Area2D _playerArea, _playerHitbox, _playerHeadTarget;
     private WeaponManager _weaponManager;
-    private Area2D _playerHitbox;
 
     // State enum
     private enum State
@@ -64,6 +63,7 @@ public partial class Player : CharacterBody2D
         _playerArea = GetNode<Area2D>("player_area");
         _weaponManager = GetNode<WeaponManager>("WeaponManager");
         _playerHitbox = GetNode<Area2D>("player_hitbox");
+        _playerHeadTarget = GetNode<Area2D>("player_head_target");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -314,6 +314,7 @@ public partial class Player : CharacterBody2D
     {
         UpdateState((float)delta);
         Overlord.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
+        Overlord.Instance.UpdatePlayerHeadTargetGlobalPosition(_playerHeadTarget.GlobalPosition);
     }
     
     //// Signal methods
