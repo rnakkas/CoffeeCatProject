@@ -1,14 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://br3kx6h2du01c"]
+[gd_scene load_steps=9 format=3 uid="uid://br3kx6h2du01c"]
 
 [ext_resource type="Texture2D" uid="uid://cjr86ionikox4" path="res://Assets/Sprites/Placeholders/fatty-1.png" id="1_l6pg5"]
 [ext_resource type="Script" path="res://Enemies/Scripts/RangedEnemy.cs" id="1_wknb3"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qtau2"]
-radius = 15.0
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_u3baa"]
 radius = 20.0
 height = 40.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v3so7"]
+radius = 26.0192
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7a6on"]
+radius = 27.0185
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qtau2"]
+radius = 15.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ryclu"]
 atlas = ExtResource("1_l6pg5")
@@ -30,10 +36,6 @@ collision_layer = 32
 collision_mask = 17
 script = ExtResource("1_wknb3")
 
-[node name="collider" type="CollisionShape2D" parent="."]
-position = Vector2(1, 2)
-shape = SubResource("CircleShape2D_qtau2")
-
 [node name="enemy_hurtbox" type="Area2D" parent="."]
 collision_layer = 64
 collision_mask = 128
@@ -41,11 +43,7 @@ collision_mask = 128
 [node name="hurtbox_collider" type="CollisionShape2D" parent="enemy_hurtbox"]
 position = Vector2(1, 2)
 shape = SubResource("CapsuleShape2D_u3baa")
-debug_color = Color(0.896565, 0.284615, 0.36789, 0.42)
-
-[node name="sprite" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_8tbk3")
-animation = &"idle"
+debug_color = Color(1, 1, 1, 0.42)
 
 [node name="attack_delay_timer" type="Timer" parent="."]
 
@@ -63,3 +61,29 @@ collision_mask = 2
 
 [node name="player_detection_collider" type="CollisionPolygon2D" parent="player_detection_area"]
 polygon = PackedVector2Array(0, 0, -192, -128, -192, -128, -224, -96, -248, -64, -256, -48, -264, -16, -264, 8, -256, 48, -248, 64, -224, 96, -192, 128, -192, 128)
+
+[node name="attack_hitbox" type="Area2D" parent="."]
+collision_layer = 256
+collision_mask = 2
+
+[node name="attack_hitbox_collider" type="CollisionShape2D" parent="attack_hitbox"]
+position = Vector2(1, 2)
+shape = SubResource("CircleShape2D_v3so7")
+debug_color = Color(0.458906, 0.197794, 0.859965, 0.42)
+
+[node name="attack_area" type="Area2D" parent="."]
+position = Vector2(1, 2)
+collision_layer = 256
+collision_mask = 2
+
+[node name="attack_collider" type="CollisionShape2D" parent="attack_area"]
+shape = SubResource("CircleShape2D_7a6on")
+debug_color = Color(0.265666, 0.633389, 0, 0.42)
+
+[node name="collider" type="CollisionShape2D" parent="."]
+position = Vector2(1, 2)
+shape = SubResource("CircleShape2D_qtau2")
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_8tbk3")
+animation = &"idle"

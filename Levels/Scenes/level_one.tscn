@@ -73,18 +73,26 @@ limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
-[node name="enemy_bean_bear" parent="." instance=ExtResource("3_lx8tw")]
+[node name="fatty_enemies" type="Node" parent="."]
+
+[node name="enemy_fatty2" parent="fatty_enemies" instance=ExtResource("5_nek4u")]
+position = Vector2(1157, 150)
+
+[node name="enemy_fatty" parent="fatty_enemies" instance=ExtResource("5_nek4u")]
+position = Vector2(482, 180)
+rotation = -3.14159
+scale = Vector2(1, -1)
+
+[node name="bean_bear_enemies" type="Node" parent="."]
+
+[node name="enemy_bean_bear" parent="bean_bear_enemies" instance=ExtResource("3_lx8tw")]
 position = Vector2(600, 204)
+
+[node name="enemy_bean_bear2" parent="bean_bear_enemies" instance=ExtResource("3_lx8tw")]
+position = Vector2(1041, 268)
 
 [node name="enemy_lab_guy" parent="." instance=ExtResource("4_grdbd")]
 position = Vector2(803, 268)
-
-[node name="enemy_fatty2" parent="." instance=ExtResource("5_nek4u")]
-position = Vector2(1157, 150)
-
-[node name="enemy_fatty" parent="." instance=ExtResource("5_nek4u")]
-position = Vector2(482, 180)
-scale = Vector2(-1, 1)
 
 [node name="item_pickups" type="Node" parent="."]
 

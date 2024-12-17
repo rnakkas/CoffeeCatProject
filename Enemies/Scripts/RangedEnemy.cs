@@ -5,13 +5,9 @@ namespace CoffeeCatProject.Enemies.Scripts;
 
 // Enemy is stationary, shoots projectiles in a straight line towards player's position
 //TODO:
-// -- enemy projectile logic to only shoot one projectile at a time, see the shotgun behaviour
-// -- only tracking player and shoot at player when within a certain range, use an area2d to detect when player
-//		enters this range.
-// -- Then use the GlobalPosition.DistanceTo and AngleTo methods to determine direction and angle for shooting
-// -- shooting projectile at player location, projectiles can move through platforms but not through walls
-// -- dying when health reaches 0
-// -- hurt player if it gets too close, for example if trying to wall jump and this enemy is on the wall
+// -- projectiles can move through platforms but not through walls
+// -- hurt and knock back player if it gets too close, for example if trying to wall jump and this enemy is on the wall,
+//		the player will get knocked back and not be able to wall jump
 public partial class RangedEnemy : CharacterBody2D
 {
 	// Consts
@@ -98,7 +94,6 @@ public partial class RangedEnemy : CharacterBody2D
 		if (!_playerInRange) 
 			return;
 		_playerHeadTargetGlobalPosition = Overlord.Instance.PlayerHeadTargetGlobalPosition;
-		// SetDirectionToTarget(_playerHeadTargetGlobalPosition);
 
 		if (_attacking)
 		{
@@ -130,20 +125,6 @@ public partial class RangedEnemy : CharacterBody2D
 		// When attack finished, wait for attack delay to start attacking again
 		_attackDelayTimer.Start();
 	}
-	
-	// // Setting the directions
-	// private void SetDirectionToTarget(Vector2 target) // Setting the direction based on player's position 
-	// {
-	// 	// Get x location and translate that to self direction float
-	// 	if (GlobalPosition.DirectionTo(target).X < 0)
-	// 	{
-	// 		_direction = -1.0f;
-	// 	}
-	// 	else if (GlobalPosition.DirectionTo(target).X > 0)
-	// 	{
-	// 		_direction = 1.0f;
-	// 	}
-	// }
 	
 	// Getting hit by player's bullets
 	private void HitByBullets(Area2D area)
@@ -203,26 +184,11 @@ public partial class RangedEnemy : CharacterBody2D
 		
 		for (int i = 0; i < DeathProjectileCount; i++)
 		{
-			GD.Print("explosion death");
 			var projectileInstance = (FattySpit)_fattySpit.Instantiate();
 			projectileInstance.ProjectileType = Overlord.EnemyProjectileTypes.DeathProjectile;
 			projectileInstance.Target = GlobalPosition.DirectionTo(_playerHeadTargetGlobalPosition);
 			projectileInstance.GlobalPosition = _deathExplosionPoint.GlobalPosition;
 			projectileInstance.RotationDegrees = rng.RandfRange(-DeathProjectileAngle, DeathProjectileAngle);
-			
-			
-			// switch (i)
-			// {
-			// 	case 0:
-			// 		projectileInstance.RotationDegrees = DeathProjectileAngle;
-			// 		break;
-			// 	case 1:
-			// 		projectileInstance.RotationDegrees = 0.0f;
-			// 		break;
-			// 	case 2:
-			// 		projectileInstance.RotationDegrees = -DeathProjectileAngle;
-			// 		break;
-			// }
 			
 			GetTree().Root.AddChild(projectileInstance);
 		}
