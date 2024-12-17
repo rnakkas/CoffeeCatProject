@@ -1,4 +1,5 @@
 using Godot;
+using CoffeeCatProject.GlobalScripts;
 
 namespace CoffeeCatProject.Enemies.Scripts;
 
@@ -13,6 +14,8 @@ public partial class FattySpit : Area2D
 	// Variables
 	public Vector2 Target {get; set;}
 	private bool _hitStatus;
+	public Overlord.EnemyProjectileTypes ProjectileType {get; set;}
+	private float _direction;
 	
 	public override void _Ready()
 	{
@@ -27,19 +30,13 @@ public partial class FattySpit : Area2D
 		// Area2D signals
 		BodyEntered += OnBodyEntered;
 		AreaEntered += OnAreaEntered;
-		
-		
 	}
 
 	public override async void _PhysicsProcess(double delta)
 	{
-		// Flip sprite based on direction
-		FlipSprite();
-
 		if (!_hitStatus)
 		{
-			MoveLocalX(Speed * (float)delta * Target.X);
-			MoveLocalY(Speed * (float)delta * Target.Y);
+			ProjectilesBehaviour((float)delta);
 		}
 		else
 		{
@@ -54,14 +51,16 @@ public partial class FattySpit : Area2D
 	private void FlipSprite()
 	{
 		// Flip sprite based on direction
-		if (GlobalPosition.DirectionTo(Target).X < 0)
+		if (Target.X < 0)
 		{
 			_sprite.FlipH = false;
+			_direction = -1.0f;
 		}
 
-		if (GlobalPosition.DirectionTo(Target).X > 0)
+		if (Target.X > 0)
 		{
 			_sprite.FlipH = true;
+			_direction = 1.0f;
 		}
 		
 	}
@@ -80,6 +79,21 @@ public partial class FattySpit : Area2D
 		if (area.Name == "player_hitbox")
 		{
 			_hitStatus = true;
+		}
+	}
+	
+	// Projectiles behaviour based on type
+	private void ProjectilesBehaviour(float delta)
+	{
+		switch (ProjectileType)
+		{
+			case Overlord.EnemyProjectileTypes.AttackProjectile:
+				MoveLocalX(Speed * delta * Target.X);
+				MoveLocalY(Speed * delta * Target.Y);
+				break;
+			case Overlord.EnemyProjectileTypes.DeathProjectile:
+				MoveLocalX(Speed * delta * _direction);
+				break;
 		}
 	}
 }

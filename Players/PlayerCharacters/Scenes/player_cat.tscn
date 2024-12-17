@@ -324,13 +324,13 @@ sprite_frames = SubResource("SpriteFrames_k3p2u")
 animation = &"idle"
 
 [node name="player_head_target" type="Area2D" parent="."]
-position = Vector2(0, -15)
+position = Vector2(0, -10)
 collision_layer = 2
 collision_mask = 512
 
 [node name="player_head_target_collider" type="CollisionShape2D" parent="player_head_target"]
 shape = SubResource("CircleShape2D_3bfa6")
-debug_color = Color(0.348074, 0.613676, 0.25642, 0.42)
+debug_color = Color(1, 1, 1, 0.42)
 
 [node name="WeaponManager" type="Node" parent="."]
 script = ExtResource("3_g73be")

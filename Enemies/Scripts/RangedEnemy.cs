@@ -17,22 +17,25 @@ public partial class RangedEnemy : CharacterBody2D
 	// Consts
 	private const float AttackDelayTime = 0.8f;
 	private const float AttackCooldownTime = 1.0f;
+	private const float DeathProjectileAngle = 45.0f;
+	private const int DeathProjectileCount = 10;
 	
 	// Vars
 	private int _health = 50;
-	private Vector2 _playerHeadTargetGlobalPosition, _mouthPosition;
+	private Vector2 _playerHeadTargetGlobalPosition, _mouthPosition, _deathExplosionPointPosition;
 	private float _direction;
 	
 	// Statuses
 	private bool _playerInRange;
 	private bool _attacking;
 	private bool _hurt;
+	private bool _exploding;
 	
 	// Nodes
 	private AnimatedSprite2D _sprite;
 	private Area2D _enemyHurtbox, _playerDetectionArea;
 	private Timer _attackDelayTimer, _attackCooldownTimer;
-	private Marker2D _mouth;
+	private Marker2D _mouth, _deathExplosionPoint;
 	
 	// Packed scene: projectiles
 	private readonly PackedScene _fattySpit =
@@ -47,12 +50,16 @@ public partial class RangedEnemy : CharacterBody2D
 		_attackCooldownTimer = GetNode<Timer>("attack_cooldown_timer");
 		_mouth = GetNode<Marker2D>("mouth");
 		_playerDetectionArea = GetNode<Area2D>("player_detection_area");
+		_deathExplosionPoint = GetNode<Marker2D>("death_explosion_point");
 		
 		// Animation (using idle for now)
 		_sprite.Play("idle");
 		
 		// Set mouth position
 		_mouthPosition = _mouth.Position;
+		
+		// Set the death explosion point position
+		_deathExplosionPointPosition = _deathExplosionPoint.Position;
 		
 		// Area2D signal connections
 		_enemyHurtbox.AreaEntered += HitByBullets;
@@ -75,8 +82,15 @@ public partial class RangedEnemy : CharacterBody2D
 		// Die when health reaches 0
 		if (_health <= 0)
 		{
+			_exploding = true;
 			//TODO: Play death animation
 			GD.Print("enemy died, \r\n -> await animation finished before QueueFree");
+			if (_exploding)
+			{
+				_exploding = false;
+				SpawnDeathProjectiles();
+			}
+			
 			QueueFree();
 		}
 		
@@ -84,12 +98,12 @@ public partial class RangedEnemy : CharacterBody2D
 		if (!_playerInRange) 
 			return;
 		_playerHeadTargetGlobalPosition = Overlord.Instance.PlayerHeadTargetGlobalPosition;
-		SetDirectionToTarget(_playerHeadTargetGlobalPosition);
+		// SetDirectionToTarget(_playerHeadTargetGlobalPosition);
 
 		if (_attacking)
 		{
 			_attacking = false;
-			SpawnProjectile();
+			SpawnAttackProjectiles();
 		}
 		else if (_hurt)
 		{
@@ -117,19 +131,19 @@ public partial class RangedEnemy : CharacterBody2D
 		_attackDelayTimer.Start();
 	}
 	
-	// Setting the directions
-	private void SetDirectionToTarget(Vector2 target) // Setting the direction based on player's position 
-	{
-		// Get x location and translate that to self direction float
-		if (GlobalPosition.DirectionTo(target).X < 0)
-		{
-			_direction = -1.0f;
-		}
-		else if (GlobalPosition.DirectionTo(target).X > 0)
-		{
-			_direction = 1.0f;
-		}
-	}
+	// // Setting the directions
+	// private void SetDirectionToTarget(Vector2 target) // Setting the direction based on player's position 
+	// {
+	// 	// Get x location and translate that to self direction float
+	// 	if (GlobalPosition.DirectionTo(target).X < 0)
+	// 	{
+	// 		_direction = -1.0f;
+	// 	}
+	// 	else if (GlobalPosition.DirectionTo(target).X > 0)
+	// 	{
+	// 		_direction = 1.0f;
+	// 	}
+	// }
 	
 	// Getting hit by player's bullets
 	private void HitByBullets(Area2D area)
@@ -173,11 +187,44 @@ public partial class RangedEnemy : CharacterBody2D
 	}
 	
 	// Spawning the projectiles to shoot at player
-	private void SpawnProjectile()
+	private void SpawnAttackProjectiles()
 	{
 		var projectileInstance = (FattySpit)_fattySpit.Instantiate();
+		projectileInstance.ProjectileType = Overlord.EnemyProjectileTypes.AttackProjectile;
 		projectileInstance.Target = GlobalPosition.DirectionTo(_playerHeadTargetGlobalPosition);
 		projectileInstance.GlobalPosition = _mouth.GlobalPosition;
 		GetTree().Root.AddChild(projectileInstance);
+	}
+
+	// Spawning projectiles on death
+	private void SpawnDeathProjectiles()
+	{
+		var rng = new RandomNumberGenerator();
+		
+		for (int i = 0; i < DeathProjectileCount; i++)
+		{
+			GD.Print("explosion death");
+			var projectileInstance = (FattySpit)_fattySpit.Instantiate();
+			projectileInstance.ProjectileType = Overlord.EnemyProjectileTypes.DeathProjectile;
+			projectileInstance.Target = GlobalPosition.DirectionTo(_playerHeadTargetGlobalPosition);
+			projectileInstance.GlobalPosition = _deathExplosionPoint.GlobalPosition;
+			projectileInstance.RotationDegrees = rng.RandfRange(-DeathProjectileAngle, DeathProjectileAngle);
+			
+			
+			// switch (i)
+			// {
+			// 	case 0:
+			// 		projectileInstance.RotationDegrees = DeathProjectileAngle;
+			// 		break;
+			// 	case 1:
+			// 		projectileInstance.RotationDegrees = 0.0f;
+			// 		break;
+			// 	case 2:
+			// 		projectileInstance.RotationDegrees = -DeathProjectileAngle;
+			// 		break;
+			// }
+			
+			GetTree().Root.AddChild(projectileInstance);
+		}
 	}
 }

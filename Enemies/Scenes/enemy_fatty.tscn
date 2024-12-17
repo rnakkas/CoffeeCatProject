@@ -52,11 +52,14 @@ animation = &"idle"
 [node name="attack_cooldown_timer" type="Timer" parent="."]
 
 [node name="mouth" type="Marker2D" parent="."]
-position = Vector2(-7, 10)
+position = Vector2(-8, 10)
+
+[node name="death_explosion_point" type="Marker2D" parent="."]
+position = Vector2(-8, 0)
 
 [node name="player_detection_area" type="Area2D" parent="."]
 collision_layer = 256
 collision_mask = 2
 
-[node name="collider" type="CollisionPolygon2D" parent="player_detection_area"]
+[node name="player_detection_collider" type="CollisionPolygon2D" parent="player_detection_area"]
 polygon = PackedVector2Array(0, 0, -192, -128, -192, -128, -224, -96, -248, -64, -256, -48, -264, -16, -264, 8, -256, 48, -248, 64, -224, 96, -192, 128, -192, 128)

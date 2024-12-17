@@ -83,7 +83,7 @@ position = Vector2(803, 268)
 position = Vector2(1157, 150)
 
 [node name="enemy_fatty" parent="." instance=ExtResource("5_nek4u")]
-position = Vector2(480, 217)
+position = Vector2(482, 180)
 scale = Vector2(-1, 1)
 
 [node name="item_pickups" type="Node" parent="."]
