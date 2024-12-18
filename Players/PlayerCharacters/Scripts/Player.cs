@@ -338,8 +338,12 @@ public partial class Player : CharacterBody2D
         switch (area.Name)
         {
             case "attack_hitbox":
-                GD.Print("player has been attacked: SetState(State.Death)");
-                // SetState(State.Death); Commented out for now, reenable once death state has been figured out.
+                GD.Print("player has been attacked by melee: SetState(State.Hurt)");
+                // SetState(State.Hurt); Commented out for now, reenable once hurt state has been figured out.
+                break;
+            
+            case "damage_player_area":
+                GD.Print("player has been attacked by fatty: SetState(State.Hurt)");
                 break;
         }
     }

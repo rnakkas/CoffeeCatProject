@@ -1,4 +1,4 @@
 Throwing projectile in a bezier curve: 
 https://forum.godotengine.org/t/how-to-throw-object-along-bezier-curve-how-to-make-arc-projectile/59099/10
 
-
+- using metadata for attack areas, see code

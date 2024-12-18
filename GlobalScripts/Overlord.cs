@@ -14,6 +14,18 @@ public partial class Overlord: Node
         AttackProjectile,
         DeathProjectile
     }
+
+    public enum EnemyMetadataTypes
+    {
+        AttackType
+    }
+    
+    public enum EnemyAttackTypes
+    {
+        MeleeAttack,
+        ProjectileAttack,
+        FattySpikeAttack
+    }
     
     public void UpdatePlayerGlobalPosition(Vector2 globalPosition)
     {

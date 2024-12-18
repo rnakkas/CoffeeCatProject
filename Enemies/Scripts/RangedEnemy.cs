@@ -29,7 +29,7 @@ public partial class RangedEnemy : CharacterBody2D
 	
 	// Nodes
 	private AnimatedSprite2D _sprite;
-	private Area2D _enemyHurtbox, _playerDetectionArea;
+	private Area2D _enemyHurtbox, _playerDetectionArea, _damagePlayerArea;
 	private Timer _attackDelayTimer, _attackCooldownTimer;
 	private Marker2D _mouth, _deathExplosionPoint;
 	
@@ -47,6 +47,7 @@ public partial class RangedEnemy : CharacterBody2D
 		_mouth = GetNode<Marker2D>("mouth");
 		_playerDetectionArea = GetNode<Area2D>("player_detection_area");
 		_deathExplosionPoint = GetNode<Marker2D>("death_explosion_point");
+		_damagePlayerArea = GetNode<Area2D>("damage_player_area");
 		
 		// Animation (using idle for now)
 		_sprite.Play("idle");
@@ -62,6 +63,7 @@ public partial class RangedEnemy : CharacterBody2D
 		_enemyHurtbox.AreaExited += BulletsDestroyed;
 		_playerDetectionArea.AreaEntered += PlayerEnteredDetectionArea;
 		_playerDetectionArea.AreaExited += PlayerExitedDetectionArea;
+		_damagePlayerArea.AreaEntered += PlayerEnteredDamageArea;
 		
 		// Set timer values
 		_attackDelayTimer.OneShot = true;
@@ -71,6 +73,12 @@ public partial class RangedEnemy : CharacterBody2D
 		_attackCooldownTimer.OneShot = true;
 		_attackCooldownTimer.WaitTime = AttackCooldownTime;
 		_attackCooldownTimer.Timeout += AttackCooldownTimerTimeout;
+		
+		// Set metadata for attack area
+		_damagePlayerArea.SetMeta(
+			Overlord.EnemyMetadataTypes.AttackType.ToString(), 
+			Overlord.EnemyAttackTypes.FattySpikeAttack.ToString()
+			);
 	}
 
 	public override void _Process(double delta)
@@ -192,5 +200,14 @@ public partial class RangedEnemy : CharacterBody2D
 			
 			GetTree().Root.AddChild(projectileInstance);
 		}
+	}
+	
+	// Player enters the damage area
+	private void PlayerEnteredDamageArea(Node2D area)
+	{
+		if (area.Name != "player_hitbox")
+			return;
+		
+		GD.Print("player entered damage area");
 	}
 }

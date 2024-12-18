@@ -30,6 +30,12 @@ public partial class FattySpit : Area2D
 		// Area2D signals
 		BodyEntered += OnBodyEntered;
 		AreaEntered += OnAreaEntered;
+		
+		// Set metadata for attack area
+		SetMeta(
+			Overlord.EnemyMetadataTypes.AttackType.ToString(), 
+			Overlord.EnemyAttackTypes.ProjectileAttack.ToString()
+			);
 	}
 
 	public override async void _PhysicsProcess(double delta)
