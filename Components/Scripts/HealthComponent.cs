@@ -1,7 +1,8 @@
 using Godot;
-using System;
 
 namespace CoffeeCatProject.Components.Scripts;
+
+// This component handles dealing damage to health when hit and healing (for player only) when picking up health items.
 
 [GlobalClass]
 public partial class HealthComponent : Node2D

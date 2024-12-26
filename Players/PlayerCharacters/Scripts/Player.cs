@@ -20,7 +20,7 @@ public partial class Player : CharacterBody2D
     // Nodes
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
-    private Area2D _playerArea, _playerHeadTarget;
+    private Area2D _playerHeadTarget;
     private WeaponManager _weaponManager;
     private HurtboxComponent _hurtboxComponent;
 
@@ -62,7 +62,6 @@ public partial class Player : CharacterBody2D
         _animation = GetNode<AnimatedSprite2D>("sprite");
         _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
-        _playerArea = GetNode<Area2D>("player_area");
         _weaponManager = GetNode<WeaponManager>("WeaponManager");
         _playerHeadTarget = GetNode<Area2D>("player_head_target");
         _hurtboxComponent = GetNode<HurtboxComponent>("HurtboxComponent");
@@ -85,9 +84,6 @@ public partial class Player : CharacterBody2D
         // Animation to play on ready
         _animation.FlipH = true;
         _animation.Play("idle");
-        
-        // Signal connections
-        _playerArea.AreaEntered += WeaponPickupAreaEntered;
     }
 
     // State Machine
@@ -318,19 +314,5 @@ public partial class Player : CharacterBody2D
         Overlord.Instance.UpdatePlayerHeadTargetGlobalPosition(_playerHeadTarget.GlobalPosition);
     }
     
-    //// Signal methods
     
-    
-    // Picking up weapons
-    private void WeaponPickupAreaEntered(Node2D area)
-    {
-        if (!area.HasMeta(WeaponPickupAreaMetadata))
-        {
-            throw new Exception("Missing metadata " + WeaponPickupAreaMetadata + " in area");
-        }
-        
-        _weaponManager.EquipWeapon(
-            area.GetMeta(WeaponPickupAreaMetadata).ToString().ToLower()
-            );
-    }
 }

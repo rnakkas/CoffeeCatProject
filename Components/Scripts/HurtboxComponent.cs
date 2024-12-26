@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 namespace CoffeeCatProject.Components.Scripts;
 

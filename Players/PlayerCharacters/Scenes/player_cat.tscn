@@ -1,20 +1,21 @@
-[gd_scene load_steps=44 format=3 uid="uid://dlyfs7e3himjx"]
+[gd_scene load_steps=45 format=3 uid="uid://dlyfs7e3himjx"]
 
 [ext_resource type="Script" path="res://Players/PlayerCharacters/Scripts/Player.cs" id="1_vmxij"]
 [ext_resource type="Script" path="res://Components/Scripts/HurtboxComponent.cs" id="2_1w0xb"]
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="2_2ql0j"]
 [ext_resource type="Script" path="res://Players/Weapons/WeaponManager.cs" id="3_g73be"]
 [ext_resource type="Script" path="res://Components/Scripts/HealthComponent.cs" id="3_r6vfe"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_v1o4q"]
-size = Vector2(11.5, 16)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_divmg"]
-size = Vector2(18, 24)
+[ext_resource type="Script" path="res://Components/Scripts/PickupsComponent.cs" id="5_565do"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_05o1h"]
 radius = 7.0
 height = 22.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_divmg"]
+size = Vector2(17, 22)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v1o4q"]
+size = Vector2(11.5, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kh1su"]
 atlas = ExtResource("2_2ql0j")
@@ -288,20 +289,24 @@ collision_layer = 2
 collision_mask = 21
 script = ExtResource("1_vmxij")
 
-[node name="collider" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_v1o4q")
+[node name="left_wall_detect" type="RayCast2D" parent="."]
+modulate = Color(0.08, 1, 0.172, 1)
+position = Vector2(-2, 0)
+target_position = Vector2(-10, 0)
+collision_mask = 16
 
-[node name="player_area" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 4
+[node name="right_wall_detect" type="RayCast2D" parent="."]
+modulate = Color(0.08, 1, 0.172, 1)
+position = Vector2(1, 0)
+target_position = Vector2(11, 0)
+collision_mask = 16
 
-[node name="collider" type="CollisionShape2D" parent="player_area"]
-position = Vector2(1, -2)
-shape = SubResource("RectangleShape2D_divmg")
-debug_color = Color(0.641889, 0.521654, 0.132785, 0.42)
+[node name="WeaponManager" type="Node" parent="."]
+script = ExtResource("3_g73be")
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_r6vfe")
+_health = 100
 
 [node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("_healthComponent")]
 collision_layer = 2
@@ -314,17 +319,19 @@ position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_05o1h")
 debug_color = Color(0.969075, 0, 0.463732, 0.42)
 
-[node name="left_wall_detect" type="RayCast2D" parent="."]
-modulate = Color(0.08, 1, 0.172, 1)
-position = Vector2(-2, 0)
-target_position = Vector2(-10, 0)
-collision_mask = 16
+[node name="PickupsComponent" type="Area2D" parent="." node_paths=PackedStringArray("WeaponManager")]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("5_565do")
+WeaponManager = NodePath("../WeaponManager")
 
-[node name="right_wall_detect" type="RayCast2D" parent="."]
-modulate = Color(0.08, 1, 0.172, 1)
-position = Vector2(1, 0)
-target_position = Vector2(11, 0)
-collision_mask = 16
+[node name="pickups_component_collider" type="CollisionShape2D" parent="PickupsComponent"]
+position = Vector2(-0.5, -1)
+shape = SubResource("RectangleShape2D_divmg")
+debug_color = Color(0.641889, 0.521654, 0.132785, 0.42)
+
+[node name="collider" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_v1o4q")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_k3p2u")
@@ -338,6 +345,3 @@ collision_mask = 512
 [node name="player_head_target_collider" type="CollisionShape2D" parent="player_head_target"]
 shape = SubResource("CircleShape2D_3bfa6")
 debug_color = Color(1, 1, 1, 0.42)
-
-[node name="WeaponManager" type="Node" parent="."]
-script = ExtResource("3_g73be")
