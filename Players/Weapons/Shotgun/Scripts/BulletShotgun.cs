@@ -11,8 +11,6 @@ public partial class BulletShotgun : Area2D
 
 	// Variables
 	public float Direction {get; set;}
-	
-	private Vector2 _directionVector = Vector2.Zero;
 	private bool _hitStatus;
 	
 	public override void _Ready()

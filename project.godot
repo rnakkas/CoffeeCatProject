@@ -81,6 +81,7 @@ shoot={
 2d_physics/layer_7="enemis_hitbox"
 2d_physics/layer_8="player_bullets"
 2d_physics/layer_9="enemy_attack_area"
+2d_physics/layer_10="enemy_projectile"
 
 [physics]
 

@@ -7,10 +7,34 @@ public partial class Overlord: Node
 {
     public static Overlord Instance { get; private set; }
     public Vector2 PlayerGlobalPosition {get; private set;}
+    public Vector2 PlayerHeadTargetGlobalPosition {get; private set;}
+
+    public enum EnemyProjectileTypes
+    {
+        AttackProjectile,
+        DeathProjectile
+    }
+
+    public enum EnemyMetadataTypes
+    {
+        AttackType
+    }
+    
+    public enum EnemyAttackTypes
+    {
+        MeleeAttack,
+        ProjectileAttack,
+        FattySpikeAttack
+    }
     
     public void UpdatePlayerGlobalPosition(Vector2 globalPosition)
     {
         PlayerGlobalPosition =  globalPosition;
+    }
+
+    public void UpdatePlayerHeadTargetGlobalPosition(Vector2 globalPosition)
+    {
+        PlayerHeadTargetGlobalPosition = globalPosition;
     }
     
     public override void _Ready()

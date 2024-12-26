@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bo4hl6wq88lfk"]
+
+[ext_resource type="Script" path="res://Enemies/Scripts/FattySpit.cs" id="1_nqxw0"]
+[ext_resource type="Texture2D" uid="uid://opxvmr7jb4op" path="res://icon.svg" id="1_o4t1d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e6rec"]
+size = Vector2(10, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_78fcf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_o4t1d")
+}],
+"loop": true,
+"name": &"fly",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"hit",
+"speed": 5.0
+}]
+
+[node name="fatty_spit" type="Area2D"]
+collision_layer = 512
+collision_mask = 19
+script = ExtResource("1_nqxw0")
+
+[node name="collider" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_e6rec")
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+self_modulate = Color(1, 0.0862745, 0.054902, 1)
+scale = Vector2(0.0839844, 0.0878906)
+sprite_frames = SubResource("SpriteFrames_78fcf")
+animation = &"fly"

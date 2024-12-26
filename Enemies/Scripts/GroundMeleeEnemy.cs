@@ -1,4 +1,3 @@
-using System;
 using CoffeeCatProject.GlobalScripts;
 using Godot;
 
@@ -86,7 +85,12 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		_attackCooldownTimer.OneShot = true;
 		_attackCooldownTimer.WaitTime = AttackCooldownTime;
 		_attackCooldownTimer.Timeout += AttackCooldownTimerTimeout;
-
+		
+		// Set metadata for attack area
+		_attackHitbox.SetMeta(
+			Overlord.EnemyMetadataTypes.AttackType.ToString(), 
+			Overlord.EnemyAttackTypes.MeleeAttack.ToString()
+			);
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -134,7 +138,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		}
 		else if (_hurt)
 		{
-			// GD.Print("enemy got hit by player's bullets");
+			GD.Print("enemy got hit by player's bullets");
 		}
 		
 		Velocity = _velocity;
