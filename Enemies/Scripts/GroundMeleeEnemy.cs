@@ -16,7 +16,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	private const float ChaseTime = 3.0f;
 	private const float AttackDelayTime = 0.3f;
 	private const float AttackCooldownTime = 0.2f;
-	private const float SlowDownRate = 2.7f;
+	private const float SlowDownRate = 50.0f;
 	
 	// Vars
 	private int _health = 100;
@@ -104,7 +104,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		{
 			case true:
 			{
-				ChaseThePlayer();
+				ChaseThePlayer(delta);
 				break;
 			}
 			
@@ -269,7 +269,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 	}
 	
 	// Logic for chasing the player
-	private void ChaseThePlayer()
+	private void ChaseThePlayer(double delta)
 	{
 		_playerGlobalPosition = Overlord.Instance.PlayerGlobalPosition;
 		SetDirectionToTarget(_playerGlobalPosition);
@@ -278,7 +278,7 @@ public partial class GroundMeleeEnemy : CharacterBody2D
 		// If player jumps over the enemy during chase, the enemy will "skid" and turn around to continue chasing
 		if (_playerGlobalPosition.Y < GlobalPosition.Y)
 		{
-			_velocity = _velocity.MoveToward(Vector2.Zero, SlowDownRate);
+			_velocity = _velocity.MoveToward(Vector2.Zero, (float)delta * SlowDownRate);
 		}
 		else
 		{
