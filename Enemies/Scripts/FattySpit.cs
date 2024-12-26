@@ -82,7 +82,7 @@ public partial class FattySpit : Area2D
 
 	private void OnAreaEntered(Node area)
 	{
-		if (area.Name == "player_hitbox")
+		if (area.Name == "player_area")
 		{
 			_hitStatus = true;
 		}

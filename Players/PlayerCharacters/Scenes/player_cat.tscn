@@ -1,14 +1,16 @@
-[gd_scene load_steps=42 format=3 uid="uid://dlyfs7e3himjx"]
+[gd_scene load_steps=44 format=3 uid="uid://dlyfs7e3himjx"]
 
 [ext_resource type="Script" path="res://Players/PlayerCharacters/Scripts/Player.cs" id="1_vmxij"]
+[ext_resource type="Script" path="res://Components/Scripts/HurtboxComponent.cs" id="2_1w0xb"]
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="2_2ql0j"]
 [ext_resource type="Script" path="res://Players/Weapons/WeaponManager.cs" id="3_g73be"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_divmg"]
-size = Vector2(18, 24)
+[ext_resource type="Script" path="res://Components/Scripts/HealthComponent.cs" id="3_r6vfe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v1o4q"]
 size = Vector2(11.5, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_divmg"]
+size = Vector2(18, 24)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_05o1h"]
 radius = 7.0
@@ -286,6 +288,9 @@ collision_layer = 2
 collision_mask = 21
 script = ExtResource("1_vmxij")
 
+[node name="collider" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_v1o4q")
+
 [node name="player_area" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 4
@@ -295,14 +300,16 @@ position = Vector2(1, -2)
 shape = SubResource("RectangleShape2D_divmg")
 debug_color = Color(0.641889, 0.521654, 0.132785, 0.42)
 
-[node name="collider" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_v1o4q")
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("3_r6vfe")
 
-[node name="player_hitbox" type="Area2D" parent="."]
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("_healthComponent")]
 collision_layer = 2
 collision_mask = 768
+script = ExtResource("2_1w0xb")
+_healthComponent = NodePath("../HealthComponent")
 
-[node name="player_hitbox_collider" type="CollisionShape2D" parent="player_hitbox"]
+[node name="hurtbox_component_collider" type="CollisionShape2D" parent="HurtboxComponent"]
 position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_05o1h")
 debug_color = Color(0.969075, 0, 0.463732, 0.42)

@@ -4,3 +4,5 @@ https://forum.godotengine.org/t/how-to-throw-object-along-bezier-curve-how-to-ma
 - using metadata for attack areas, see code
 
 - godot composition: https://www.youtube.com/watch?v=rCu8vQrdDDI
+
+- COMPOSITION IS FUCKING AWESOME!!

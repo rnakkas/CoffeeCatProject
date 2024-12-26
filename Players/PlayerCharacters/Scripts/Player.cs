@@ -1,4 +1,5 @@
 using System;
+using CoffeeCatProject.Components.Scripts;
 using CoffeeCatProject.GlobalScripts;
 using CoffeeCatProject.Players.Weapons;
 using Godot;
@@ -19,8 +20,9 @@ public partial class Player : CharacterBody2D
     // Nodes
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
-    private Area2D _playerArea, _playerHitbox, _playerHeadTarget;
+    private Area2D _playerArea, _playerHeadTarget;
     private WeaponManager _weaponManager;
+    private HurtboxComponent _hurtboxComponent;
 
     // State enum
     private enum State
@@ -62,8 +64,8 @@ public partial class Player : CharacterBody2D
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _playerArea = GetNode<Area2D>("player_area");
         _weaponManager = GetNode<WeaponManager>("WeaponManager");
-        _playerHitbox = GetNode<Area2D>("player_hitbox");
         _playerHeadTarget = GetNode<Area2D>("player_head_target");
+        _hurtboxComponent = GetNode<HurtboxComponent>("HurtboxComponent");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -86,7 +88,6 @@ public partial class Player : CharacterBody2D
         
         // Signal connections
         _playerArea.AreaEntered += WeaponPickupAreaEntered;
-        _playerHitbox.AreaEntered += EnemyAttackHitboxEntered;
     }
 
     // State Machine
@@ -331,24 +332,5 @@ public partial class Player : CharacterBody2D
         _weaponManager.EquipWeapon(
             area.GetMeta(WeaponPickupAreaMetadata).ToString().ToLower()
             );
-    }
-
-    private void EnemyAttackHitboxEntered(Node2D area)
-    {
-        switch (area.Name)
-        {
-            case "attack_hitbox":
-                GD.Print("player has been attacked by melee: SetState(State.Hurt)");
-                // SetState(State.Hurt); Commented out for now, reenable once hurt state has been figured out.
-                break;
-            
-            case "damage_player_area":
-                GD.Print("player has been attacked by fatty: SetState(State.Hurt)");
-                break;
-            
-            case "fatty_spit":
-                GD.Print("player has been hit by fatty's spit projectile: SetState(State.Hurt)");
-                break;
-        }
     }
 }

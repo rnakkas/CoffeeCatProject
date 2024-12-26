@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cj35pm0wno6d1"]
-
-[ext_resource type="Script" path="res://Players/Components/Scripts/WeaponAnimationComponent.cs" id="1_03jh6"]
-
-[node name="weapon_animation_component" type="Node" node_paths=PackedStringArray("CooldownTimer")]
-script = ExtResource("1_03jh6")
-CooldownTimer = NodePath("")
