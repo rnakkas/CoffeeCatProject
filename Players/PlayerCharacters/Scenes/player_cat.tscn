@@ -300,7 +300,7 @@ shape = SubResource("RectangleShape2D_v1o4q")
 
 [node name="player_hitbox" type="Area2D" parent="."]
 collision_layer = 2
-collision_mask = 256
+collision_mask = 768
 
 [node name="player_hitbox_collider" type="CollisionShape2D" parent="player_hitbox"]
 position = Vector2(0, -1)

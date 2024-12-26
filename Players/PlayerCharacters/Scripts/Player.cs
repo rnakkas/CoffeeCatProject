@@ -345,6 +345,10 @@ public partial class Player : CharacterBody2D
             case "damage_player_area":
                 GD.Print("player has been attacked by fatty: SetState(State.Hurt)");
                 break;
+            
+            case "fatty_spit":
+                GD.Print("player has been hit by fatty's spit projectile: SetState(State.Hurt)");
+                break;
         }
     }
 }
