@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://dlyfs7e3himjx"]
+[gd_scene load_steps=47 format=3 uid="uid://dlyfs7e3himjx"]
 
 [ext_resource type="Script" path="res://Players/PlayerCharacters/Scripts/Player.cs" id="1_vmxij"]
 [ext_resource type="Script" path="res://Components/Scripts/HurtboxComponent.cs" id="2_1w0xb"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://Players/Weapons/WeaponManager.cs" id="3_g73be"]
 [ext_resource type="Script" path="res://Components/Scripts/HealthComponent.cs" id="3_r6vfe"]
 [ext_resource type="Script" path="res://Components/Scripts/PickupsComponent.cs" id="5_565do"]
+[ext_resource type="Script" path="res://Components/Scripts/PlayerControllerComponent.cs" id="6_6caky"]
+[ext_resource type="Script" path="res://Components/Scripts/VelocityComponent.cs" id="6_dui42"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_05o1h"]
 radius = 7.0
@@ -330,6 +332,21 @@ position = Vector2(-0.5, -1)
 shape = SubResource("RectangleShape2D_divmg")
 debug_color = Color(0.641889, 0.521654, 0.132785, 0.42)
 
+[node name="PlayerControllerComponent" type="Node2D" parent="." node_paths=PackedStringArray("_playerCharacter", "_velocityComponent")]
+script = ExtResource("6_6caky")
+_playerCharacter = NodePath("..")
+_velocityComponent = NodePath("../VelocityComponent")
+
+[node name="VelocityComponent" type="Node2D" parent="."]
+script = ExtResource("6_dui42")
+_maxRunSpeed = 170.0
+_acceleration = 80.0
+_friction = 75.0
+_jumpVelocity = -250.0
+_gravity = 750.0
+_wallSlideGravity = 500.0
+_wallJumpVelocity = -200.0
+
 [node name="collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_v1o4q")
 
@@ -338,10 +355,12 @@ sprite_frames = SubResource("SpriteFrames_k3p2u")
 animation = &"idle"
 
 [node name="player_head_target" type="Area2D" parent="."]
+visible = false
 position = Vector2(0, -10)
 collision_layer = 2
 collision_mask = 512
 
 [node name="player_head_target_collider" type="CollisionShape2D" parent="player_head_target"]
+visible = false
 shape = SubResource("CircleShape2D_3bfa6")
 debug_color = Color(1, 1, 1, 0.42)

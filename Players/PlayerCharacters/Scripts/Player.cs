@@ -15,14 +15,12 @@ public partial class Player : CharacterBody2D
     private const float WallSlideGravity = 500.0f;
     private const float WallJumpVelocity = -200.0f;
     private const float FloorSnapLengthValue = 2.5f;
-    private const string WeaponPickupAreaMetadata = "WeaponPickupType";
 
     // Nodes
     private AnimatedSprite2D _animation;
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Area2D _playerHeadTarget;
     private WeaponManager _weaponManager;
-    private HurtboxComponent _hurtboxComponent;
 
     // State enum
     private enum State
@@ -41,11 +39,7 @@ public partial class Player : CharacterBody2D
     private State _currentState;
     private float _wallJumpDirection;
     private Vector2 _velocity;
-    private Vector2 _muzzlePosition;
-    private bool _onCooldown;
     private string _currentWeapon;
-    private string _weaponPickupType;
-    private PackedScene _weaponScene;
     
     public float SpriteDirection { get; set; }
     public bool WallSlide { get; set; }
@@ -64,7 +58,6 @@ public partial class Player : CharacterBody2D
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
         _weaponManager = GetNode<WeaponManager>("WeaponManager");
         _playerHeadTarget = GetNode<Area2D>("player_head_target");
-        _hurtboxComponent = GetNode<HurtboxComponent>("HurtboxComponent");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -86,206 +79,228 @@ public partial class Player : CharacterBody2D
         _animation.Play("idle");
     }
 
-    // State Machine
-    private void SetState(State newState)
-    {
-        if (newState == _currentState)
-            return;
-        
-        ExitState();
-        _currentState = newState;
-        EnterState();
-    }
-
-    private void EnterState()
-    {
-        switch (_currentState)
-        {
-            case State.Idle:
-                _velocity.Y = 0;
-                _animation.Play("idle");
-                break;
-            
-            case State.Run:
-                _animation.Play("run");
-                break;
-            
-            case State.Jump:
-                _velocity.Y = JumpVelocity;
-                _animation.Play("jump");
-                break;
-            
-            case State.WallSlide:
-                WallSlide = true;
-                _animation.Play("wall_slide");
-                break;
-            
-            case State.Fall:
-                _animation.Play("fall");
-                break;
-            
-            case State.WallJump:
-                _velocity.Y = WallJumpVelocity;
-                _animation.Play("jump");
-                break;
-            case State.Death:
-                GD.Print("Entered Death State");
-                // TODO: play death animation
-                break;
-        }
-    }
-
-    private void ExitState()
-    {
-        switch (_currentState)
-        {
-            case State.Idle:
-                break;
-            case State.Run:
-                break;
-            case State.Jump:
-                break;
-            case State.WallSlide:
-                WallSlide = false;
-                break;
-            case State.Fall:
-                break;
-            case State.WallJump:
-                break;
-        }
-    }
-
-    private void UpdateState(float delta)
-    {
-        Vector2 direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-
-        switch (_currentState)
-        {
-            case State.Idle:
-                if (direction.X != 0)
-                {
-                    SetState(State.Run);
-                }
-                else if (Input.IsActionJustPressed("jump") && IsOnFloor())
-                {
-                    SetState(State.Jump);
-                }
-                else if (!IsOnFloor())
-                {
-                    SetState(State.Fall);
-                }
-
-                break;
-
-            case State.Run:
-                _velocity.X = direction.X * Speed;
-                FlipSprite(direction.X);
-
-                if (direction.X == 0)
-                {
-                    SetState(State.Idle);
-                }
-                else if (Input.IsActionJustPressed("jump") && IsOnFloor())
-                {
-                    SetState(State.Jump);
-                }
-                else if (!IsOnFloor())
-                {
-                    SetState(State.Fall);
-                }
-
-                Velocity = _velocity;
-                MoveAndSlide();
-                break;
-
-            case State.Jump:
-                _velocity.X = direction.X * Speed;
-                FlipSprite(direction.X);
-
-                if (!IsOnFloor())
-                {
-                    _velocity.Y += Gravity * delta;
-                    if (Velocity.Y > 0)
-                    {
-                        SetState(State.Fall);
-                    }
-                    // Only detect wall tile (collision layer 5)
-                    else if (_leftWallDetect.IsColliding() || _rightWallDetect.IsColliding())
-                    {
-                        SetState(State.WallSlide);
-                    }
-                }
-
-                Velocity = _velocity;
-                MoveAndSlide();
-                break;
-
-            case State.Fall:
-                _velocity.X = direction.X * Speed;
-                FlipSprite(direction.X);
-
-                if (IsOnFloor())
-                {
-                    SetState(State.Idle);
-                }
-                // Only detect wall tile (collision layer 5)
-                else if (_leftWallDetect.IsColliding() || _rightWallDetect.IsColliding())
-                {
-                    SetState(State.WallSlide);
-                }
-                else
-                {
-                    _velocity.Y += Gravity * delta;
-                }
-
-                Velocity = _velocity;
-                MoveAndSlide();
-                break;
-
-            case State.WallSlide:
-                _velocity.Y += WallSlideGravity * delta;
-
-                if (Input.IsActionJustPressed("jump"))
-                {
-                    if (_leftWallDetect.IsColliding())
-                    {
-                        _wallJumpDirection = 1.0f;
-                    }
-                    else if (_rightWallDetect.IsColliding())
-                    {
-                        _wallJumpDirection = -1.0f;
-                    }
-
-                    SetState(State.WallJump);
-
-                }
-                else if (IsOnFloor())
-                {
-                    SetState(State.Idle);
-                }
-
-                Velocity = _velocity;
-                MoveAndSlide();
-                break;
-
-            case State.WallJump:
-                _velocity.X = _wallJumpDirection * Speed;
-                FlipSprite(_wallJumpDirection);
-
-                if (!IsOnFloor())
-                {
-                    _velocity.Y += Gravity * delta;
-                    if (_velocity.Y > 0)
-                    {
-                        SetState(State.Fall);
-                    }
-                }
-
-                Velocity = _velocity;
-                MoveAndSlide();
-                break;
-        }
-    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //
+    // // State Machine
+    // private void SetState(State newState)
+    // {
+    //     if (newState == _currentState)
+    //         return;
+    //     
+    //     ExitState();
+    //     _currentState = newState;
+    //     EnterState();
+    // }
+    //
+    // private void EnterState()
+    // {
+    //     switch (_currentState)
+    //     {
+    //         case State.Idle:
+    //             _velocity.Y = 0;
+    //             _animation.Play("idle");
+    //             break;
+    //         
+    //         case State.Run:
+    //             _animation.Play("run");
+    //             break;
+    //         
+    //         case State.Jump:
+    //             _velocity.Y = JumpVelocity;
+    //             _animation.Play("jump");
+    //             break;
+    //         
+    //         case State.WallSlide:
+    //             WallSlide = true;
+    //             _animation.Play("wall_slide");
+    //             break;
+    //         
+    //         case State.Fall:
+    //             _animation.Play("fall");
+    //             break;
+    //         
+    //         case State.WallJump:
+    //             _velocity.Y = WallJumpVelocity;
+    //             _animation.Play("jump");
+    //             break;
+    //         case State.Death:
+    //             GD.Print("Entered Death State");
+    //             // TODO: play death animation
+    //             break;
+    //     }
+    // }
+    //
+    // private void ExitState()
+    // {
+    //     switch (_currentState)
+    //     {
+    //         case State.Idle:
+    //             break;
+    //         case State.Run:
+    //             break;
+    //         case State.Jump:
+    //             break;
+    //         case State.WallSlide:
+    //             WallSlide = false;
+    //             break;
+    //         case State.Fall:
+    //             break;
+    //         case State.WallJump:
+    //             break;
+    //     }
+    // }
+    //
+    // private void UpdateState(float delta)
+    // {
+    //     Vector2 direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+    //
+    //     switch (_currentState)
+    //     {
+    //         case State.Idle:
+    //             if (direction.X != 0)
+    //             {
+    //                 SetState(State.Run);
+    //             }
+    //             else if (Input.IsActionJustPressed("jump") && IsOnFloor())
+    //             {
+    //                 SetState(State.Jump);
+    //             }
+    //             else if (!IsOnFloor())
+    //             {
+    //                 SetState(State.Fall);
+    //             }
+    //
+    //             break;
+    //
+    //         case State.Run:
+    //             _velocity.X = direction.X * Speed;
+    //             FlipSprite(direction.X);
+    //
+    //             if (direction.X == 0)
+    //             {
+    //                 SetState(State.Idle);
+    //             }
+    //             else if (Input.IsActionJustPressed("jump") && IsOnFloor())
+    //             {
+    //                 SetState(State.Jump);
+    //             }
+    //             else if (!IsOnFloor())
+    //             {
+    //                 SetState(State.Fall);
+    //             }
+    //
+    //             Velocity = _velocity;
+    //             MoveAndSlide();
+    //             break;
+    //
+    //         case State.Jump:
+    //             _velocity.X = direction.X * Speed;
+    //             FlipSprite(direction.X);
+    //
+    //             if (!IsOnFloor())
+    //             {
+    //                 _velocity.Y += Gravity * delta;
+    //                 if (Velocity.Y > 0)
+    //                 {
+    //                     SetState(State.Fall);
+    //                 }
+    //                 // Only detect wall tile (collision layer 5)
+    //                 else if (_leftWallDetect.IsColliding() || _rightWallDetect.IsColliding())
+    //                 {
+    //                     SetState(State.WallSlide);
+    //                 }
+    //             }
+    //
+    //             Velocity = _velocity;
+    //             MoveAndSlide();
+    //             break;
+    //
+    //         case State.Fall:
+    //             _velocity.X = direction.X * Speed;
+    //             FlipSprite(direction.X);
+    //
+    //             if (IsOnFloor())
+    //             {
+    //                 SetState(State.Idle);
+    //             }
+    //             // Only detect wall tile (collision layer 5)
+    //             else if (_leftWallDetect.IsColliding() || _rightWallDetect.IsColliding())
+    //             {
+    //                 SetState(State.WallSlide);
+    //             }
+    //             else
+    //             {
+    //                 _velocity.Y += Gravity * delta;
+    //             }
+    //
+    //             Velocity = _velocity;
+    //             MoveAndSlide();
+    //             break;
+    //
+    //         case State.WallSlide:
+    //             _velocity.Y += WallSlideGravity * delta;
+    //
+    //             if (Input.IsActionJustPressed("jump"))
+    //             {
+    //                 if (_leftWallDetect.IsColliding())
+    //                 {
+    //                     _wallJumpDirection = 1.0f;
+    //                 }
+    //                 else if (_rightWallDetect.IsColliding())
+    //                 {
+    //                     _wallJumpDirection = -1.0f;
+    //                 }
+    //
+    //                 SetState(State.WallJump);
+    //
+    //             }
+    //             else if (IsOnFloor())
+    //             {
+    //                 SetState(State.Idle);
+    //             }
+    //
+    //             Velocity = _velocity;
+    //             MoveAndSlide();
+    //             break;
+    //
+    //         case State.WallJump:
+    //             _velocity.X = _wallJumpDirection * Speed;
+    //             FlipSprite(_wallJumpDirection);
+    //
+    //             if (!IsOnFloor())
+    //             {
+    //                 _velocity.Y += Gravity * delta;
+    //                 if (_velocity.Y > 0)
+    //                 {
+    //                     SetState(State.Fall);
+    //                 }
+    //             }
+    //
+    //             Velocity = _velocity;
+    //             MoveAndSlide();
+    //             break;
+    //     }
+    // }
 
     private void FlipSprite(float directionX)
     {
@@ -309,9 +324,10 @@ public partial class Player : CharacterBody2D
     }
     public override void _PhysicsProcess(double delta)
     {
-        UpdateState((float)delta);
-        Overlord.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
-        Overlord.Instance.UpdatePlayerHeadTargetGlobalPosition(_playerHeadTarget.GlobalPosition);
+        
+        // UpdateState((float)delta);
+        // Overlord.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
+        // Overlord.Instance.UpdatePlayerHeadTargetGlobalPosition(_playerHeadTarget.GlobalPosition);
     }
     
     
