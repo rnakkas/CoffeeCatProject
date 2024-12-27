@@ -7,6 +7,7 @@ namespace CoffeeCatProject.Components.Scripts;
 [GlobalClass]
 public partial class VelocityComponent : Node2D
 {
+	[Export] private CharacterBody2D _characterBody;
 	[Export] private float _maxRunSpeed;
 	[Export] private float _minRunSpeed;
 	[Export] private float _acceleration;
@@ -33,27 +34,29 @@ public partial class VelocityComponent : Node2D
 		_velocity.Y += _wallSlideGravity * delta;
 	}
 
-	public void AccelerateToMaxRunSpeed(float delta, float direction)
+	public void AccelerateToMaxRunSpeed(float direction)
 	{
-		_velocity.X = _velocity.MoveToward(new Vector2(_maxRunSpeed, _velocity.Y), _acceleration * delta * direction).X;
+		_velocity = _velocity.MoveToward(new Vector2(_maxRunSpeed * direction, _velocity.Y), _acceleration);
 	}
 
 	public void DecelerateToZeroVelocity(float delta)
 	{
-		_velocity.X = _velocity.MoveToward(new Vector2(0, _velocity.Y), _friction * delta).X;
+		_velocity = _velocity.MoveToward(new Vector2(0, _velocity.Y), _friction);
 	}
 
-	public void DecelerateToMinRunSpeed(float delta)
+	public void DecelerateToMinRunSpeed(float direction)
 	{
-		_velocity.X = _velocity.MoveToward(new Vector2(_minRunSpeed, _velocity.Y), _friction * delta).X;
+		_velocity = _velocity.MoveToward(new Vector2(_minRunSpeed * direction, _velocity.Y), _friction);
 	}
 	
 	public override void _Ready()
 	{
+		_velocity = _characterBody.Velocity;
 	}
 	
-	public override void _Process(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
+		_characterBody.Velocity = _velocity;
 	}
 	
 	

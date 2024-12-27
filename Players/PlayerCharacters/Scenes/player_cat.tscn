@@ -291,13 +291,13 @@ collision_layer = 2
 collision_mask = 21
 script = ExtResource("1_vmxij")
 
-[node name="left_wall_detect" type="RayCast2D" parent="."]
+[node name="left_wall_detector" type="RayCast2D" parent="."]
 modulate = Color(0.08, 1, 0.172, 1)
 position = Vector2(-2, 0)
 target_position = Vector2(-10, 0)
 collision_mask = 16
 
-[node name="right_wall_detect" type="RayCast2D" parent="."]
+[node name="right_wall_detector" type="RayCast2D" parent="."]
 modulate = Color(0.08, 1, 0.172, 1)
 position = Vector2(1, 0)
 target_position = Vector2(11, 0)
@@ -332,16 +332,19 @@ position = Vector2(-0.5, -1)
 shape = SubResource("RectangleShape2D_divmg")
 debug_color = Color(0.641889, 0.521654, 0.132785, 0.42)
 
-[node name="PlayerControllerComponent" type="Node2D" parent="." node_paths=PackedStringArray("_playerCharacter", "_velocityComponent")]
+[node name="PlayerControllerComponent" type="Node2D" parent="." node_paths=PackedStringArray("_playerCharacter", "_velocityComponent", "_leftWallDetector", "_rightWallDetector")]
 script = ExtResource("6_6caky")
 _playerCharacter = NodePath("..")
 _velocityComponent = NodePath("../VelocityComponent")
+_leftWallDetector = NodePath("../left_wall_detector")
+_rightWallDetector = NodePath("../right_wall_detector")
 
-[node name="VelocityComponent" type="Node2D" parent="."]
+[node name="VelocityComponent" type="Node2D" parent="." node_paths=PackedStringArray("_characterBody")]
 script = ExtResource("6_dui42")
+_characterBody = NodePath("..")
 _maxRunSpeed = 170.0
-_acceleration = 80.0
-_friction = 75.0
+_acceleration = 20.0
+_friction = 4.0
 _jumpVelocity = -250.0
 _gravity = 750.0
 _wallSlideGravity = 500.0

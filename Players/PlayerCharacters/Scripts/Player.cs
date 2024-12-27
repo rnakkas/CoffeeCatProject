@@ -54,8 +54,8 @@ public partial class Player : CharacterBody2D
         
         // Get nodes
         _animation = GetNode<AnimatedSprite2D>("sprite");
-        _leftWallDetect = GetNode<RayCast2D>("left_wall_detect");
-        _rightWallDetect = GetNode<RayCast2D>("right_wall_detect");
+        _leftWallDetect = GetNode<RayCast2D>("left_wall_detector");
+        _rightWallDetect = GetNode<RayCast2D>("right_wall_detector");
         _weaponManager = GetNode<WeaponManager>("WeaponManager");
         _playerHeadTarget = GetNode<Area2D>("player_head_target");
         
@@ -79,27 +79,6 @@ public partial class Player : CharacterBody2D
         _animation.Play("idle");
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     //
     // // State Machine
     // private void SetState(State newState)
@@ -324,7 +303,7 @@ public partial class Player : CharacterBody2D
     }
     public override void _PhysicsProcess(double delta)
     {
-        
+        MoveAndSlide();
         // UpdateState((float)delta);
         // Overlord.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
         // Overlord.Instance.UpdatePlayerHeadTargetGlobalPosition(_playerHeadTarget.GlobalPosition);
