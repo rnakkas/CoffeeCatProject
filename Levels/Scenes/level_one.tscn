@@ -62,7 +62,7 @@ tile_map_data = PackedByteArray("AAAAAP//AAAFAAEAAAAAAAMAAAAFAAMAAAABAAMAAAACAAE
 tile_set = SubResource("TileSet_a32n0")
 
 [node name="player_cat" parent="." instance=ExtResource("2_xme8i")]
-position = Vector2(799, 124)
+position = Vector2(800, 129)
 
 [node name="Camera2D" type="Camera2D" parent="player_cat"]
 visible = false
@@ -76,7 +76,7 @@ position_smoothing_speed = 8.0
 [node name="fatty_enemies" type="Node" parent="."]
 
 [node name="enemy_fatty2" parent="fatty_enemies" instance=ExtResource("5_nek4u")]
-position = Vector2(1157, 150)
+position = Vector2(1160, 72)
 
 [node name="enemy_fatty" parent="fatty_enemies" instance=ExtResource("5_nek4u")]
 position = Vector2(482, 180)

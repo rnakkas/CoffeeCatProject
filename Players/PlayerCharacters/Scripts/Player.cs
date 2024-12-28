@@ -9,11 +9,11 @@ namespace CoffeeCatProject.Players.PlayerCharacters.Scripts;
 public partial class Player : CharacterBody2D
 {
     // Constants
-    private const float Speed = 170.0f;
-    private const float JumpVelocity = -250.0f;
-    private const float Gravity = 750.0f;
-    private const float WallSlideGravity = 500.0f;
-    private const float WallJumpVelocity = -200.0f;
+    // private const float Speed = 170.0f;
+    // private const float JumpVelocity = -250.0f;
+    // private const float Gravity = 750.0f;
+    // private const float WallSlideGravity = 500.0f;
+    // private const float WallJumpVelocity = -200.0f;
     private const float FloorSnapLengthValue = 2.5f;
 
     // Nodes

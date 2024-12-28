@@ -3,6 +3,7 @@ using Godot;
 
 namespace CoffeeCatProject.Players.Weapons;
 
+// This component will handle switching weapons
 [GlobalClass]
 public partial class WeaponManager : Node
 {

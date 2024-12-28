@@ -24,17 +24,28 @@ public partial class VelocityComponent : Node2D
 		_velocity.Y += _gravity * delta;
 	}
 
-	public void Jump()
+	public void IdleOnGroundVelocity()
+	{
+		_velocity.Y = 0;
+	}
+
+	public void JumpVelocity()
 	{
 		_velocity.Y = _jumpVelocity;
 	}
 
-	public void WallSlide(float delta)
+	public void WallJumpVelocity(float wallJumpDirection)
+	{
+		_velocity.Y = _wallJumpVelocity;
+		_velocity.X = wallJumpDirection * _maxRunSpeed;
+	}
+
+	public void WallSlideVelocity(float delta)
 	{
 		_velocity.Y += _wallSlideGravity * delta;
 	}
 
-	public void AccelerateToMaxRunSpeed(float direction)
+	public void AccelerateToMaxRunVelocity(float direction)
 	{
 		_velocity = _velocity.MoveToward(new Vector2(_maxRunSpeed * direction, _velocity.Y), _acceleration);
 	}
@@ -44,7 +55,7 @@ public partial class VelocityComponent : Node2D
 		_velocity = _velocity.MoveToward(new Vector2(0, _velocity.Y), _friction);
 	}
 
-	public void DecelerateToMinRunSpeed(float direction)
+	public void DecelerateToMinRunVelocity(float direction)
 	{
 		_velocity = _velocity.MoveToward(new Vector2(_minRunSpeed * direction, _velocity.Y), _friction);
 	}

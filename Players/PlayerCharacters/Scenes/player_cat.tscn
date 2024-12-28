@@ -345,9 +345,9 @@ _characterBody = NodePath("..")
 _maxRunSpeed = 170.0
 _acceleration = 20.0
 _friction = 4.0
-_jumpVelocity = -250.0
+_jumpVelocity = -260.0
 _gravity = 750.0
-_wallSlideGravity = 500.0
+_wallSlideGravity = 100.0
 _wallJumpVelocity = -200.0
 
 [node name="collider" type="CollisionShape2D" parent="."]
