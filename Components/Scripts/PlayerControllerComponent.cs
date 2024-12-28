@@ -3,7 +3,7 @@ using System;
 
 namespace CoffeeCatProject.Components.Scripts;
 
-// This component handles all player inputs to allow control of a character
+// This component handles all player inputs for all possible player movement options
 
 [GlobalClass]
 public partial class PlayerControllerComponent : Node2D
@@ -12,12 +12,13 @@ public partial class PlayerControllerComponent : Node2D
 	[Export] private VelocityComponent _velocityComponent;
 	[Export] private RayCast2D _leftWallDetector;
 	[Export] private RayCast2D _rightWallDetector;
+	[Export] private RunComponent _runComponent;
 	
 	private Vector2 _direction = Vector2.Zero;
 	private float _wallJumpDirection;
 	private bool _wallSlide;
 
-	private void Fall(float delta)
+	public void Fall(float delta)
 	{
 		if (!_playerCharacter.IsOnFloor())
 		{
@@ -25,23 +26,23 @@ public partial class PlayerControllerComponent : Node2D
 		}
 		else
 		{
-			_velocityComponent.IdleOnGroundVelocity();
+			_velocityComponent.IdleOnGroundVelocityY();
 		}
 	}
 
-	private void Run(float delta)
-	{
-		if (_direction.X != 0)
-		{
-			_velocityComponent.AccelerateToMaxRunVelocity(_direction.X);
-		}
-		else if (_direction.X == 0)
-		{
-			_velocityComponent.DecelerateToZeroVelocity((float)delta);
-		}
-	}
+	// public void Run(float delta)
+	// {
+	// 	if (_direction.X != 0)
+	// 	{
+	// 		_velocityComponent.AccelerateToMaxRunVelocity(_direction.X);
+	// 	}
+	// 	else if (_direction.X == 0)
+	// 	{
+	// 		_velocityComponent.DecelerateToZeroVelocity((float)delta);
+	// 	}
+	// }
 
-	private void Jump(float delta)
+	public void Jump(float delta)
 	{
 		if (Input.IsActionPressed("jump") && _playerCharacter.IsOnFloor())
 		{
@@ -49,7 +50,7 @@ public partial class PlayerControllerComponent : Node2D
 		}
 	}
 
-	private void WallSlide(float delta)
+	public void WallSlide(float delta)
 	{
 		if (!_playerCharacter.IsOnFloor() && 
 		    (_leftWallDetector.IsColliding() || _rightWallDetector.IsColliding())
@@ -64,7 +65,7 @@ public partial class PlayerControllerComponent : Node2D
 		}
 	}
 
-	private void WallJump(float delta)
+	public void WallJump(float delta)
 	{
 		if (_wallSlide && Input.IsActionJustPressed("jump"))
 		{
@@ -89,11 +90,13 @@ public partial class PlayerControllerComponent : Node2D
 			"move_down"
 			);
 		
+		// Fall, run and jump are common to all players
 		Fall((float)delta);
-		Run((float)delta);
+		_runComponent?.Run((float)delta, _direction);
 		Jump((float)delta);
-		WallSlide((float)delta);
-		WallJump((float)delta);
+		
+		// WallSlide((float)delta);
+		// WallJump((float)delta);
 		
 	}
 }

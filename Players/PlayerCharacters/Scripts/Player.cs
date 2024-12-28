@@ -21,6 +21,7 @@ public partial class Player : CharacterBody2D
     private RayCast2D _leftWallDetect, _rightWallDetect;
     private Area2D _playerHeadTarget;
     private WeaponManager _weaponManager;
+    private PlayerControllerComponent _playerControllerComponent;
 
     // State enum
     private enum State
@@ -58,6 +59,7 @@ public partial class Player : CharacterBody2D
         _rightWallDetect = GetNode<RayCast2D>("right_wall_detector");
         _weaponManager = GetNode<WeaponManager>("WeaponManager");
         _playerHeadTarget = GetNode<Area2D>("player_head_target");
+        _playerControllerComponent = GetNode<PlayerControllerComponent>("PlayerControllerComponent");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -303,7 +305,12 @@ public partial class Player : CharacterBody2D
     }
     public override void _PhysicsProcess(double delta)
     {
+        // Specific Movements available to player
+        _playerControllerComponent.WallSlide((float)delta);
+        _playerControllerComponent.WallJump((float)delta);
+        
         MoveAndSlide();
+        
         // UpdateState((float)delta);
         // Overlord.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
         // Overlord.Instance.UpdatePlayerHeadTargetGlobalPosition(_playerHeadTarget.GlobalPosition);

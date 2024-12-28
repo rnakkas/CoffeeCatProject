@@ -24,9 +24,14 @@ public partial class VelocityComponent : Node2D
 		_velocity.Y += _gravity * delta;
 	}
 
-	public void IdleOnGroundVelocity()
+	public void IdleOnGroundVelocityY()
 	{
 		_velocity.Y = 0;
+	}
+	
+	public void IdleOnGroundVelocityX()
+	{
+		_velocity.X = 0;
 	}
 
 	public void JumpVelocity()
