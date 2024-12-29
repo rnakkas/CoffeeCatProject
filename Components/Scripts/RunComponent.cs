@@ -1,9 +1,8 @@
 using Godot;
-using System;
 
 namespace CoffeeCatProject.Components.Scripts;
 
-// This component handles character's running ability
+// This component allows characters to run
 
 [GlobalClass]
 public partial class RunComponent : Node2D

@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://dlyfs7e3himjx"]
+[gd_scene load_steps=51 format=3 uid="uid://dlyfs7e3himjx"]
 
 [ext_resource type="Script" path="res://Players/PlayerCharacters/Scripts/Player.cs" id="1_vmxij"]
 [ext_resource type="Script" path="res://Components/Scripts/HurtboxComponent.cs" id="2_1w0xb"]
@@ -9,6 +9,9 @@
 [ext_resource type="Script" path="res://Components/Scripts/PlayerControllerComponent.cs" id="6_6caky"]
 [ext_resource type="Script" path="res://Components/Scripts/VelocityComponent.cs" id="6_dui42"]
 [ext_resource type="Script" path="res://Components/Scripts/RunComponent.cs" id="7_sxucr"]
+[ext_resource type="Script" path="res://Components/Scripts/FallComponent.cs" id="9_6yn13"]
+[ext_resource type="Script" path="res://Components/Scripts/JumpComponent.cs" id="10_mscge"]
+[ext_resource type="Script" path="res://Components/Scripts/WallJumpComponent.cs" id="11_m5hsf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_05o1h"]
 radius = 7.0
@@ -344,17 +347,34 @@ _gravity = 750.0
 _wallSlideGravity = 100.0
 _wallJumpVelocity = -200.0
 
-[node name="PlayerControllerComponent" type="Node2D" parent="." node_paths=PackedStringArray("_playerCharacter", "_velocityComponent", "_leftWallDetector", "_rightWallDetector", "_runComponent")]
+[node name="PlayerControllerComponent" type="Node2D" parent="." node_paths=PackedStringArray("_playerCharacter", "_runComponent", "_fallComponent", "_jumpComponent", "_wallJumpComponent")]
 script = ExtResource("6_6caky")
 _playerCharacter = NodePath("..")
-_velocityComponent = NodePath("../VelocityComponent")
-_leftWallDetector = NodePath("../left_wall_detector")
-_rightWallDetector = NodePath("../right_wall_detector")
 _runComponent = NodePath("RunComponent")
+_fallComponent = NodePath("FallComponent")
+_jumpComponent = NodePath("JumpComponent")
+_wallJumpComponent = NodePath("WallJumpComponent")
 
 [node name="RunComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_velocityComponent")]
 script = ExtResource("7_sxucr")
 _velocityComponent = NodePath("../../VelocityComponent")
+
+[node name="FallComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_characterBody", "_velocityComponent")]
+script = ExtResource("9_6yn13")
+_characterBody = NodePath("../..")
+_velocityComponent = NodePath("../../VelocityComponent")
+
+[node name="JumpComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_characterBody", "_velocityComponent")]
+script = ExtResource("10_mscge")
+_characterBody = NodePath("../..")
+_velocityComponent = NodePath("../../VelocityComponent")
+
+[node name="WallJumpComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_characterBody", "_velocityComponent", "_leftWallDetector", "_rightWallDetector")]
+script = ExtResource("11_m5hsf")
+_characterBody = NodePath("../..")
+_velocityComponent = NodePath("../../VelocityComponent")
+_leftWallDetector = NodePath("../../left_wall_detector")
+_rightWallDetector = NodePath("../../right_wall_detector")
 
 [node name="collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_v1o4q")

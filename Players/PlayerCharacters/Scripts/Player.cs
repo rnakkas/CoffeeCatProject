@@ -18,28 +18,32 @@ public partial class Player : CharacterBody2D
 
     // Nodes
     private AnimatedSprite2D _animation;
-    private RayCast2D _leftWallDetect, _rightWallDetect;
+    // private RayCast2D _leftWallDetect, _rightWallDetect;
     private Area2D _playerHeadTarget;
     private WeaponManager _weaponManager;
-    private PlayerControllerComponent _playerControllerComponent;
+    // private PlayerControllerComponent _playerControllerComponent;
 
+    
     // State enum
-    private enum State
-    {
-        Idle, 
-        Run, 
-        Jump, 
-        WallSlide, 
-        Fall, 
-        WallJump,
-        Hurt,
-        Death,
-    };
+    // private enum State
+    // {
+    //     Idle, 
+    //     Run, 
+    //     Jump, 
+    //     WallSlide, 
+    //     Fall, 
+    //     WallJump,
+    //     Hurt,
+    //     Death,
+    // };
 
     // Variables
-    private State _currentState;
-    private float _wallJumpDirection;
-    private Vector2 _velocity;
+    
+    // private State _currentState;
+    
+    // private float _wallJumpDirection;
+    // private Vector2 _velocity;
+    
     private string _currentWeapon;
     
     public float SpriteDirection { get; set; }
@@ -55,11 +59,14 @@ public partial class Player : CharacterBody2D
         
         // Get nodes
         _animation = GetNode<AnimatedSprite2D>("sprite");
-        _leftWallDetect = GetNode<RayCast2D>("left_wall_detector");
-        _rightWallDetect = GetNode<RayCast2D>("right_wall_detector");
+        
+        // _leftWallDetect = GetNode<RayCast2D>("left_wall_detector");
+        // _rightWallDetect = GetNode<RayCast2D>("right_wall_detector");
+        
         _weaponManager = GetNode<WeaponManager>("WeaponManager");
         _playerHeadTarget = GetNode<Area2D>("player_head_target");
-        _playerControllerComponent = GetNode<PlayerControllerComponent>("PlayerControllerComponent");
+        
+        // _playerControllerComponent = GetNode<PlayerControllerComponent>("PlayerControllerComponent");
         
         // Set z index high so player is in front of all other objects
         ZIndex = 100;
@@ -71,7 +78,7 @@ public partial class Player : CharacterBody2D
         FloorConstantSpeed = true;
 
         // Set velocity
-        _velocity = Velocity;
+        // _velocity = Velocity;
         
         // Set default direction
         SpriteDirection = 1.0f;
@@ -305,9 +312,6 @@ public partial class Player : CharacterBody2D
     }
     public override void _PhysicsProcess(double delta)
     {
-        // Specific Movements available to player
-        _playerControllerComponent.WallSlide((float)delta);
-        _playerControllerComponent.WallJump((float)delta);
         
         MoveAndSlide();
         
