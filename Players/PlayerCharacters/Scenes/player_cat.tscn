@@ -1,6 +1,6 @@
-[gd_scene load_steps=47 format=3 uid="uid://dlyfs7e3himjx"]
+[gd_scene load_steps=51 format=3 uid="uid://dlyfs7e3himjx"]
 
-[ext_resource type="Script" path="res://Players/PlayerCharacters/Scripts/Player.cs" id="1_vmxij"]
+[ext_resource type="Script" path="res://Players/PlayerCharacters/Scripts/PlayerCat.cs" id="1_kydxu"]
 [ext_resource type="Script" path="res://Components/Scripts/HurtboxComponent.cs" id="2_1w0xb"]
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="2_2ql0j"]
 [ext_resource type="Script" path="res://Players/Weapons/WeaponManager.cs" id="3_g73be"]
@@ -8,6 +8,10 @@
 [ext_resource type="Script" path="res://Components/Scripts/PickupsComponent.cs" id="5_565do"]
 [ext_resource type="Script" path="res://Components/Scripts/PlayerControllerComponent.cs" id="6_6caky"]
 [ext_resource type="Script" path="res://Components/Scripts/VelocityComponent.cs" id="6_dui42"]
+[ext_resource type="Script" path="res://Components/Scripts/RunComponent.cs" id="7_sxucr"]
+[ext_resource type="Script" path="res://Components/Scripts/FallComponent.cs" id="9_6yn13"]
+[ext_resource type="Script" path="res://Components/Scripts/JumpComponent.cs" id="10_mscge"]
+[ext_resource type="Script" path="res://Components/Scripts/WallJumpComponent.cs" id="11_m5hsf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_05o1h"]
 radius = 7.0
@@ -289,7 +293,7 @@ radius = 2.0
 [node name="player_cat" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 21
-script = ExtResource("1_vmxij")
+script = ExtResource("1_kydxu")
 
 [node name="left_wall_detector" type="RayCast2D" parent="."]
 modulate = Color(0.08, 1, 0.172, 1)
@@ -332,13 +336,6 @@ position = Vector2(-0.5, -1)
 shape = SubResource("RectangleShape2D_divmg")
 debug_color = Color(0.641889, 0.521654, 0.132785, 0.42)
 
-[node name="PlayerControllerComponent" type="Node2D" parent="." node_paths=PackedStringArray("_playerCharacter", "_velocityComponent", "_leftWallDetector", "_rightWallDetector")]
-script = ExtResource("6_6caky")
-_playerCharacter = NodePath("..")
-_velocityComponent = NodePath("../VelocityComponent")
-_leftWallDetector = NodePath("../left_wall_detector")
-_rightWallDetector = NodePath("../right_wall_detector")
-
 [node name="VelocityComponent" type="Node2D" parent="." node_paths=PackedStringArray("_characterBody")]
 script = ExtResource("6_dui42")
 _characterBody = NodePath("..")
@@ -349,6 +346,32 @@ _jumpVelocity = -260.0
 _gravity = 750.0
 _wallSlideGravity = 100.0
 _wallJumpVelocity = -200.0
+
+[node name="PlayerControllerComponent" type="Node2D" parent="." node_paths=PackedStringArray("_playerCharacter", "_runComponent", "_fallComponent", "_jumpComponent", "_wallJumpComponent")]
+script = ExtResource("6_6caky")
+_playerCharacter = NodePath("..")
+_runComponent = NodePath("RunComponent")
+_fallComponent = NodePath("FallComponent")
+_jumpComponent = NodePath("JumpComponent")
+_wallJumpComponent = NodePath("WallJumpComponent")
+
+[node name="RunComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_velocityComponent")]
+script = ExtResource("7_sxucr")
+_velocityComponent = NodePath("../../VelocityComponent")
+
+[node name="FallComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_velocityComponent")]
+script = ExtResource("9_6yn13")
+_velocityComponent = NodePath("../../VelocityComponent")
+
+[node name="JumpComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_velocityComponent")]
+script = ExtResource("10_mscge")
+_velocityComponent = NodePath("../../VelocityComponent")
+
+[node name="WallJumpComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_velocityComponent", "_leftWallDetector", "_rightWallDetector")]
+script = ExtResource("11_m5hsf")
+_velocityComponent = NodePath("../../VelocityComponent")
+_leftWallDetector = NodePath("../../left_wall_detector")
+_rightWallDetector = NodePath("../../right_wall_detector")
 
 [node name="collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_v1o4q")

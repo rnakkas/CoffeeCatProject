@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dektetqmafmuu"]
+
+[ext_resource type="Script" path="res://Components/Scripts/FallComponent.cs" id="1_i0lgo"]
+
+[node name="FallComponent" type="Node2D"]
+script = ExtResource("1_i0lgo")
