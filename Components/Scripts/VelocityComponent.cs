@@ -22,11 +22,6 @@ public partial class VelocityComponent : Node2D
 	public void FallDueToGravity(float delta)
 	{
 		_velocity.Y += _gravity * delta;
-		
-		if (_characterBody.IsOnFloor())
-		{
-			_velocity.Y = 0;
-		}
 	}
 
 	public void IdleOnGroundVelocityY()
@@ -60,7 +55,7 @@ public partial class VelocityComponent : Node2D
 		_velocity = _velocity.MoveToward(new Vector2(_maxRunSpeed * direction, _velocity.Y), _acceleration);
 	}
 
-	public void DecelerateToZeroVelocity(float delta)
+	public void DecelerateToZeroVelocity()
 	{
 		_velocity = _velocity.MoveToward(new Vector2(0, _velocity.Y), _friction);
 	}

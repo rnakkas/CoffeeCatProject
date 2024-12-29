@@ -14,50 +14,19 @@ public partial class AnimationComponent : Node2D
 		_sprite.Play("idle");
 	}
 
-	public void RunAnimation(RunComponent runComponent)
+	public void RunAnimation()
 	{
-		var isRunning = runComponent?.IsRunning ?? false;
-		
-		if (isRunning)
-		{
-			_sprite.Play("run");
-		}
-		else
-		{
-			IdleAnimation();
-		}
+		_sprite.Play("run");
 	}
 	
-	public void JumpAndFallAnimations(JumpComponent jumpComponent, FallComponent fallComponent)
+	public void JumpAnimation()
 	{
-		var isJumping = jumpComponent?.IsJumping ?? false;
-		var isFalling = jumpComponent?.IsFalling ?? false;
-	
-		if (isJumping)
-		{
-			_sprite.Play("jump");
-		}
-		
-		if (isFalling)
-		{
-			_sprite.Play("fall");
-		}
-		
-		
+		_sprite.Play("jump");
 	}
 	
-	public void FallAnimation(FallComponent fallComponent)
+	public void FallAnimation()
 	{
-		var isFalling = fallComponent?.IsFalling ?? false;
-
-		if (isFalling)
-		{
-			_sprite.Play("fall");
-		}
-		else
-		{
-			IdleAnimation();
-		}
+		_sprite.Play("fall");
 	}
 	
 	public void FlipSprite(float directionX)

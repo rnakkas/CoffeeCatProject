@@ -22,6 +22,7 @@ public partial class PlayerCat : CharacterBody2D
     private Area2D _playerHeadTarget;
     private WeaponManager _weaponManager;
     // private PlayerControllerComponent _playerControllerComponent;
+    private PlayerMovementComponent _playerMovementComponent;
 
     
     // State enum
@@ -58,6 +59,7 @@ public partial class PlayerCat : CharacterBody2D
         SetMeta("role", "Player");
         
         // Get nodes
+        _playerMovementComponent = GetNodeOrNull<PlayerMovementComponent>("PlayerMovementComponent");
         _animation = GetNode<AnimatedSprite2D>("sprite");
         
         // _leftWallDetect = GetNode<RayCast2D>("left_wall_detector");
@@ -312,8 +314,12 @@ public partial class PlayerCat : CharacterBody2D
     }
     public override void _PhysicsProcess(double delta)
     {
-        
         MoveAndSlide();
+        _playerMovementComponent?.Run();
+        _playerMovementComponent?.Fall((float)delta);
+        _playerMovementComponent?.OnGround();
+        _playerMovementComponent?.Jump((float)delta);
+        _playerMovementComponent?.WallJump((float)delta);
         
         // UpdateState((float)delta);
         // Overlord.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
