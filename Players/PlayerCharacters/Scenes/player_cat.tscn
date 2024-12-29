@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://Components/Scripts/PickupsComponent.cs" id="5_565do"]
 [ext_resource type="Script" path="res://Components/Scripts/VelocityComponent.cs" id="6_dui42"]
 [ext_resource type="Script" path="res://Components/Scripts/AnimationComponent.cs" id="7_i2nye"]
-[ext_resource type="Script" path="res://Components/Scripts/PlayerMovementComponent.cs" id="8_yhiwl"]
+[ext_resource type="Script" path="res://Components/Scripts/MovementComponent.cs" id="8_ymvrk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_05o1h"]
 radius = 7.0
@@ -304,9 +304,6 @@ position = Vector2(1, 0)
 target_position = Vector2(11, 0)
 collision_mask = 16
 
-[node name="WeaponManager" type="Node" parent="."]
-script = ExtResource("3_g73be")
-
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_r6vfe")
 _health = 100
@@ -322,17 +319,6 @@ position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_05o1h")
 debug_color = Color(0.969075, 0, 0.463732, 0.42)
 
-[node name="PickupsComponent" type="Area2D" parent="." node_paths=PackedStringArray("WeaponManager")]
-collision_layer = 2
-collision_mask = 4
-script = ExtResource("5_565do")
-WeaponManager = NodePath("../WeaponManager")
-
-[node name="pickups_component_collider" type="CollisionShape2D" parent="PickupsComponent"]
-position = Vector2(-0.5, -1)
-shape = SubResource("RectangleShape2D_divmg")
-debug_color = Color(0.641889, 0.521654, 0.132785, 0.42)
-
 [node name="VelocityComponent" type="Node2D" parent="." node_paths=PackedStringArray("_characterBody")]
 script = ExtResource("6_dui42")
 _characterBody = NodePath("..")
@@ -344,16 +330,30 @@ _gravity = 750.0
 _wallSlideGravity = 100.0
 _wallJumpVelocity = -200.0
 
-[node name="AnimationComponent" type="Node2D" parent="." node_paths=PackedStringArray("_sprite")]
-script = ExtResource("7_i2nye")
-_sprite = NodePath("../sprite")
-
-[node name="PlayerMovementComponent" type="Node2D" parent="." node_paths=PackedStringArray("_velocityComponent", "_characterBody", "_leftWallDetector", "_rightWallDetector")]
-script = ExtResource("8_yhiwl")
+[node name="MovementComponent" type="Node2D" parent="." node_paths=PackedStringArray("_velocityComponent", "_characterBody", "_leftWallDetector", "_rightWallDetector")]
+script = ExtResource("8_ymvrk")
 _velocityComponent = NodePath("../VelocityComponent")
 _characterBody = NodePath("..")
 _leftWallDetector = NodePath("../left_wall_detector")
 _rightWallDetector = NodePath("../right_wall_detector")
+
+[node name="AnimationComponent" type="Node2D" parent="." node_paths=PackedStringArray("_sprite")]
+script = ExtResource("7_i2nye")
+_sprite = NodePath("../sprite")
+
+[node name="PickupsComponent" type="Area2D" parent="." node_paths=PackedStringArray("WeaponManager")]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("5_565do")
+WeaponManager = NodePath("../WeaponManager")
+
+[node name="pickups_component_collider" type="CollisionShape2D" parent="PickupsComponent"]
+position = Vector2(-0.5, -1)
+shape = SubResource("RectangleShape2D_divmg")
+debug_color = Color(0.641889, 0.521654, 0.132785, 0.42)
+
+[node name="WeaponManager" type="Node" parent="."]
+script = ExtResource("3_g73be")
 
 [node name="collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_v1o4q")

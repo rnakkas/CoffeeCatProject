@@ -1,10 +1,9 @@
-using CoffeeCatProject.Components.Scripts;
 using Godot;
 
 namespace CoffeeCatProject.Components.Scripts;
 
 [GlobalClass]
-public partial class PlayerMovementComponent : Node2D
+public partial class MovementComponent : Node2D
 {
 	[Export] private VelocityComponent _velocityComponent;
 	[Export] private CharacterBody2D _characterBody;
