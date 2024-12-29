@@ -13,6 +13,7 @@ public partial class PlayerControllerComponent : Node2D
 	[Export] private FallComponent _fallComponent;
 	[Export] private JumpComponent _jumpComponent;
 	[Export] private WallJumpComponent _wallJumpComponent;
+	[Export] private AnimationComponent _animationComponent;
 	
 	private Vector2 _direction = Vector2.Zero;
 	
@@ -25,9 +26,21 @@ public partial class PlayerControllerComponent : Node2D
 			"move_down"
 			);
 		
-		_fallComponent?.Fall((float)delta,_playerCharacter);
+		_animationComponent.FlipSprite(_direction.X);
+		
 		_runComponent?.Run((float)delta, _direction);
-		_jumpComponent?.Jump((float)delta, _playerCharacter);
+		_animationComponent.RunAnimation(_runComponent);
+		
+		_jumpComponent?.JumpAndFall((float)delta, _playerCharacter);
+		_animationComponent.JumpAndFallAnimations(_jumpComponent, _fallComponent);
+		
+		// _fallComponent?.Fall((float)delta,_playerCharacter);
+		
+		
+		
+		
+		
+		
 		_wallJumpComponent?.WallJump((float)delta, _playerCharacter);
 
 	}

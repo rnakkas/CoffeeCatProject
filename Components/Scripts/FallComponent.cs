@@ -8,16 +8,20 @@ namespace CoffeeCatProject.Components.Scripts;
 public partial class FallComponent : Node2D
 {
 	[Export] private VelocityComponent _velocityComponent;
+
+	public bool IsFalling;
 	
 	public void Fall(float delta, CharacterBody2D characterBody)
 	{
 		if (!characterBody.IsOnFloor())
 		{
 			_velocityComponent.FallDueToGravity(delta);
+			IsFalling = true;
 		}
-		else
+		else if (characterBody.IsOnFloor() && !Input.IsActionPressed("jump"))
 		{
 			_velocityComponent.IdleOnGroundVelocityY();
+			IsFalling = false;
 		}
 	}
 }

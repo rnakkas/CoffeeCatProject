@@ -22,6 +22,11 @@ public partial class VelocityComponent : Node2D
 	public void FallDueToGravity(float delta)
 	{
 		_velocity.Y += _gravity * delta;
+		
+		if (_characterBody.IsOnFloor())
+		{
+			_velocity.Y = 0;
+		}
 	}
 
 	public void IdleOnGroundVelocityY()
