@@ -1,6 +1,6 @@
 [gd_scene load_steps=51 format=3 uid="uid://dlyfs7e3himjx"]
 
-[ext_resource type="Script" path="res://Players/PlayerCharacters/Scripts/Player.cs" id="1_vmxij"]
+[ext_resource type="Script" path="res://Players/PlayerCharacters/Scripts/PlayerCat.cs" id="1_kydxu"]
 [ext_resource type="Script" path="res://Components/Scripts/HurtboxComponent.cs" id="2_1w0xb"]
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="2_2ql0j"]
 [ext_resource type="Script" path="res://Players/Weapons/WeaponManager.cs" id="3_g73be"]
@@ -293,7 +293,7 @@ radius = 2.0
 [node name="player_cat" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 21
-script = ExtResource("1_vmxij")
+script = ExtResource("1_kydxu")
 
 [node name="left_wall_detector" type="RayCast2D" parent="."]
 modulate = Color(0.08, 1, 0.172, 1)
@@ -359,19 +359,16 @@ _wallJumpComponent = NodePath("WallJumpComponent")
 script = ExtResource("7_sxucr")
 _velocityComponent = NodePath("../../VelocityComponent")
 
-[node name="FallComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_characterBody", "_velocityComponent")]
+[node name="FallComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_velocityComponent")]
 script = ExtResource("9_6yn13")
-_characterBody = NodePath("../..")
 _velocityComponent = NodePath("../../VelocityComponent")
 
-[node name="JumpComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_characterBody", "_velocityComponent")]
+[node name="JumpComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_velocityComponent")]
 script = ExtResource("10_mscge")
-_characterBody = NodePath("../..")
 _velocityComponent = NodePath("../../VelocityComponent")
 
-[node name="WallJumpComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_characterBody", "_velocityComponent", "_leftWallDetector", "_rightWallDetector")]
+[node name="WallJumpComponent" type="Node2D" parent="PlayerControllerComponent" node_paths=PackedStringArray("_velocityComponent", "_leftWallDetector", "_rightWallDetector")]
 script = ExtResource("11_m5hsf")
-_characterBody = NodePath("../..")
 _velocityComponent = NodePath("../../VelocityComponent")
 _leftWallDetector = NodePath("../../left_wall_detector")
 _rightWallDetector = NodePath("../../right_wall_detector")

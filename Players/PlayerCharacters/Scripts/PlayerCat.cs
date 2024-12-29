@@ -6,7 +6,7 @@ using Godot;
 
 namespace CoffeeCatProject.Players.PlayerCharacters.Scripts;
 
-public partial class Player : CharacterBody2D
+public partial class PlayerCat : CharacterBody2D
 {
     // Constants
     // private const float Speed = 170.0f;

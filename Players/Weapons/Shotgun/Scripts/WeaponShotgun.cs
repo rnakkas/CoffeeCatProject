@@ -14,7 +14,7 @@ public partial class WeaponShotgun : Node2D
 	private AnimatedSprite2D _sprite;
 	private Timer _cooldownTimer;
 	private Marker2D _muzzle;
-	private Player _player;
+	private PlayerCat _playerCat;
 
 	// Packed scene: bullets
 	private readonly PackedScene _shotgunShells =
@@ -32,7 +32,7 @@ public partial class WeaponShotgun : Node2D
 		_sprite = GetNode<AnimatedSprite2D>("sprite");
 		_cooldownTimer = GetNode<Timer>("shotCoolDownTimer");
 		_muzzle = GetNode<Marker2D>("muzzle");
-		_player = GetParentOrNull<Player>();
+		_playerCat = GetParentOrNull<PlayerCat>();
 		
 		// Play idle animation
 		FlipSprite();
@@ -59,7 +59,7 @@ public partial class WeaponShotgun : Node2D
 			var bulletInstance = (BulletShotgun)_shotgunShells.Instantiate();
 
 			// Set bullet's direction
-			bulletInstance.Direction = _player.SpriteDirection;
+			bulletInstance.Direction = _playerCat.SpriteDirection;
 
 			// Set bullets rotations
 			bulletInstance.RotationDegrees = rng.RandfRange(-BulletAngle, BulletAngle);
@@ -77,14 +77,14 @@ public partial class WeaponShotgun : Node2D
 	private async void WeaponBehaviour()
 	{
 		if ((Input.IsActionJustPressed("shoot") || Input.IsActionPressed("shoot")) &&
-		    !_player.WallSlide &&
+		    !_playerCat.WallSlide &&
 		    !_onCooldown)
 		{
 			_onCooldown = true;
 			SpawnBullets();
 			_sprite.Play("shoot");
 		}
-		else if (_player.WallSlide)
+		else if (_playerCat.WallSlide)
 		{
 			_sprite.Play("wall_slide");
 		}
@@ -105,14 +105,14 @@ public partial class WeaponShotgun : Node2D
 
 	private void FlipSprite()
 	{
-		if (_player != null)
+		if (_playerCat != null)
 		{
-			if (_player.SpriteDirection < 0)
+			if (_playerCat.SpriteDirection < 0)
 			{
 				_sprite.FlipH = false;
 				_muzzle.Position = new Vector2(_muzzlePosition.X, _muzzlePosition.Y);
 			}
-			else if (_player.SpriteDirection > 0)
+			else if (_playerCat.SpriteDirection > 0)
 			{
 				_sprite.FlipH = true;
 				_muzzle.Position = new Vector2(-_muzzlePosition.X, _muzzlePosition.Y);
@@ -124,7 +124,7 @@ public partial class WeaponShotgun : Node2D
 	{
 		FlipSprite();
 		
-		if (_player == null) 
+		if (_playerCat == null) 
 			return;
 		
 		WeaponBehaviour();
