@@ -53,6 +53,46 @@ public partial class AnimationComponent : Node2D
 			}
 		}
 	}
+
+	public void HurtAnimation()
+	{
+		//TODO
+	}
+
+	public void DeathAnimation()
+	{
+		//TODO
+	}
+
+	public void ChaseAnimation()
+	{
+		//TODO
+	}
+	
+	public void MeleeAttackAnimation()
+	{
+		//TODO
+	}
+
+	public void RangedAttackAnimation()
+	{
+		//TODO
+	}
+
+	public void SpawnAnimation()
+	{
+		//TODO
+	}
+
+	public void SkidAnimation()
+	{
+		//TODO
+	}
+
+	public void WallSlideAnimation()
+	{
+		//TODO
+	}
 	
 	public void FlipSprite()
 	{
