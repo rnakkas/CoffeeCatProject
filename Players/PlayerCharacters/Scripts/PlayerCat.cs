@@ -22,6 +22,8 @@ public partial class PlayerCat : CharacterBody2D
     private Area2D _playerHeadTarget;
     private WeaponManager _weaponManager;
     // private PlayerControllerComponent _playerControllerComponent;
+    private MovementComponent _movementComponent;
+    private AnimationComponent _animationComponent;
 
     
     // State enum
@@ -58,7 +60,8 @@ public partial class PlayerCat : CharacterBody2D
         SetMeta("role", "Player");
         
         // Get nodes
-        _animation = GetNode<AnimatedSprite2D>("sprite");
+        _movementComponent = GetNodeOrNull<MovementComponent>("MovementComponent");
+        _animationComponent = GetNodeOrNull<AnimationComponent>("AnimationComponent");
         
         // _leftWallDetect = GetNode<RayCast2D>("left_wall_detector");
         // _rightWallDetect = GetNode<RayCast2D>("right_wall_detector");
@@ -84,8 +87,7 @@ public partial class PlayerCat : CharacterBody2D
         SpriteDirection = 1.0f;
         
         // Animation to play on ready
-        _animation.FlipH = true;
-        _animation.Play("idle");
+        _animationComponent.IdleAnimation();
     }
 
     //
@@ -312,8 +314,20 @@ public partial class PlayerCat : CharacterBody2D
     }
     public override void _PhysicsProcess(double delta)
     {
-        
         MoveAndSlide();
+        
+        _movementComponent?.Idle();
+        _movementComponent?.Run();
+        _movementComponent?.Jump();
+        _movementComponent?.Fall((float)delta);
+        _movementComponent?.WallJump((float)delta);
+        
+        _animationComponent.FlipSprite();
+        
+        _animationComponent.IdleAnimation();
+        _animationComponent.RunAnimation();
+        _animationComponent.JumpAnimation();
+        _animationComponent.FallAnimation();
         
         // UpdateState((float)delta);
         // Overlord.Instance.UpdatePlayerGlobalPosition(GlobalPosition);
