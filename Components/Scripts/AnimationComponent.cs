@@ -8,35 +8,60 @@ namespace CoffeeCatProject.Components.Scripts;
 public partial class AnimationComponent : Node2D
 {
 	[Export] private AnimatedSprite2D _sprite;
+	[Export] private MovementComponent _movementComponent;
+	[Export] private CharacterBody2D _characterBody;
+
+	public override void _Ready()
+	{
+		_sprite.FlipH = true;
+	}
 
 	public void IdleAnimation()
 	{
-		_sprite.Play("idle");
+		if (_characterBody.Velocity == Vector2.Zero)
+		{
+			_sprite.Play("idle");
+		}
 	}
 
 	public void RunAnimation()
 	{
-		_sprite.Play("run");
+		if (_characterBody.Velocity.X != 0 && _characterBody.IsOnFloor())
+		{
+			_sprite.Play("run");
+		}
 	}
 	
 	public void JumpAnimation()
 	{
-		_sprite.Play("jump");
+		if (!_characterBody.IsOnFloor() && _characterBody.Velocity.Y < 0)
+		{
+			if (_sprite.Animation != "jump")
+			{
+				_sprite.Play("jump");
+			}
+		}
 	}
 	
 	public void FallAnimation()
 	{
-		_sprite.Play("fall");
+		if (!_characterBody.IsOnFloor() && _characterBody.Velocity.Y > 0)
+		{
+			if (_sprite.Animation != "fall" || _sprite.Animation == "jump")
+			{
+				_sprite.Play("fall");
+			}
+		}
 	}
 	
-	public void FlipSprite(float directionX)
+	public void FlipSprite()
 	{
-		if (directionX < 0)
+		if (_characterBody.Velocity.X < 0)
 		{
 			_sprite.FlipH = false;
 			// SpriteDirection = -1;
 		}
-		else if (directionX > 0)
+		else if (_characterBody.Velocity.X > 0)
 		{
 			_sprite.FlipH = true;
 			// SpriteDirection = 1;

@@ -10,26 +10,25 @@ public partial class MovementComponent : Node2D
 	[Export] private RayCast2D _leftWallDetector;
 	[Export] private RayCast2D _rightWallDetector;
 	
-	private Vector2 _direction = Vector2.Zero;
+	public Vector2 Direction = Vector2.Zero;
 	
 	public void Run()
 	{
-		_direction = Input.GetVector(
+		Direction = Input.GetVector(
 			"move_left", 
 			"move_right", 
 			"move_up", 
 			"move_down"
 		);
 		
-		if (_direction.X != 0)
+		if (Direction.X != 0)
 		{
-			_velocityComponent.AccelerateToMaxRunVelocity(_direction.X);
+			_velocityComponent.AccelerateToMaxRunVelocity(Direction.X);
 		}
-		else if (_direction.X == 0 && _characterBody.IsOnFloor())
-		{
-			_velocityComponent.DecelerateToZeroVelocity();
-		}
-		else if (_direction.X == 0)
+		else if (
+			(Direction.X == 0 && _characterBody.IsOnFloor()) ||
+			Direction.X == 0
+			)
 		{
 			_velocityComponent.DecelerateToZeroVelocity();
 		}
@@ -43,7 +42,7 @@ public partial class MovementComponent : Node2D
 		}
 	}
 
-	public void OnGround()
+	public void Idle()
 	{
 		if (_characterBody.IsOnFloor())
 		{
@@ -51,7 +50,7 @@ public partial class MovementComponent : Node2D
 		}
 	}
 
-	public void Jump(float delta)
+	public void Jump()
 	{
 		if (_characterBody.IsOnFloor() && Input.IsActionPressed("jump"))
 		{
@@ -61,8 +60,6 @@ public partial class MovementComponent : Node2D
 
 	public void WallJump(float delta)
 	{
-		var wallJumpDirection = 0.0f;
-		
 		if (!_characterBody.IsOnFloor() && 
 		    (_leftWallDetector.IsColliding() || _rightWallDetector.IsColliding())
 		   )
@@ -73,13 +70,13 @@ public partial class MovementComponent : Node2D
 			{
 				if (_leftWallDetector.IsColliding())
 				{
-					wallJumpDirection = 1.0f;
+					Direction.X = 1.0f;
 				}
 				else if (_rightWallDetector.IsColliding())
 				{
-					wallJumpDirection = -1.0f;
+					Direction.X = -1.0f;
 				}
-				_velocityComponent.WallJumpVelocity(wallJumpDirection);
+				_velocityComponent.WallJumpVelocity(Direction.X);
 			}
 		}
 	}

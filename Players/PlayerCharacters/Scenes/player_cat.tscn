@@ -337,9 +337,11 @@ _characterBody = NodePath("..")
 _leftWallDetector = NodePath("../left_wall_detector")
 _rightWallDetector = NodePath("../right_wall_detector")
 
-[node name="AnimationComponent" type="Node2D" parent="." node_paths=PackedStringArray("_sprite")]
+[node name="AnimationComponent" type="Node2D" parent="." node_paths=PackedStringArray("_sprite", "_movementComponent", "_characterBody")]
 script = ExtResource("7_i2nye")
 _sprite = NodePath("../sprite")
+_movementComponent = NodePath("../MovementComponent")
+_characterBody = NodePath("..")
 
 [node name="PickupsComponent" type="Area2D" parent="." node_paths=PackedStringArray("WeaponManager")]
 collision_layer = 2
