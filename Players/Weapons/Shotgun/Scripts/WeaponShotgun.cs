@@ -47,6 +47,8 @@ public partial class WeaponShotgun : Node2D
 
 		// Set muzzle position
 		_muzzlePosition = _muzzle.Position;
+
+		ZIndex = 101;
 	}
 
 	private void SpawnBullets()

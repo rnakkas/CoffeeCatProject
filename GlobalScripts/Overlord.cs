@@ -26,6 +26,35 @@ public partial class Overlord: Node
         ProjectileAttack,
         FattySpikeAttack
     }
+
+    public enum PickupItemTypes
+    {
+        Coffee,
+        Collectible,
+        Weapon,
+        Ammo,
+        Key
+    }
+
+    public enum PickupItemNames
+    {
+        CoffeeMug,
+        CoffeeJar,
+        Catnip,
+        Pistol,
+        Shotgun,
+        MachineGun,
+        PlasmaRifle,
+        RocketLauncher,
+        Bullets,
+        Shells,
+        Cartridges,
+        PlasmaCells,
+        Rockets,
+        RedKey,
+        BlueKey,
+        YellowKey
+    }
     
     public void UpdatePlayerGlobalPosition(Vector2 globalPosition)
     {
