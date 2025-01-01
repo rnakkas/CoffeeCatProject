@@ -1,4 +1,5 @@
 using System;
+using CoffeeCatProject.GlobalScripts;
 using Godot;
 
 namespace CoffeeCatProject.Components.Scripts;
@@ -14,62 +15,32 @@ public partial class WeaponManagerComponent : Node2D
 
 	private Node _weapon;
 	private Area2D _bullets;
-	private enum WeaponTypes
-	{
-		Shotgun,
-		Revolver,
-		MachineGun,
-		PlasmaRifle
-	}
-	
-	// Packed scene: shotgun
-	private readonly PackedScene _weaponShotgunScene = 
-		ResourceLoader.Load<PackedScene>("res://Players/Weapons/Shotgun/Scenes/weapon_shotgun.tscn");
-	
-	// Packed scene: revolver
-	/// <summary>
-	/// TODO
-	/// </summary>
-	///
-	/// // Packed scene: machinegun
-	/// <summary>
-	/// TODO
-	/// </summary>
-	///
-	/// /// // Packed scene: plasmarifle
-	/// <summary>
-	/// TODO
-	/// </summary>
 	
 	public override void _Ready()
 	{
 		GD.Print("weapon manager ready");
 	}
 
-	public void EquipWeapon(string weaponName)
+	// Instantiate the weapon and add as sibling, i.e. child of player scene
+	public void EquipWeapon(Overlord.PickupItemNames weaponName)
 	{
 		switch (weaponName)
 		{
-			case not null when weaponName.Equals(WeaponTypes.Shotgun.ToString().ToLower()):
-				
-				// Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
-				_weapon = _weaponShotgunScene.Instantiate();
-				GetParent().AddChild(_weapon);
+			case Overlord.PickupItemNames.Shotgun:
+				_weapon = Overlord.WeaponShotgunScene.Instantiate();
+				AddSibling(_weapon);
 				break;
             
-			case not null when weaponName.Contains(WeaponTypes.MachineGun.ToString().ToLower()):
-				
-				GD.Print("machine gun");
+			case Overlord.PickupItemNames.Pistol:
+				GD.Print("pistol equipped");
 				break;
             
-			case not null when weaponName.Contains(WeaponTypes.Revolver.ToString().ToLower()):
-				
-				GD.Print("revolver picked up");
+			case Overlord.PickupItemNames.PlasmaRifle:
+				GD.Print("PlasmaRifle equipped");
 				break;
 			
-			case not null when weaponName.Contains(WeaponTypes.PlasmaRifle.ToString().ToLower()):
-				
-				GD.Print("plasma-rifle picked up");
+			case Overlord.PickupItemNames.RocketLauncher:
+				GD.Print("rocket launcher equipped");
 				break;
             
 			default:

@@ -343,10 +343,11 @@ _sprite = NodePath("../sprite")
 _movementComponent = NodePath("../MovementComponent")
 _characterBody = NodePath("..")
 
-[node name="PickupsComponent" type="Area2D" parent="."]
+[node name="PickupsComponent" type="Area2D" parent="." node_paths=PackedStringArray("WeaponManagerComponent")]
 collision_layer = 2
 collision_mask = 4
 script = ExtResource("5_565do")
+WeaponManagerComponent = NodePath("../WeaponManagerComponent")
 
 [node name="pickups_component_collider" type="CollisionShape2D" parent="PickupsComponent"]
 position = Vector2(-0.5, -1)

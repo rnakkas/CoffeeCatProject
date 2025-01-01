@@ -66,7 +66,7 @@ public partial class PlayerCat : CharacterBody2D
         // _leftWallDetect = GetNode<RayCast2D>("left_wall_detector");
         // _rightWallDetect = GetNode<RayCast2D>("right_wall_detector");
         
-        _weaponManagerComponent = GetNode<WeaponManagerComponent>("WeaponManager");
+        _weaponManagerComponent = GetNode<WeaponManagerComponent>("WeaponManagerComponent");
         _playerHeadTarget = GetNode<Area2D>("player_head_target");
         
         // _playerControllerComponent = GetNode<PlayerControllerComponent>("PlayerControllerComponent");
