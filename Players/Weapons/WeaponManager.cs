@@ -1,12 +1,11 @@
 using System;
-using CoffeeCatProject.GlobalScripts;
 using Godot;
 
-namespace CoffeeCatProject.Components.Scripts;
+namespace CoffeeCatProject.Players.Weapons;
 
 // This component will handle switching weapons
 [GlobalClass]
-public partial class WeaponManagerComponent : Node2D
+public partial class WeaponManager : Node
 {
 	// Variables
 	private string _currentWeapon;
@@ -41,17 +40,21 @@ public partial class WeaponManagerComponent : Node2D
 	/// <summary>
 	/// TODO
 	/// </summary>
+	
+	public override void _Ready()
+	{
+		GD.Print("weapon manager ready");
+	}
 
 	public void EquipWeapon(string weaponName)
 	{
 		switch (weaponName)
 		{
-			case not null when weaponName.Equals(Overlord.PickupItemNames.Shotgun.ToString()):
+			case not null when weaponName.Equals(WeaponTypes.Shotgun.ToString().ToLower()):
 				
 				// Instantiate the weapon scene, set direction based on player's direction, add scene as child of player
 				_weapon = _weaponShotgunScene.Instantiate();
-				// GetParent().AddChild(_weapon);
-				AddSibling(_weapon);
+				GetParent().AddChild(_weapon);
 				break;
             
 			case not null when weaponName.Contains(WeaponTypes.MachineGun.ToString().ToLower()):

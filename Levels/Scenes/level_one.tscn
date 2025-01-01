@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://da3jiitknrkpe" path="res://Enemies/Scenes/enemy_bean_bear.tscn" id="3_lx8tw"]
 [ext_resource type="PackedScene" uid="uid://c2sydjrfojhxe" path="res://Enemies/Scenes/enemy_lab_guy.tscn" id="4_grdbd"]
 [ext_resource type="PackedScene" uid="uid://br3kx6h2du01c" path="res://Enemies/Scenes/enemy_fatty.tscn" id="5_nek4u"]
-[ext_resource type="PackedScene" uid="uid://cfwbrx67rwnwc" path="res://ItemPickups/WeaponPickups/Scenes/shotgun_pickup.tscn" id="6_lm4qd"]
+[ext_resource type="PackedScene" uid="uid://75xqviw4yqgm" path="res://ItemPickups/WeaponPickups/Scenes/pickups_shotgun.tscn" id="6_68er7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mb7bu"]
 texture = ExtResource("1_8igll")
@@ -62,7 +62,7 @@ tile_map_data = PackedByteArray("AAAAAP//AAAFAAEAAAAAAAMAAAAFAAMAAAABAAMAAAACAAE
 tile_set = SubResource("TileSet_a32n0")
 
 [node name="player_cat" parent="." instance=ExtResource("2_xme8i")]
-position = Vector2(813, 154)
+position = Vector2(803, -73)
 
 [node name="Camera2D" type="Camera2D" parent="player_cat"]
 visible = false
@@ -96,5 +96,5 @@ position = Vector2(803, 268)
 
 [node name="item_pickups" type="Node" parent="."]
 
-[node name="ShotgunPickup" parent="item_pickups" instance=ExtResource("6_lm4qd")]
-position = Vector2(741, 272)
+[node name="pickups_shotgun" parent="item_pickups" instance=ExtResource("6_68er7")]
+position = Vector2(708, 272)

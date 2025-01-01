@@ -8,7 +8,4 @@
   <ItemGroup>
     <Content Include="Notes.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ItemPickups\WeaponPickups\Scripts\" />
-  </ItemGroup>
 </Project>

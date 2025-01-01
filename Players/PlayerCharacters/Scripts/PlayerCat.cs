@@ -20,7 +20,7 @@ public partial class PlayerCat : CharacterBody2D
     private AnimatedSprite2D _animation;
     // private RayCast2D _leftWallDetect, _rightWallDetect;
     private Area2D _playerHeadTarget;
-    private WeaponManagerComponent _weaponManagerComponent;
+    private WeaponManager _weaponManager;
     // private PlayerControllerComponent _playerControllerComponent;
     private MovementComponent _movementComponent;
     private AnimationComponent _animationComponent;
@@ -66,7 +66,7 @@ public partial class PlayerCat : CharacterBody2D
         // _leftWallDetect = GetNode<RayCast2D>("left_wall_detector");
         // _rightWallDetect = GetNode<RayCast2D>("right_wall_detector");
         
-        _weaponManagerComponent = GetNode<WeaponManagerComponent>("WeaponManagerComponent");
+        _weaponManager = GetNode<WeaponManager>("WeaponManager");
         _playerHeadTarget = GetNode<Area2D>("player_head_target");
         
         // _playerControllerComponent = GetNode<PlayerControllerComponent>("PlayerControllerComponent");
@@ -307,7 +307,7 @@ public partial class PlayerCat : CharacterBody2D
 
         if (_currentWeapon != null)
         {
-            _weaponManagerComponent.SpriteDirection = SpriteDirection;
+            _weaponManager.SpriteDirection = SpriteDirection;
             
         }
         

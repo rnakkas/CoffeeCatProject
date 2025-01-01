@@ -1,5 +1,4 @@
 using System;
-using CoffeeCatProject.GlobalScripts;
 using CoffeeCatProject.Players.Weapons;
 using Godot;
 
@@ -10,30 +9,19 @@ namespace CoffeeCatProject.Components.Scripts;
 [GlobalClass]
 public partial class PickupsComponent : Area2D
 {
-	[Export] public WeaponManagerComponent WeaponManagerComponent;
+	[Export] public WeaponManager WeaponManager;
 	
-	[Signal] public delegate void PickupItemEnteredEventHandler(PickupItemsComponent item);
-
-	private string _pickupItemType;
-	private string _pickupItemName;
+	private const string WeaponPickupAreaMetadata = "WeaponPickupType";
 	
 	public override void _Ready()
 	{
-		PickupItemEntered += ItemPickedUp;
+		AreaEntered += WeaponPickedUp;
+		AreaEntered += CoffeePickedUp;
+		AreaEntered += KeyPickedUp;
+		AreaEntered += CatnipPickupUp;
+		AreaEntered += AmmoPickedUp;
 	}
 
-	public override void _Process(double delta)
-	{
-		WeaponPickedUp();
-	}
-
-	private void WeaponPickedUp()
-	{
-		if (_pickupItemType != Overlord.PickupItemTypes.Weapon.ToString())
-			return;
-		WeaponManagerComponent?.EquipWeapon(_pickupItemName);
-	}
-	
 	private void AmmoPickedUp(Area2D area)
 	{
 		
@@ -54,22 +42,15 @@ public partial class PickupsComponent : Area2D
 		
 	}
 
-	private void ItemPickedUp(PickupItemsComponent item)
+	private void WeaponPickedUp(Area2D area)
 	{
-		GD.Print("Picked up ");
-		_pickupItemType = item.ItemType.ToString();
-		_pickupItemName = item.ItemName.ToString();
-
-		// if (!item.WeaponTypes)
-		//
-		//
-		// if (!area.HasMeta(WeaponPickupAreaMetadata))
-		// {
-		// 	throw new Exception("Missing metadata " + WeaponPickupAreaMetadata + " in area");
-		// }
-		//       
-		// WeaponManagerComponent?.EquipWeapon(
-		// 	area.GetMeta(WeaponPickupAreaMetadata).ToString().ToLower()
-		// );
+		if (!area.HasMeta(WeaponPickupAreaMetadata))
+		{
+			throw new Exception("Missing metadata " + WeaponPickupAreaMetadata + " in area");
+		}
+        
+		WeaponManager.EquipWeapon(
+			area.GetMeta(WeaponPickupAreaMetadata).ToString().ToLower()
+		);
 	}
 }
