@@ -1,11 +1,11 @@
 using System;
 using Godot;
 
-namespace CoffeeCatProject.Players.Weapons;
+namespace CoffeeCatProject.Components.Scripts;
 
-// This component will handle switching weapons
+// This component will handle equipping and switching weapons
 [GlobalClass]
-public partial class WeaponManager : Node
+public partial class WeaponManagerComponent : Node2D
 {
 	// Variables
 	private string _currentWeapon;

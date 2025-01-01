@@ -9,7 +9,7 @@ namespace CoffeeCatProject.Components.Scripts;
 [GlobalClass]
 public partial class PickupsComponent : Area2D
 {
-	[Export] public WeaponManager WeaponManager;
+	[Export] public WeaponManagerComponent WeaponManagerComponent;
 	
 	private const string WeaponPickupAreaMetadata = "WeaponPickupType";
 	
@@ -49,7 +49,7 @@ public partial class PickupsComponent : Area2D
 			throw new Exception("Missing metadata " + WeaponPickupAreaMetadata + " in area");
 		}
         
-		WeaponManager.EquipWeapon(
+		WeaponManagerComponent.EquipWeapon(
 			area.GetMeta(WeaponPickupAreaMetadata).ToString().ToLower()
 		);
 	}
