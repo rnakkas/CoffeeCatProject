@@ -8,6 +8,13 @@ public partial class Overlord: Node
     public static Overlord Instance { get; private set; }
     public Vector2 PlayerGlobalPosition {get; private set;}
     public Vector2 PlayerHeadTargetGlobalPosition {get; private set;}
+    
+    public int PlayerHealth {get; private set;}
+
+    public void UpdatePlayerHealth(int currentHealth)
+    {
+        PlayerHealth = currentHealth;
+    }
 
     public enum PickupItemTypes
     {

@@ -12,7 +12,6 @@ public partial class PickupItemsComponent : Area2D
     [Export] public Overlord.PickupItemNames ItemName;
     [Export] public int HealAmount;
     [Export] private AnimatedSprite2D _sprite;
-    
     public override void _Ready()
     {
         _sprite.Play("idle");
@@ -20,6 +19,7 @@ public partial class PickupItemsComponent : Area2D
 
         // Connect to signal when a body enters area
         BodyEntered += OnBodyEntered;
+        AreaEntered += PlayerEnteredPickupItemArea;
     }
 
     private void ItemGetsPickedUp()
@@ -38,5 +38,18 @@ public partial class PickupItemsComponent : Area2D
         {
             ItemGetsPickedUp();
         }
+    }
+
+    private void PlayerEnteredPickupItemArea(Area2D area)
+    {
+        if (area is PickupsComponent pickupsComponent)
+        {
+            PickupItemLogic(pickupsComponent);
+        }
+    }
+
+    private void PickupItemLogic(PickupsComponent pickupsComponent)
+    {
+        
     }
 }

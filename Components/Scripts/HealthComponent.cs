@@ -1,3 +1,4 @@
+using CoffeeCatProject.GlobalScripts;
 using Godot;
 
 namespace CoffeeCatProject.Components.Scripts;
@@ -14,6 +15,7 @@ public partial class HealthComponent : Node2D
     {
         CurrentHealth -= damage;
         GD.Print("Health: " + CurrentHealth);
+        Overlord.Instance.UpdatePlayerHealth(CurrentHealth);
     }
 
     public void Heal(int heal)

@@ -11,8 +11,6 @@ public partial class PickupsComponent : Area2D
 	[Export] private WeaponManagerComponent _weaponManagerComponent;
 	[Export] private HealthComponent _healthComponent;
 	
-	private PickupItemsComponent _pickupItemsComponent; 
-	
 	public override void _Ready()
 	{
 		AreaEntered += ItemPickedUp;
