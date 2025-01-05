@@ -47,6 +47,9 @@ public partial class WeaponShotgun : Node2D
 
 		// Set muzzle position
 		_muzzlePosition = _muzzle.Position;
+		
+		// Set z index higher than player to be displayed above player sprite
+		ZIndex = 101;
 	}
 
 	private void SpawnBullets()

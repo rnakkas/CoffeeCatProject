@@ -9,6 +9,53 @@ public partial class Overlord: Node
     public Vector2 PlayerGlobalPosition {get; private set;}
     public Vector2 PlayerHeadTargetGlobalPosition {get; private set;}
 
+    public enum PickupItemTypes
+    {
+        Coffee,
+        Weapon,
+        Ammo,
+        Collectible,
+        Key
+    }
+
+    public enum PickupItemNames
+    {
+        CoffeeMug,
+        CoffeeJar,
+        Pistol,
+        Shotgun,
+        PlasmaRifle,
+        RocketLauncher,
+        Bullets,
+        Shells,
+        PlasmaCells,
+        Rockets,
+        Catnip,
+        RedKey,
+        BlueKey,
+        YellowKey
+    }
+    
+    // Packed scene: shotgun
+    public static readonly PackedScene WeaponShotgunScene = 
+        ResourceLoader.Load<PackedScene>("res://Players/Weapons/Shotgun/Scenes/weapon_shotgun.tscn");
+    
+    // Packed scene: revolver
+    /// <summary>
+    /// TODO
+    /// </summary>
+    ///
+    /// // Packed scene: machinegun
+    /// <summary>
+    /// TODO
+    /// </summary>
+    ///
+    /// /// // Packed scene: plasmarifle
+    /// <summary>
+    /// TODO
+    /// </summary>
+    ///
+    
     public enum EnemyProjectileTypes
     {
         AttackProjectile,

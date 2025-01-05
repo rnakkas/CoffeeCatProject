@@ -27,6 +27,10 @@ window/size/resizable=false
 
 project/assembly_name="CoffeeCatProject"
 
+[global_group]
+
+Player="Group for player nodes"
+
 [input]
 
 move_right={

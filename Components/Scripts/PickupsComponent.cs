@@ -1,5 +1,4 @@
-using System;
-using CoffeeCatProject.Players.Weapons;
+using CoffeeCatProject.GlobalScripts;
 using Godot;
 
 namespace CoffeeCatProject.Components.Scripts;
@@ -9,48 +8,68 @@ namespace CoffeeCatProject.Components.Scripts;
 [GlobalClass]
 public partial class PickupsComponent : Area2D
 {
-	[Export] public WeaponManager WeaponManager;
-	
-	private const string WeaponPickupAreaMetadata = "WeaponPickupType";
+	[Export] private WeaponManagerComponent _weaponManagerComponent;
+	[Export] private HealthComponent _healthComponent;
 	
 	public override void _Ready()
 	{
-		AreaEntered += WeaponPickedUp;
-		AreaEntered += CoffeePickedUp;
-		AreaEntered += KeyPickedUp;
-		AreaEntered += CatnipPickupUp;
-		AreaEntered += AmmoPickedUp;
+		AreaEntered += ItemPickedUp;
 	}
 
+	private void ItemPickedUp(Area2D area)
+	{
+		if (area is PickupItemsComponent pickupItemsComponent)
+		{
+			PickupItemLogic(pickupItemsComponent);
+		}
+	}
+
+	private void PickupItemLogic(PickupItemsComponent pickupItemsComponent)
+	{
+		switch (pickupItemsComponent.ItemType)
+		{
+			case Overlord.PickupItemTypes.Coffee:
+				CoffeePickedUp(pickupItemsComponent);
+				break;
+			case Overlord.PickupItemTypes.Weapon:
+				WeaponPickedUp(pickupItemsComponent);
+				break;
+			case Overlord.PickupItemTypes.Ammo:
+				AmmoPickedUp(pickupItemsComponent);
+				break;
+			case Overlord.PickupItemTypes.Collectible:
+				CollectiblePickupUp(pickupItemsComponent);
+				break;
+			case Overlord.PickupItemTypes.Key:
+				KeyPickedUp(pickupItemsComponent);
+				break;
+		}
+	}
+	
+	private void CoffeePickedUp(PickupItemsComponent pickupItemsComponent)
+	{
+		_healthComponent.Heal(pickupItemsComponent);
+	}
+	
+	private void WeaponPickedUp(PickupItemsComponent pickupItemsComponent)
+	{
+		pickupItemsComponent.ItemGetsPickedUp();
+		_weaponManagerComponent.EquipWeapon(pickupItemsComponent.ItemName);
+	}
+	
 	private void AmmoPickedUp(Area2D area)
 	{
-		
+		GD.Print("ammo picked up: talk to WeaponManagerComponent to increase ammo");
 	}
 
-	private void CatnipPickupUp(Area2D area)
+	private void CollectiblePickupUp(Area2D area)
 	{
-		
+		GD.Print("collectible picked up: talk to Overlord to increase collectible count");
 	}
 
 	private void KeyPickedUp(Area2D area)
 	{
-		
+		GD.Print("key picked up: talk to Overlord to set key bools");
 	}
-
-	private void CoffeePickedUp(Area2D area)
-	{
-		
-	}
-
-	private void WeaponPickedUp(Area2D area)
-	{
-		if (!area.HasMeta(WeaponPickupAreaMetadata))
-		{
-			throw new Exception("Missing metadata " + WeaponPickupAreaMetadata + " in area");
-		}
-        
-		WeaponManager.EquipWeapon(
-			area.GetMeta(WeaponPickupAreaMetadata).ToString().ToLower()
-		);
-	}
+	
 }

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://csyxfl13nwexb"]
+
+[ext_resource type="Script" path="res://Components/Scripts/PickupItemsComponent.cs" id="1_da3bq"]
+
+[node name="PickupItemsComponent" type="Area2D"]
+script = ExtResource("1_da3bq")

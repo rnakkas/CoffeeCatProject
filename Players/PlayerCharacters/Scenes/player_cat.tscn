@@ -3,11 +3,11 @@
 [ext_resource type="Script" path="res://Players/PlayerCharacters/Scripts/PlayerCat.cs" id="1_kydxu"]
 [ext_resource type="Script" path="res://Components/Scripts/HurtboxComponent.cs" id="2_1w0xb"]
 [ext_resource type="Texture2D" uid="uid://8qngepld1gb2" path="res://Assets/Sprites/PlayerSprites/cat_shotgun-3.png" id="2_2ql0j"]
-[ext_resource type="Script" path="res://Players/Weapons/WeaponManager.cs" id="3_g73be"]
 [ext_resource type="Script" path="res://Components/Scripts/HealthComponent.cs" id="3_r6vfe"]
 [ext_resource type="Script" path="res://Components/Scripts/PickupsComponent.cs" id="5_565do"]
 [ext_resource type="Script" path="res://Components/Scripts/VelocityComponent.cs" id="6_dui42"]
 [ext_resource type="Script" path="res://Components/Scripts/AnimationComponent.cs" id="7_i2nye"]
+[ext_resource type="Script" path="res://Components/Scripts/WeaponManagerComponent.cs" id="8_pqxbg"]
 [ext_resource type="Script" path="res://Components/Scripts/MovementComponent.cs" id="8_ymvrk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_05o1h"]
@@ -287,7 +287,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_3bfa6"]
 radius = 2.0
 
-[node name="player_cat" type="CharacterBody2D"]
+[node name="player_cat" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
 collision_mask = 21
 script = ExtResource("1_kydxu")
@@ -306,7 +306,8 @@ collision_mask = 16
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_r6vfe")
-_health = 100
+MaxHealth = 100
+CurrentHealth = 50
 
 [node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("_healthComponent")]
 collision_layer = 2
@@ -343,19 +344,20 @@ _sprite = NodePath("../sprite")
 _movementComponent = NodePath("../MovementComponent")
 _characterBody = NodePath("..")
 
-[node name="PickupsComponent" type="Area2D" parent="." node_paths=PackedStringArray("WeaponManager")]
+[node name="PickupsComponent" type="Area2D" parent="." node_paths=PackedStringArray("_weaponManagerComponent", "_healthComponent")]
 collision_layer = 2
 collision_mask = 4
 script = ExtResource("5_565do")
-WeaponManager = NodePath("../WeaponManager")
+_weaponManagerComponent = NodePath("../WeaponManagerComponent")
+_healthComponent = NodePath("../HealthComponent")
 
 [node name="pickups_component_collider" type="CollisionShape2D" parent="PickupsComponent"]
 position = Vector2(-0.5, -1)
 shape = SubResource("RectangleShape2D_divmg")
 debug_color = Color(0.641889, 0.521654, 0.132785, 0.42)
 
-[node name="WeaponManager" type="Node" parent="."]
-script = ExtResource("3_g73be")
+[node name="WeaponManagerComponent" type="Node2D" parent="."]
+script = ExtResource("8_pqxbg")
 
 [node name="collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_v1o4q")

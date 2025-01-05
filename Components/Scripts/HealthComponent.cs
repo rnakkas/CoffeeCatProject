@@ -1,3 +1,4 @@
+using CoffeeCatProject.GlobalScripts;
 using Godot;
 
 namespace CoffeeCatProject.Components.Scripts;
@@ -7,18 +8,26 @@ namespace CoffeeCatProject.Components.Scripts;
 [GlobalClass]
 public partial class HealthComponent : Node2D
 {
-    
-    [Export] private int _health;
+    [Export] public int MaxHealth;
+    [Export] public int CurrentHealth;
 
     public void TakeDamage(int damage)
     {
-        _health -= damage;
-        GD.Print("Health: " + _health);
+        CurrentHealth -= damage;
+        GD.Print("Health: " + CurrentHealth);
     }
 
-    public void Heal(int heal)
+    public void Heal(PickupItemsComponent pickupItemsComponent)
     {
-        _health += heal;
-        GD.Print("Health: " + _health);
+        // If current health is less than max health, pick up the health item
+        if (CurrentHealth < MaxHealth)
+        {
+            pickupItemsComponent.ItemGetsPickedUp();
+        }
+        
+        // If current health exceeds max health after heal, set the current health to max health
+        CurrentHealth += pickupItemsComponent.HealAmount;
+        CurrentHealth =  Mathf.Min(CurrentHealth, MaxHealth);
+        GD.Print("Health: " + CurrentHealth);
     }
 }
