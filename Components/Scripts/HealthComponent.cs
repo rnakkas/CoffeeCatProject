@@ -15,13 +15,19 @@ public partial class HealthComponent : Node2D
     {
         CurrentHealth -= damage;
         GD.Print("Health: " + CurrentHealth);
-        Overlord.Instance.UpdatePlayerHealth(CurrentHealth);
     }
 
-    public void Heal(int heal)
+    public void Heal(PickupItemsComponent pickupItemsComponent)
     {
-        // Clamp the current health between 0 and max health
-        CurrentHealth =  Mathf.Clamp(CurrentHealth + heal, 0, MaxHealth);
+        // If current health is less than max health, pick up the health item
+        if (CurrentHealth < MaxHealth)
+        {
+            pickupItemsComponent.ItemGetsPickedUp();
+        }
+        
+        // If current health exceeds max health after heal, set the current health to max health
+        CurrentHealth += pickupItemsComponent.HealAmount;
+        CurrentHealth =  Mathf.Min(CurrentHealth, MaxHealth);
         GD.Print("Health: " + CurrentHealth);
     }
 }

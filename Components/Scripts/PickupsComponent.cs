@@ -48,11 +48,12 @@ public partial class PickupsComponent : Area2D
 	
 	private void CoffeePickedUp(PickupItemsComponent pickupItemsComponent)
 	{
-		_healthComponent.Heal(pickupItemsComponent.HealAmount);
+		_healthComponent.Heal(pickupItemsComponent);
 	}
 	
 	private void WeaponPickedUp(PickupItemsComponent pickupItemsComponent)
 	{
+		pickupItemsComponent.ItemGetsPickedUp();
 		_weaponManagerComponent.EquipWeapon(pickupItemsComponent.ItemName);
 	}
 	
