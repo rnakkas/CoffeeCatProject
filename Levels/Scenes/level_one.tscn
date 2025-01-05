@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://bl58j0wkqq0wh"]
+[gd_scene load_steps=10 format=4 uid="uid://bl58j0wkqq0wh"]
 
 [ext_resource type="Texture2D" uid="uid://bktmt6xe6jq14" path="res://Assets/Tilemaps/tilemap-floors-walls-1.png" id="1_8igll"]
 [ext_resource type="PackedScene" uid="uid://dlyfs7e3himjx" path="res://Players/PlayerCharacters/Scenes/player_cat.tscn" id="2_xme8i"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c2sydjrfojhxe" path="res://Enemies/Scenes/enemy_lab_guy.tscn" id="4_grdbd"]
 [ext_resource type="PackedScene" uid="uid://br3kx6h2du01c" path="res://Enemies/Scenes/enemy_fatty.tscn" id="5_nek4u"]
 [ext_resource type="PackedScene" uid="uid://8edqs6oqk7sr" path="res://ItemPickups/WeaponPickups/Scenes/shotgun_pickup.tscn" id="7_1duw4"]
+[ext_resource type="PackedScene" uid="uid://tkcnd75dj1cc" path="res://ItemPickups/CoffeePickups/coffee_mug_pickup.tscn" id="7_76yfn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mb7bu"]
 texture = ExtResource("1_8igll")
@@ -98,3 +99,6 @@ position = Vector2(803, 268)
 
 [node name="ShotgunPickup" parent="item_pickups" instance=ExtResource("7_1duw4")]
 position = Vector2(762, 274)
+
+[node name="CoffeeMugPickup" parent="item_pickups" instance=ExtResource("7_76yfn")]
+position = Vector2(703, 181)

@@ -8,7 +8,8 @@ namespace CoffeeCatProject.Components.Scripts;
 [GlobalClass]
 public partial class PickupsComponent : Area2D
 {
-	[Export] public WeaponManagerComponent WeaponManagerComponent;
+	[Export] private WeaponManagerComponent _weaponManagerComponent;
+	[Export] private HealthComponent _healthComponent;
 	
 	private PickupItemsComponent _pickupItemsComponent; 
 	
@@ -47,29 +48,29 @@ public partial class PickupsComponent : Area2D
 		}
 	}
 	
-	private void CoffeePickedUp(Area2D area)
+	private void CoffeePickedUp(PickupItemsComponent pickupItemsComponent)
 	{
-		GD.Print("Coffee Picked Up: ");
+		_healthComponent.Heal(pickupItemsComponent.HealAmount);
 	}
 	
 	private void WeaponPickedUp(PickupItemsComponent pickupItemsComponent)
 	{
-		WeaponManagerComponent.EquipWeapon(pickupItemsComponent.ItemName);
+		_weaponManagerComponent.EquipWeapon(pickupItemsComponent.ItemName);
 	}
 	
 	private void AmmoPickedUp(Area2D area)
 	{
-		GD.Print("ammo picked up");
+		GD.Print("ammo picked up: talk to WeaponManagerComponent to increase ammo");
 	}
 
 	private void CollectiblePickupUp(Area2D area)
 	{
-		GD.Print("collectible picked up");
+		GD.Print("collectible picked up: talk to Overlord to increase collectible count");
 	}
 
 	private void KeyPickedUp(Area2D area)
 	{
-		GD.Print("key picked up");
+		GD.Print("key picked up: talk to Overlord to set key bools");
 	}
 	
 }

@@ -18,6 +18,9 @@ public partial class HealthComponent : Node2D
 
     public void Heal(int heal)
     {
+        if (_health + heal >= _health)
+            return;
+        
         _health += heal;
         GD.Print("Health: " + _health);
     }

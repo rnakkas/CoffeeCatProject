@@ -1,0 +1,112 @@
+[gd_scene load_steps=16 format=3 uid="uid://tkcnd75dj1cc"]
+
+[ext_resource type="Script" path="res://Components/Scripts/PickupItemsComponent.cs" id="1_pq44i"]
+[ext_resource type="Texture2D" uid="uid://cp7stu7okphtc" path="res://Assets/coffee_mug_spritesheet_v1.png" id="2_snjhm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0q6ox"]
+atlas = ExtResource("2_snjhm")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eysx1"]
+atlas = ExtResource("2_snjhm")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dc6kp"]
+atlas = ExtResource("2_snjhm")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6yo8h"]
+atlas = ExtResource("2_snjhm")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_185c0"]
+atlas = ExtResource("2_snjhm")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_td6v6"]
+atlas = ExtResource("2_snjhm")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vki4"]
+atlas = ExtResource("2_snjhm")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nu2qo"]
+atlas = ExtResource("2_snjhm")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yfyim"]
+atlas = ExtResource("2_snjhm")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_twms4"]
+atlas = ExtResource("2_snjhm")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m57xa"]
+atlas = ExtResource("2_snjhm")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6ttuq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0q6ox")
+}],
+"loop": true,
+"name": &"collect",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eysx1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dc6kp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6yo8h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_185c0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_td6v6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3vki4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nu2qo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yfyim")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_twms4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m57xa")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_55w7u"]
+radius = 4.0
+
+[node name="CoffeeMugPickup" type="Area2D" node_paths=PackedStringArray("_sprite")]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_pq44i")
+HealAmount = 15
+_sprite = NodePath("sprite")
+
+[node name="sprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.15, 0.161)
+sprite_frames = SubResource("SpriteFrames_6ttuq")
+animation = &"idle"
+
+[node name="collider" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_55w7u")

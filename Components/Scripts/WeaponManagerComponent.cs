@@ -4,7 +4,7 @@ using Godot;
 
 namespace CoffeeCatProject.Components.Scripts;
 
-// This component will handle equipping and switching weapons
+// This component will handle equipping weapons, switching weapons, tracking ammo count
 [GlobalClass]
 public partial class WeaponManagerComponent : Node2D
 {

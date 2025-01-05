@@ -10,13 +10,11 @@ public partial class PickupItemsComponent : Area2D
 {
     [Export] public Overlord.PickupItemTypes ItemType;
     [Export] public Overlord.PickupItemNames ItemName;
+    [Export] public int HealAmount;
     [Export] private AnimatedSprite2D _sprite;
     
     public override void _Ready()
     {
-        // Get nodes
-        _sprite = GetNode<AnimatedSprite2D>("sprite");
-		
         _sprite.Play("idle");
         _sprite.FlipH = true;
 
