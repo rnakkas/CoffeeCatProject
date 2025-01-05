@@ -63,7 +63,7 @@ tile_map_data = PackedByteArray("AAAAAP//AAAFAAEAAAAAAAMAAAAFAAMAAAABAAMAAAACAAE
 tile_set = SubResource("TileSet_a32n0")
 
 [node name="player_cat" parent="." instance=ExtResource("2_xme8i")]
-position = Vector2(801, 154)
+position = Vector2(678, 271)
 
 [node name="Camera2D" type="Camera2D" parent="player_cat"]
 visible = false
@@ -93,7 +93,7 @@ position = Vector2(600, 204)
 position = Vector2(1041, 268)
 
 [node name="enemy_lab_guy" parent="." instance=ExtResource("4_grdbd")]
-position = Vector2(803, 268)
+position = Vector2(1084, 205)
 
 [node name="item_pickups" type="Node" parent="."]
 
@@ -101,13 +101,25 @@ position = Vector2(803, 268)
 position = Vector2(762, 274)
 
 [node name="CoffeeMugPickup" parent="item_pickups" instance=ExtResource("7_76yfn")]
-position = Vector2(703, 181)
+position = Vector2(721, 275)
 
 [node name="CoffeeMugPickup2" parent="item_pickups" instance=ExtResource("7_76yfn")]
-position = Vector2(900, 164)
+position = Vector2(881, 275)
+
+[node name="CoffeeMugPickup5" parent="item_pickups" instance=ExtResource("7_76yfn")]
+position = Vector2(842, 275)
+
+[node name="CoffeeMugPickup6" parent="item_pickups" instance=ExtResource("7_76yfn")]
+position = Vector2(791, 275)
 
 [node name="CoffeeMugPickup3" parent="item_pickups" instance=ExtResource("7_76yfn")]
-position = Vector2(980, 180)
+position = Vector2(921, 274)
 
 [node name="CoffeeMugPickup4" parent="item_pickups" instance=ExtResource("7_76yfn")]
-position = Vector2(1075, 211)
+position = Vector2(1009, 275)
+
+[node name="CoffeeMugPickup7" parent="item_pickups" instance=ExtResource("7_76yfn")]
+position = Vector2(1081, 275)
+
+[node name="CoffeeMugPickup8" parent="item_pickups" instance=ExtResource("7_76yfn")]
+position = Vector2(961, 275)

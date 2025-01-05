@@ -12,18 +12,20 @@ public partial class PickupItemsComponent : Area2D
     [Export] public Overlord.PickupItemNames ItemName;
     [Export] public int HealAmount;
     [Export] private AnimatedSprite2D _sprite;
-    
+
+    public bool IsHealthFull;
+        
     public override void _Ready()
     {
         _sprite.Play("idle");
         _sprite.FlipH = true;
-
-        // Connect to signal when a body enters area
-        BodyEntered += OnBodyEntered;
     }
 
-    private void ItemGetsPickedUp()
+    public void ItemGetsPickedUp()
     {
+        // Turn collision layer off so player cannot quickly run inside layer to heal again during despawn animation
+        CollisionLayer = 0;
+        
         Tween tween1 = GetTree().CreateTween();
         Tween tween2 = GetTree().CreateTween();
 
@@ -32,11 +34,4 @@ public partial class PickupItemsComponent : Area2D
         tween2.TweenCallback(Callable.From(QueueFree));
     }
     
-    private void OnBodyEntered(Node2D body)
-    {
-        if (body.GetMeta("role").ToString() == "Player")
-        {
-            ItemGetsPickedUp();
-        }
-    }
 }
